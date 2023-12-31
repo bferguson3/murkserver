@@ -1,4 +1,5 @@
-// #include <cstdio.h>
+// murk client.c
+
 #include <enet/enet.h>
 #include <stdio.h>
 #include <termios.h>
@@ -19,13 +20,7 @@ char *menuselpkt;
 char un[64];
 char pw[64] = {0};
 char lastInput[64];
-
-typedef enum packet_action
-{
-    PA_NONE = 0,
-    PA_LOGIN = 1,
-    PA_MENUSELECT = 2
-} PacketAction;
+unsigned char temp_pass_sh[64] = {0};
 
 char menuInput = 0;
 
@@ -36,26 +31,8 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer);
 ssize_t getpasswd(char **pw, size_t sz, int mask, FILE *fp);
 void g_copy(char *src, char *dst, size_t len);
 void *encrypt_pass(char *pass);
-
-// void *hash;
-
-void assert(bool tf)
-{
-    if (!tf)
-    {
-        printf("*ASSERTION FAILED*\n");
-        abort();
-    }
-}
-
-const char *CmdPrompt(const char *prompt)
-{
-    printf("%s", prompt);
-    fflush(stdout);
-    scanf("%s", lastInput);
-    return (const char *)&lastInput[0];
-    // printf("[Debug] Last Input: %s\n", lastInput);
-}
+void assert(bool tf);
+const char *CmdPrompt(const char *prompt);
 
 //
 int main(int argc, char **argv)
@@ -176,6 +153,10 @@ int main(int argc, char **argv)
             case ENET_EVENT_TYPE_DISCONNECT:
                 puts("Disconnect ok\n");
                 disc = 1;
+                break;
+            case ENET_EVENT_TYPE_NONE:
+                break;
+            case ENET_EVENT_TYPE_CONNECT:
                 break;
         }
     }
@@ -330,18 +311,16 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
     free(j);
 }
 
-unsigned char temp_pass_sh[64] = {0};
-
 void *encrypt_pass(char *pass)
 {
     // sha3 test
     sha3_context c;
-    uint8_t *hash;
+    void *hash;
     sha3_Init512(&c);
     sha3_Update(&c, pass, strlen(pass));
-    hash = sha3_Finalize(&c);
+    hash = (void *)sha3_Finalize(&c);
     // for (int i = 0; i < 64; i++) printf("%u ", hash[i]);
-    g_copy(hash, temp_pass_sh, 64);
+    g_copy((char *)hash, (char *)temp_pass_sh, 64);
 
     return &temp_pass_sh[0];
 }
@@ -370,7 +349,7 @@ char *ConstructLoginPacket(char *un, void *pw)
     int len_p;
     const int ALEN = 35;
     const int BLEN = 11;
-    g_copy(loginpacketex, loginPacket, ALEN);
+    g_copy((char *)loginpacketex, loginPacket, ALEN);
 
     // copy in UN and PW
     for (i = 0; i < ulen; i++) loginPacket[ALEN + i] = un[i];  // username
@@ -399,4 +378,22 @@ char *ConstructLoginPacket(char *un, void *pw)
     printf("\n%s\n", loginPacket);
 
     return loginPacket;
+}
+
+void assert(bool tf)
+{
+    if (!tf)
+    {
+        printf("*ASSERTION FAILED*\n");
+        abort();
+    }
+}
+
+const char *CmdPrompt(const char *prompt)
+{
+    printf("%s", prompt);
+    fflush(stdout);
+    scanf("%s", lastInput);
+    return (const char *)&lastInput[0];
+    // printf("[Debug] Last Input: %s\n", lastInput);
 }

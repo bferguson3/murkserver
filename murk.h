@@ -1,4 +1,6 @@
-//
+#ifndef __MURK_H__
+#define __MURK_H__
+
 typedef unsigned char u8;
 typedef unsigned char bool;
 typedef unsigned char byte;
@@ -25,3 +27,18 @@ enum MURK_PACKET_TYPES
     LOGIN_REQ = 1,
     LOGIN_WELCOME = 2,
 };
+
+typedef enum packet_action
+{
+    PA_NONE = 0,
+    PA_LOGIN = 1,
+    PA_MENUSELECT = 2
+} PacketAction;
+
+typedef enum process_action
+{
+    PRA_NONE = 0,
+    PRA_PROCESSLOGIN = 1
+} ProcessAction;
+
+#endif

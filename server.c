@@ -1,3 +1,5 @@
+// murk server.c
+
 #include <enet/enet.h>
 #include <sqlite3.h>
 #include <stdio.h>
@@ -35,15 +37,9 @@ sqlite3 *murk_userdb;
 byte password_buffer[128] = {0};
 size_t last_buffer_size = 0;
 
-typedef enum process_action
-{
-    PA_NONE = 0,
-    PA_PROCESSLOGIN = 1
-} ProcessAction;
-
 void clear_password_buffer()
 {
-    long *ptr = &password_buffer[0];
+    long *ptr = (long *)&password_buffer[0];
     for (int i = 0; i < (128 / sizeof(long)); i++)
     {
         *ptr = (long)0;
@@ -60,13 +56,11 @@ static int pw_callback(void *_notused, int argc, char **argv, char **azColName)
         if (strcmp(azColName[i], "password") == 0)
         {
             // g_copy(argv[i], password_buffer, strlen(argv[i]));
-            char *_a = &password_buffer[0];
+            char *_a = (char *)&password_buffer[0];
             char *_b = &argv[i][0];
-            // TODO RESUME HERE
             // printf("pb %s\nargv %s\n", _a, _b);
             // printf("sz %d\n", last_buffer_size);
             for (int j = 0; j < last_buffer_size; j++) _a[j] = _b[j];
-            //  password_buffer[j] = argv[i][j];
         }
     }
     // printf("%s\n", password_buffer);  // THIS IS RAW HASH.
@@ -175,6 +169,10 @@ int main(int argc, char **argv)
                     // event.peer->data = NULL;
                     free(event.peer->data);
                     break;
+
+                case ENET_EVENT_TYPE_NONE:
+
+                    break;
             }
         }
     }
@@ -252,8 +250,9 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
                 /* USER LOGIN FOUND IN USER DB */
                 //        printf("User found. Checking PW.\n");
                 // processLogin = true;
-                p_act = PA_PROCESSLOGIN;
-                user.userName = next_str->string;  // user_db[i].userName;
+                p_act = PRA_PROCESSLOGIN;
+                user.userName =
+                    (char *)next_str->string;  // user_db[i].userName;
 
                 last_buffer_size = GetBlobLength("users", "user_id", "password",
                                                  user.userName);
@@ -271,8 +270,8 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
             else if (JNEXT("pass")) /* handle password field */
             {
                 JSONString pw = next_val->payload;
-                Base64decode(&decrypted_pass, (char *)pw->string);
-                user.password = &decrypted_pass;
+                Base64decode((char *)&decrypted_pass, (char *)pw->string);
+                user.password = (char *)&decrypted_pass;
                 // char decrypted[128] = {0};
                 //  printf("%s \n", decrypted);
             }
@@ -286,9 +285,9 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
     }
 
     // Final processing loop
-    if (p_act == PA_PROCESSLOGIN)
+    if (p_act == PRA_PROCESSLOGIN)
     {
-        if (CheckUserPass(user.userName, user.password))
+        if (CheckUserPass(user.userName, (byte *)user.password))
         {
             printf("Login OK!\n");
             // LOGIN SUCCESSFUL !
@@ -302,23 +301,11 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
         }
         else
         {
-            printf("Invalid username or password.\n");
+            printf("Invalid username or password. Ctrl+C to exit...\n");
         }
-        /*
-        // TODO:
-        // search through database
-
-        //if ((strcmp(user.userName, user_db[userIndex].userName) == 0) &&
-        //    (strcmp(user.password, user_db[userIndex].password) == 0))
-        {
-            //
-        }
-
-        */
     }
     else
     {
-        printf("Invalid username or password.\n");
     }
 
     free(j);
@@ -426,6 +413,7 @@ bool CheckUserPass(char *un, byte *pw)
         }
         // command OK
     }
+    return 0;
 }
 
 void CreateNewUser(char *un, char *pw)
