@@ -1,0 +1,8 @@
+{
+    "packetType": "MENU_MAIN",
+    "text": "\\u001b[7h\\u001b[0;40;30m\\u001b[?33h\\u001b[30m\\u001b[40m \\u001b[1;37m \\u001b[0;30m \\u001b[31m   \\u001b[30m                                      \\u001b[34m**\\u001b[30m                                    \\u001b[31m---\\u00b6>>>\\u001b[30m   \\u001b[31mWELCOME TO\\u001b[30m   \\u001b[31m<<<\\u00b6---\\u001b[30m           \\u001b[34m*****\\u001b[30m                                                                          \\u001b[34m*\\u001b[1m*\\u001b[0;30m\\u001b[47m.\\u001b[1;34m\\u001b[40m*\\u001b[0;30m\\u001b[47m.\\u001b[1;34m\\u001b[40m*\\u001b[0m*\\u001b[30m                                            \\u001b[31mTHE MUDIVERSE!\\u001b[30m               \\u001b[34m*\\u001b[1m**\\u001b[0;31m_\\u001b[1;34m**\\u001b[0m*\\u001b[30m                                             \\u001b[31m \\u001b[30m                            \\u001b[34m*****\\u001b[30m                                ",
+    "menuOptions": [
+        "1] New Game",
+        "2] Quit"
+    ]
+}

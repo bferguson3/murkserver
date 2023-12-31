@@ -1,0 +1,5 @@
+{
+ "packetType":"LOGIN_WELCOME",
+ "text":"Welcome to \x1b[31mMUDVERSE!\x1b[0m",
+ "tickRate":250
+}

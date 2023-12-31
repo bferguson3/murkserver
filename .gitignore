@@ -1,0 +1,10 @@
+client
+server
+blobs/include/**
+tools/json2cstr
+tools/makejsonres
+tools/enc/**
+**.DS_Store**
+.nanorc
+.clang-format
+users.db
