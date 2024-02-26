@@ -270,10 +270,10 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
             else if (JNEXT("pass")) /* handle password field */
             {
                 JSONString pw = next_val->payload;
-                Base64decode((char *)&decrypted_pass, (char *)pw->string);
-                user.password = (char *)&decrypted_pass;
-                // char decrypted[128] = {0};
-                //  printf("%s \n", decrypted);
+                //Base64decode((char *)&decrypted_pass, (char *)pw->string);
+                user.password = pw->string;//(char *)&decrypted_pass;
+                //char decrypted[128] = {0};
+                //printf("DEBUG GG:%s \n", decrypted_pass);
             }
         }
         //
@@ -404,7 +404,7 @@ bool CheckUserPass(char *un, byte *pw)
     else
     {
         // now compare user.password
-        // printf("UP:%s\nPB:%s\n", user.password, password_buffer);
+        printf("UP:%s\nPB:%s\n", user.password, password_buffer);
         //  and password_buffer
         if (bytecmp(user.password, password_buffer,
                     last_buffer_size))  // == 1 is OK

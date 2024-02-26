@@ -292,7 +292,7 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
 
         void *myhash = encrypt_pass(pw);
 
-        // printf("%s", myhash);
+        //printf("hashed pw: %s\n", myhash);
         loginpkt = ConstructLoginPacket(un, myhash);
 
         printf("\nLogging in...\n");
