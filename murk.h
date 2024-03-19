@@ -23,25 +23,74 @@ typedef struct login
 
 enum MURK_PACKET_TYPES
 {
-    VOID = 0,
+    NOPACKET = 0,
     LOGIN_REQ = 1,
     LOGIN_WELCOME = 2,
+    MESSAGE_GEN = 3
 };
 
-typedef enum packet_action
+typedef enum packet_action // client
 {
     PA_NONE = 0,
     PA_LOGIN = 1,
     PA_MENUSELECT = 2
 } PacketAction;
 
-typedef enum process_action
+typedef enum process_action // server
 {
     PRA_NONE = 0,
     PRA_PROCESSLOGIN = 1,
     PRA_MENUSELECT = 2
 } ProcessAction;
 
+
+typedef struct _exits { 
+    bool N;
+    bool S;
+    bool E;
+    bool W;
+    bool Up;
+    bool Down;
+    bool NW;
+    bool NE;
+    bool SE;
+    bool SW;
+} Exits;
+
+#define no_exits 0,0,0,0,0,0,0,0,0,0
+
+enum ScreenType { 
+    LOGIN_SCREEN = 0,
+    MAIN_MENU = 1,
+    SAFE_AREA = 2,
+    NORMAL_AREA = 3
+};
+
+typedef struct _screen { 
+    int id_no;
+    enum ScreenType type;
+    Exits exits;
+    const char* description;
+} Screen;
+
+
+enum PlayerState { 
+    STATE_OFFLINE = 0,
+    STATE_MAINMENU = 1,
+    STATE_IDLE = 2,
+    STATE_INCOMBAT = 3,
+    STATE_DEAD = 4
+};
+
+typedef struct _user_state { 
+    char id[16];
+    Screen* currentScreen; 
+    enum PlayerState state;
+    char userName[64];
+    int level;
+    char miscBytes[256];
+} UserState;
+// 512 at most?
 
 
 #endif
