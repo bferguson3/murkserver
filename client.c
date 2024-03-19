@@ -18,7 +18,7 @@ char *loginpkt;
 char *menuselpkt;
 
 char un[64];
-char pw[64] = {0};
+char pw[64] = { ' ' };
 char lastInput[64];
 unsigned char temp_pass_sh[64] = {0};
 
@@ -27,6 +27,7 @@ char menuInput = 0;
 //
 
 char *ConstructLoginPacket(char *un, void *pw);
+char *ConstructMenuPacket(char sel);
 void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer);
 ssize_t getpasswd(char **pw, size_t sz, int mask, FILE *fp);
 void g_copy(char *src, char *dst, size_t len);
@@ -171,6 +172,7 @@ int main(int argc, char **argv)
 
 //
 //
+//
 void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
 {
     printf("[Debug] Packet length: %zu len\n", len);
@@ -195,6 +197,7 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
     // get the packet type
     JSONVal p_type_val = p_type->value;
     JSONString p_type_valstr = p_type_val->payload;
+    
     // Debug print the packet type
     // printf("[Debug] packetType: %s\n", p_type_valstr->string);
 
@@ -247,9 +250,11 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
             else if (JNEXT("menuOptions"))
             {
                 printf(_Rst);  // Reset ansi just in case
+                
                 // get list of menu options
                 struct json_array_s *array = json_value_as_array(next_val);
                 int arlen = array->length;  // and length
+                
                 // get first element
                 struct json_array_element_s *this_ele = array->start;
                 JSONString ele_str = json_value_as_string(this_ele->value);
@@ -260,12 +265,6 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
                     ele_str = json_value_as_string(this_ele->value);
                     printf("%s\n", ele_str->string);
                 }  // and the remaning options
-
-                // then ask for input
-                menuInput = *CmdPrompt("> ");  // only take the 1st character
-
-                // printf("[Debug] The first character you input is: %c\n",
-                //        menuInput);
             }
         }
         // other packets
@@ -278,6 +277,9 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
     // After the json is fully parsed, complete the processes here.
     //
 
+    //
+    // LOGIN PACKET PROCESS
+    //
     if (p_act == PA_LOGIN)
     {
         char *p = pw;
@@ -292,7 +294,6 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
 
         void *myhash = encrypt_pass(pw);
 
-        //printf("hashed pw: %s\n", myhash);
         loginpkt = ConstructLoginPacket(un, myhash);
 
         printf("\nLogging in...\n");
@@ -305,7 +306,17 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
     }
     else if (p_act == PA_MENUSELECT)
     {
-        //
+        // then ask for input
+        menuInput = CmdPrompt("> ")[0];  // only take the 1st character
+        
+        menuselpkt = ConstructMenuPacket(menuInput);
+        
+        ENetPacket *pak = enet_packet_create(menuselpkt, strlen(menuselpkt), 
+            ENET_PACKET_FLAG_RELIABLE);
+        
+        enet_peer_send(peer, 0, pak);
+        
+        free(menuselpkt);
     }
 
     free(j);
@@ -319,7 +330,7 @@ void *encrypt_pass(char *pass)
     sha3_Init512(&c);
     sha3_Update(&c, pass, strlen(pass));
     hash = (void *)sha3_Finalize(&c);
-    // for (int i = 0; i < 64; i++) printf("%u ", hash[i]);
+
     g_copy((char *)hash, (char *)temp_pass_sh, 64);
 
     return &temp_pass_sh[0];
@@ -330,22 +341,34 @@ void g_copy(char *src, char *dst, size_t len)
     for (int i = 0; i < len; i++) *dst++ = *src++;
 }
 
+char* ConstructMenuPacket(char sel)
+{
+    // defining strings as const and copying them into memory is SAFE.
+    const char* pakex = "{\"packetType\":\"MENU_SEL\",\n\"value\":\" \"\n}";
+    size_t totalsz = strlen(pakex);
+    char* menuPak = (char*)malloc(totalsz);
+    g_copy(pakex, menuPak, totalsz);
+    menuPak[35] = sel;
+    return menuPak;
+}
+
 char *ConstructLoginPacket(char *un, void *pw)
 {
     // sample:
     const char loginpacketex[] =
         "{\"packetType\":\"LOGIN_REQ\",\n\"user\":\"\",\n\"pass\":\"\"\
 }";
+
     // get size of packet and allocate it, pw is 512 hash
     int enclen = Base64encode_len(512 / 8);
 
     size_t totalsz = strlen(un) + enclen + strlen(loginpacketex);
-    // printf("size %d", enclen);
+    
     char *loginPacket = (char *)malloc(totalsz);
 
     int i;
     int ulen = strlen(un);
-    // int plen = 512 / 8;
+    
     int len_p;
     const int ALEN = 35;
     const int BLEN = 11;
@@ -362,9 +385,6 @@ char *ConstructLoginPacket(char *un, void *pw)
     char *encodedpass = (char *)malloc(enclen);
     Base64encode(encodedpass, pw, 512 / 8);
 
-    // char *oldp = &pw[0];
-    // for (i = 0; i < 64; i++) printf("%d ", *oldp++);
-
     //  password
     for (int n = 0; n < enclen - 1; n++)
     {
@@ -375,7 +395,7 @@ char *ConstructLoginPacket(char *un, void *pw)
     loginPacket[i++] = '"';
     loginPacket[i++] = '}';
 
-    printf("\n%s\n", loginPacket);
+    //printf("\n%s\n", loginPacket);
 
     return loginPacket;
 }

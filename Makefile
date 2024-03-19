@@ -10,7 +10,7 @@ default: $(JSONH)
 	python3 tools/makejsonres.py blobs/include 
 	$(shell itemizejson.sh)
 	gcc client.c sha3.c base64.c -lenet -lsqlite3 $(LIB) $(INC) -o client
-	gcc server.c sha3.c guid.c base64.c -lenet -lsqlite3 $(LIB) $(INC) -o server
+	gcc server.c sha3.c guid.c base64.c server_sql.c -lenet -lsqlite3 $(LIB) $(INC) -o server
     
 blobs/include/%_json.h: blobs/%.json 
 	python3 tools/json2cstr.py $< > $@

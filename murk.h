@@ -38,7 +38,10 @@ typedef enum packet_action
 typedef enum process_action
 {
     PRA_NONE = 0,
-    PRA_PROCESSLOGIN = 1
+    PRA_PROCESSLOGIN = 1,
+    PRA_MENUSELECT = 2
 } ProcessAction;
+
+
 
 #endif
