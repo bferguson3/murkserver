@@ -1,7 +1,12 @@
-/*
-   The latest version of this library is available on GitHub;
-   https://github.com/sheredom/json.h.
-*/
+//! @file json.h
+//! @brief JSON-C implementation by sheredom.
+
+
+
+//! The latest version of this library is available on GitHub;
+//! https://github.com/sheredom/json.h.
+//! 
+//!
 
 /*
    This is free and unencumbered software released into the public domain.

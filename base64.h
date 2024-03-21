@@ -1,3 +1,5 @@
+//! \file base64.h A base64 encoder/decoder by Apache.
+
 /*
  * Copyright (c) 2003 Apple Computer, Inc. All rights reserved.
  *

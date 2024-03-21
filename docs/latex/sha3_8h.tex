@@ -1,0 +1,101 @@
+\doxysection{sha3.\+h File Reference}
+\hypertarget{sha3_8h}{}\label{sha3_8h}\index{sha3.h@{sha3.h}}
+
+
+SHA3 encoding implementation.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structsha3__context__}{sha3\+\_\+context\+\_\+}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{sha3_8h_a523878099e5ec16cb61e01d0365201f5}{SHA3\+\_\+\+KECCAK\+\_\+\+SPONGE\+\_\+\+WORDS}}~    (((1600) / 8 /\texorpdfstring{$\ast$}{*}bits to byte\texorpdfstring{$\ast$}{*}/) / sizeof(uint64\+\_\+t))
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{sha3_8h_a144bd9bfe50c819c3b0ad0f4a6cbfd16}\label{sha3_8h_a144bd9bfe50c819c3b0ad0f4a6cbfd16} 
+typedef struct \mbox{\hyperlink{structsha3__context__}{sha3\+\_\+context\+\_\+}} {\bfseries sha3\+\_\+context}
+\item 
+\Hypertarget{sha3_8h_a9375a269cc778c2e4a430ed65d588e4f}\label{sha3_8h_a9375a269cc778c2e4a430ed65d588e4f} 
+typedef enum SHA3\+\_\+\+RETURN {\bfseries sha3\+\_\+return\+\_\+t}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{sha3_8h_aeafb3c3d4034b10ca45439626146202d}\label{sha3_8h_aeafb3c3d4034b10ca45439626146202d} 
+enum {\bfseries SHA3\+\_\+\+FLAGS} \{ {\bfseries SHA3\+\_\+\+FLAGS\+\_\+\+NONE} = 0
+, {\bfseries SHA3\+\_\+\+FLAGS\+\_\+\+KECCAK} = 1
+ \}
+\item 
+\Hypertarget{sha3_8h_a4c7cb4d5ae71a49c9e882b9ccd61c836}\label{sha3_8h_a4c7cb4d5ae71a49c9e882b9ccd61c836} 
+enum {\bfseries SHA3\+\_\+\+RETURN} \{ {\bfseries SHA3\+\_\+\+RETURN\+\_\+\+OK} = 0
+, {\bfseries SHA3\+\_\+\+RETURN\+\_\+\+BAD\+\_\+\+PARAMS} = 1
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{sha3_8h_a80d8a48726b284c1a0a3e7b408d7ffbc}\label{sha3_8h_a80d8a48726b284c1a0a3e7b408d7ffbc} 
+sha3\+\_\+return\+\_\+t {\bfseries sha3\+\_\+\+Init} (void \texorpdfstring{$\ast$}{*}priv, unsigned bit\+Size)
+\item 
+\Hypertarget{sha3_8h_ae6ad8ca9e5c339bbb03add5d045792a1}\label{sha3_8h_ae6ad8ca9e5c339bbb03add5d045792a1} 
+void {\bfseries sha3\+\_\+\+Init256} (void \texorpdfstring{$\ast$}{*}priv)
+\item 
+\Hypertarget{sha3_8h_abdd2a314bd4ceb904de5f3610399e262}\label{sha3_8h_abdd2a314bd4ceb904de5f3610399e262} 
+void {\bfseries sha3\+\_\+\+Init384} (void \texorpdfstring{$\ast$}{*}priv)
+\item 
+\Hypertarget{sha3_8h_aa9e1841952701e66f01ca60187c579b4}\label{sha3_8h_aa9e1841952701e66f01ca60187c579b4} 
+void {\bfseries sha3\+\_\+\+Init512} (void \texorpdfstring{$\ast$}{*}priv)
+\item 
+\Hypertarget{sha3_8h_a12f1cf6a0bd68f5c61414b6a982cef23}\label{sha3_8h_a12f1cf6a0bd68f5c61414b6a982cef23} 
+enum SHA3\+\_\+\+FLAGS {\bfseries sha3\+\_\+\+Set\+Flags} (void \texorpdfstring{$\ast$}{*}priv, enum SHA3\+\_\+\+FLAGS)
+\item 
+\Hypertarget{sha3_8h_aa3c93548de131d647e7f8a12b2ab4c60}\label{sha3_8h_aa3c93548de131d647e7f8a12b2ab4c60} 
+void {\bfseries sha3\+\_\+\+Update} (void \texorpdfstring{$\ast$}{*}priv, void const \texorpdfstring{$\ast$}{*}buf\+In, size\+\_\+t len)
+\item 
+\Hypertarget{sha3_8h_a64bc390fe9782ecde45d7ccc82393590}\label{sha3_8h_a64bc390fe9782ecde45d7ccc82393590} 
+void const \texorpdfstring{$\ast$}{*} {\bfseries sha3\+\_\+\+Finalize} (void \texorpdfstring{$\ast$}{*}priv)
+\item 
+\Hypertarget{sha3_8h_a5c4a3f0bf42eb447a47ab229815be83f}\label{sha3_8h_a5c4a3f0bf42eb447a47ab229815be83f} 
+sha3\+\_\+return\+\_\+t {\bfseries sha3\+\_\+\+Hash\+Buffer} (unsigned bit\+Size, enum SHA3\+\_\+\+FLAGS flags, const void \texorpdfstring{$\ast$}{*}in, unsigned in\+Bytes, void \texorpdfstring{$\ast$}{*}out, unsigned out\+Bytes)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+SHA3 encoding implementation. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{sha3_8h_a523878099e5ec16cb61e01d0365201f5}\label{sha3_8h_a523878099e5ec16cb61e01d0365201f5} 
+\index{sha3.h@{sha3.h}!SHA3\_KECCAK\_SPONGE\_WORDS@{SHA3\_KECCAK\_SPONGE\_WORDS}}
+\index{SHA3\_KECCAK\_SPONGE\_WORDS@{SHA3\_KECCAK\_SPONGE\_WORDS}!sha3.h@{sha3.h}}
+\doxysubsubsection{\texorpdfstring{SHA3\_KECCAK\_SPONGE\_WORDS}{SHA3\_KECCAK\_SPONGE\_WORDS}}
+{\footnotesize\ttfamily \#define SHA3\+\_\+\+KECCAK\+\_\+\+SPONGE\+\_\+\+WORDS~    (((1600) / 8 /\texorpdfstring{$\ast$}{*}bits to byte\texorpdfstring{$\ast$}{*}/) / sizeof(uint64\+\_\+t))}
+
+\DoxyHorRuler{0}
+
+\begin{DoxyItemize}
+\item Works when compiled for either 32-\/bit or 64-\/bit targets, optimized for
+\item 64 bit.
+\item 
+\item Canonical implementation of Init/\+Update/\+Finalize for SHA-\/3 byte input.
+\item 
+\item SHA3-\/256, SHA3-\/384, SHA-\/512 are implemented. SHA-\/224 can easily be added.
+\item 
+\item Based on code from \href{http://keccak.noekeon.org/}{\texttt{ http\+://keccak.\+noekeon.\+org/}} .
+\item 
+\item I place the code that I wrote into public domain, free to use.
+\item 
+\item I would appreciate if you give credits to this work if you used it to
+\item write or test \texorpdfstring{$\ast$}{*} your code.
+\item 
+\item Aug 2015. Andrey Jivsov. \href{mailto:crypto@brainhub.org}{\texttt{ crypto@brainhub.\+org}}
+\item -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/--- \texorpdfstring{$\ast$}{*}/ 
+\end{DoxyItemize}

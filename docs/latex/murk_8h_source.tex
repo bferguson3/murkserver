@@ -1,0 +1,105 @@
+\doxysection{murk.\+h}
+\hypertarget{murk_8h_source}{}\label{murk_8h_source}\mbox{\hyperlink{murk_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#ifndef\ \_\_MURK\_H\_\_}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#define\ \_\_MURK\_H\_\_}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ u8;}
+\DoxyCodeLine{00007\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ bool;}
+\DoxyCodeLine{00008\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ byte;}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structjson__object__element__s}{json\_object\_element\_s}}\ *\mbox{\hyperlink{structjson__object__element__s}{JSONElement}};}
+\DoxyCodeLine{00011\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structjson__string__s}{json\_string\_s}}\ *\mbox{\hyperlink{structjson__string__s}{JSONString}};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structjson__value__s}{json\_value\_s}}\ *\mbox{\hyperlink{structjson__value__s}{JSONVal}};}
+\DoxyCodeLine{00013\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structjson__object__s}{json\_object\_s}}\ *\mbox{\hyperlink{structjson__object__s}{JSONObject}};}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ true\ 1}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ false\ 0}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ JNEXT(x)\ (strcmp(next\_name-\/>string,\ x)\ ==\ 0)}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ PACKETTYPEIS(a)\ (strcmp(p\_type\_valstr-\/>string,\ \#a)\ ==\ 0)}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structlogin}{login}}}
+\DoxyCodeLine{00025\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{char}\ *userName;}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{char}\ *password;}
+\DoxyCodeLine{00028\ \}\ \mbox{\hyperlink{structlogin}{s\_login}};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{enum}\ MURK\_PACKET\_TYPES}
+\DoxyCodeLine{00031\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ NOPACKET\ =\ 0,}
+\DoxyCodeLine{00033\ \ \ \ \ LOGIN\_REQ\ =\ 1,}
+\DoxyCodeLine{00034\ \ \ \ \ LOGIN\_WELCOME\ =\ 2,}
+\DoxyCodeLine{00035\ \ \ \ \ MESSAGE\_GEN\ =\ 3}
+\DoxyCodeLine{00036\ \};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \mbox{\hyperlink{murk_8h_a3d1b389749f45b2be8b21fb4a584a1b0}{packet\_action}}\ }
+\DoxyCodeLine{00039\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ PA\_NONE\ =\ 0,}
+\DoxyCodeLine{00041\ \ \ \ \ PA\_LOGIN\ =\ 1,}
+\DoxyCodeLine{00042\ \ \ \ \ PA\_MENUSELECT\ =\ 2}
+\DoxyCodeLine{00043\ \}\ \mbox{\hyperlink{murk_8h_a303dec954a61c8f171b46c19ead4683f}{PacketAction}};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \mbox{\hyperlink{murk_8h_af214f68667af99c2992f25a13e2bbd9d}{process\_action}}\ }
+\DoxyCodeLine{00046\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ PRA\_NONE\ =\ 0,}
+\DoxyCodeLine{00048\ \ \ \ \ PRA\_PROCESSLOGIN\ =\ 1,}
+\DoxyCodeLine{00049\ \ \ \ \ PRA\_MENUSELECT\ =\ 2}
+\DoxyCodeLine{00050\ \}\ \mbox{\hyperlink{murk_8h_a40ffc6559626c06df42676cd5f3be6a3}{ProcessAction}};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct__exits}{\_exits}}\ \{\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{bool}\ N;}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{bool}\ S;}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{bool}\ E;}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{bool}\ W;}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{bool}\ Up;}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{bool}\ Down;}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{bool}\ NW;}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{bool}\ NE;}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{bool}\ SE;}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{bool}\ SW;}
+\DoxyCodeLine{00064\ \}\ \mbox{\hyperlink{murk_8h_ad2981c46cdb99891dcf5cb975b90fe30}{Exits}};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#define\ no\_exits\ 0,0,0,0,0,0,0,0,0,0}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{keyword}{enum}\ ScreenType\ \{\ }
+\DoxyCodeLine{00069\ \ \ \ \ LOGIN\_SCREEN\ =\ 0,}
+\DoxyCodeLine{00070\ \ \ \ \ MAIN\_MENU\ =\ 1,}
+\DoxyCodeLine{00071\ \ \ \ \ SAFE\_AREA\ =\ 2,}
+\DoxyCodeLine{00072\ \ \ \ \ NORMAL\_AREA\ =\ 3}
+\DoxyCodeLine{00073\ \};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00081\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct__screen}{\_screen}}\ \{\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{int}\ id\_no;}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{enum}\ ScreenType\ type;}
+\DoxyCodeLine{00084\ \ \ \ \ \mbox{\hyperlink{struct__exits}{Exits}}\ exits;}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ description;}
+\DoxyCodeLine{00086\ \}\ \mbox{\hyperlink{murk_8h_a073591a64c3c883b9bd2cdaded5e2276}{Screen}};}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{keyword}{enum}\ PlayerState\ \{\ }
+\DoxyCodeLine{00090\ \ \ \ \ STATE\_OFFLINE\ =\ 0,}
+\DoxyCodeLine{00091\ \ \ \ \ STATE\_MAINMENU\ =\ 1,}
+\DoxyCodeLine{00092\ \ \ \ \ STATE\_IDLE\ =\ 2,}
+\DoxyCodeLine{00093\ \ \ \ \ STATE\_INCOMBAT\ =\ 3,}
+\DoxyCodeLine{00094\ \ \ \ \ STATE\_DEAD\ =\ 4}
+\DoxyCodeLine{00095\ \};}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00105\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct__user__state}{\_user\_state}}\ \{\ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{char}\ \textcolor{keywordtype}{id}[16];}
+\DoxyCodeLine{00107\ \ \ \ \ \mbox{\hyperlink{struct__screen}{Screen}}*\ currentScreen;\ }
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keyword}{enum}\ PlayerState\ state;}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordtype}{char}\ userName[64];}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordtype}{int}\ level;}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordtype}{char}\ miscBytes[256];}
+\DoxyCodeLine{00112\ \}\ \mbox{\hyperlink{murk_8h_a805371713f5eb14e064b8d2ce95388d9}{UserState}};}
+\DoxyCodeLine{00113\ \textcolor{comment}{//\ 512\ at\ most?}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

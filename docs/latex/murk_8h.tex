@@ -1,0 +1,161 @@
+\doxysection{murk.\+h File Reference}
+\hypertarget{murk_8h}{}\label{murk_8h}\index{murk.h@{murk.h}}
+
+
+Primary MURK structure header!  
+
+
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structlogin}{login}}
+\item 
+struct \mbox{\hyperlink{struct__exits}{\+\_\+exits}}
+\begin{DoxyCompactList}\small\item\em For typical room structure of generic MUDs. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct__screen}{\+\_\+screen}}
+\item 
+struct \mbox{\hyperlink{struct__user__state}{\+\_\+user\+\_\+state}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{murk_8h_a41f9c5fb8b08eb5dc3edce4dcb37fee7}\label{murk_8h_a41f9c5fb8b08eb5dc3edce4dcb37fee7} 
+\#define {\bfseries true}~1
+\item 
+\Hypertarget{murk_8h_a65e9886d74aaee76545e83dd09011727}\label{murk_8h_a65e9886d74aaee76545e83dd09011727} 
+\#define {\bfseries false}~0
+\item 
+\Hypertarget{murk_8h_a7cd91542307a975ac6b81bbc70a9424a}\label{murk_8h_a7cd91542307a975ac6b81bbc70a9424a} 
+\#define {\bfseries JNEXT}(x)~(strcmp(next\+\_\+name-\/$>$string, x) == 0)
+\begin{DoxyCompactList}\small\item\em Macro to compare the next value in the json blob. \end{DoxyCompactList}\item 
+\Hypertarget{murk_8h_aa7aeb91fc333f405d5aef70fbd79f1b1}\label{murk_8h_aa7aeb91fc333f405d5aef70fbd79f1b1} 
+\#define {\bfseries PACKETTYPEIS}(a)~(strcmp(p\+\_\+type\+\_\+valstr-\/$>$string, \#a) == 0)
+\begin{DoxyCompactList}\small\item\em Macro to compare the incoming packet type. \end{DoxyCompactList}\item 
+\Hypertarget{murk_8h_a4aac4fa004eb7a0de323a1a79ae03a56}\label{murk_8h_a4aac4fa004eb7a0de323a1a79ae03a56} 
+\#define {\bfseries no\+\_\+exits}~0,0,0,0,0,0,0,0,0,0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{murk_8h_aed742c436da53c1080638ce6ef7d13de}\label{murk_8h_aed742c436da53c1080638ce6ef7d13de} 
+typedef unsigned char {\bfseries u8}
+\item 
+\Hypertarget{murk_8h_a97a80ca1602ebf2303258971a2c938e2}\label{murk_8h_a97a80ca1602ebf2303258971a2c938e2} 
+typedef unsigned char {\bfseries bool}
+\item 
+\Hypertarget{murk_8h_a0c8186d9b9b7880309c27230bbb5e69d}\label{murk_8h_a0c8186d9b9b7880309c27230bbb5e69d} 
+typedef unsigned char {\bfseries byte}
+\item 
+\Hypertarget{murk_8h_a0d64f6945e0015a0aed0071e005e59f4}\label{murk_8h_a0d64f6945e0015a0aed0071e005e59f4} 
+typedef struct \mbox{\hyperlink{structjson__object__element__s}{json\+\_\+object\+\_\+element\+\_\+s}} \texorpdfstring{$\ast$}{*} {\bfseries JSONElement}
+\item 
+\Hypertarget{murk_8h_a83ff94bf72b97ff1d7f22b9fa10169c4}\label{murk_8h_a83ff94bf72b97ff1d7f22b9fa10169c4} 
+typedef struct \mbox{\hyperlink{structjson__string__s}{json\+\_\+string\+\_\+s}} \texorpdfstring{$\ast$}{*} {\bfseries JSONString}
+\item 
+\Hypertarget{murk_8h_a496f9d524915f16fcabf15a893296b95}\label{murk_8h_a496f9d524915f16fcabf15a893296b95} 
+typedef struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*} {\bfseries JSONVal}
+\item 
+\Hypertarget{murk_8h_af968506d9b485985bf2180ebbe327c49}\label{murk_8h_af968506d9b485985bf2180ebbe327c49} 
+typedef struct \mbox{\hyperlink{structjson__object__s}{json\+\_\+object\+\_\+s}} \texorpdfstring{$\ast$}{*} {\bfseries JSONObject}
+\item 
+\Hypertarget{murk_8h_ae371316ce0c2d93d4cb836fdfa207001}\label{murk_8h_ae371316ce0c2d93d4cb836fdfa207001} 
+typedef struct \mbox{\hyperlink{structlogin}{login}} {\bfseries s\+\_\+login}
+\item 
+\Hypertarget{murk_8h_a303dec954a61c8f171b46c19ead4683f}\label{murk_8h_a303dec954a61c8f171b46c19ead4683f} 
+typedef enum \mbox{\hyperlink{murk_8h_a3d1b389749f45b2be8b21fb4a584a1b0}{packet\+\_\+action}} {\bfseries Packet\+Action}
+\begin{DoxyCompactList}\small\item\em client \end{DoxyCompactList}\item 
+\Hypertarget{murk_8h_a40ffc6559626c06df42676cd5f3be6a3}\label{murk_8h_a40ffc6559626c06df42676cd5f3be6a3} 
+typedef enum \mbox{\hyperlink{murk_8h_af214f68667af99c2992f25a13e2bbd9d}{process\+\_\+action}} {\bfseries Process\+Action}
+\begin{DoxyCompactList}\small\item\em server \end{DoxyCompactList}\item 
+\Hypertarget{murk_8h_ad2981c46cdb99891dcf5cb975b90fe30}\label{murk_8h_ad2981c46cdb99891dcf5cb975b90fe30} 
+typedef struct \mbox{\hyperlink{struct__exits}{\+\_\+exits}} {\bfseries Exits}
+\begin{DoxyCompactList}\small\item\em For typical room structure of generic MUDs. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{struct__screen}{\+\_\+screen}} \mbox{\hyperlink{murk_8h_a073591a64c3c883b9bd2cdaded5e2276}{Screen}}
+\item 
+typedef struct \mbox{\hyperlink{struct__user__state}{\+\_\+user\+\_\+state}} \mbox{\hyperlink{murk_8h_a805371713f5eb14e064b8d2ce95388d9}{User\+State}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{murk_8h_ad31a1b2b751cf7699c947f26855a7cc6}\label{murk_8h_ad31a1b2b751cf7699c947f26855a7cc6} 
+enum {\bfseries MURK\+\_\+\+PACKET\+\_\+\+TYPES} \{ {\bfseries NOPACKET} = 0
+, {\bfseries LOGIN\+\_\+\+REQ} = 1
+, {\bfseries LOGIN\+\_\+\+WELCOME} = 2
+, {\bfseries MESSAGE\+\_\+\+GEN} = 3
+ \}
+\item 
+\Hypertarget{murk_8h_a3d1b389749f45b2be8b21fb4a584a1b0}\label{murk_8h_a3d1b389749f45b2be8b21fb4a584a1b0} 
+enum \mbox{\hyperlink{murk_8h_a3d1b389749f45b2be8b21fb4a584a1b0}{packet\+\_\+action}} \{ {\bfseries PA\+\_\+\+NONE} = 0
+, {\bfseries PA\+\_\+\+LOGIN} = 1
+, {\bfseries PA\+\_\+\+MENUSELECT} = 2
+ \}
+\begin{DoxyCompactList}\small\item\em client \end{DoxyCompactList}\item 
+\Hypertarget{murk_8h_af214f68667af99c2992f25a13e2bbd9d}\label{murk_8h_af214f68667af99c2992f25a13e2bbd9d} 
+enum \mbox{\hyperlink{murk_8h_af214f68667af99c2992f25a13e2bbd9d}{process\+\_\+action}} \{ {\bfseries PRA\+\_\+\+NONE} = 0
+, {\bfseries PRA\+\_\+\+PROCESSLOGIN} = 1
+, {\bfseries PRA\+\_\+\+MENUSELECT} = 2
+ \}
+\begin{DoxyCompactList}\small\item\em server \end{DoxyCompactList}\item 
+\Hypertarget{murk_8h_a9f5ff9109158e83287c5c888bf7bb8a7}\label{murk_8h_a9f5ff9109158e83287c5c888bf7bb8a7} 
+enum {\bfseries Screen\+Type} \{ {\bfseries LOGIN\+\_\+\+SCREEN} = 0
+, {\bfseries MAIN\+\_\+\+MENU} = 1
+, {\bfseries SAFE\+\_\+\+AREA} = 2
+, {\bfseries NORMAL\+\_\+\+AREA} = 3
+ \}
+\item 
+\Hypertarget{murk_8h_a3c730f37b1b3a893159bada67637fdb1}\label{murk_8h_a3c730f37b1b3a893159bada67637fdb1} 
+enum {\bfseries Player\+State} \{ \newline
+{\bfseries STATE\+\_\+\+OFFLINE} = 0
+, {\bfseries STATE\+\_\+\+MAINMENU} = 1
+, {\bfseries STATE\+\_\+\+IDLE} = 2
+, {\bfseries STATE\+\_\+\+INCOMBAT} = 3
+, \newline
+{\bfseries STATE\+\_\+\+DEAD} = 4
+ \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Primary MURK structure header! 
+
+
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{murk_8h_a073591a64c3c883b9bd2cdaded5e2276}\label{murk_8h_a073591a64c3c883b9bd2cdaded5e2276} 
+\index{murk.h@{murk.h}!Screen@{Screen}}
+\index{Screen@{Screen}!murk.h@{murk.h}}
+\doxysubsubsection{\texorpdfstring{Screen}{Screen}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{struct__screen}{\+\_\+screen}} \mbox{\hyperlink{murk_8h_a073591a64c3c883b9bd2cdaded5e2276}{Screen}}}
+
+The standard building block of MURK. Note that this will expand by a LOT in the future. 
+\begin{DoxyParams}{Parameters}
+{\em id\+\_\+no} & Unique identifier number of the room. \\
+\hline
+{\em type} & Screen\+Type, be it safe room, adventuring room, menu, etc. \\
+\hline
+{\em exits} & Exits from the room, if any \\
+\hline
+{\em description} & Pointer to the const char description of the room. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{murk_8h_a805371713f5eb14e064b8d2ce95388d9}\label{murk_8h_a805371713f5eb14e064b8d2ce95388d9} 
+\index{murk.h@{murk.h}!UserState@{UserState}}
+\index{UserState@{UserState}!murk.h@{murk.h}}
+\doxysubsubsection{\texorpdfstring{UserState}{UserState}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{struct__user__state}{\+\_\+user\+\_\+state}} \mbox{\hyperlink{murk_8h_a805371713f5eb14e064b8d2ce95388d9}{User\+State}}}
+
+The user data itself. Note that all of this is prone to change. 
+\begin{DoxyParams}{Parameters}
+{\em id} & peer-\/\texorpdfstring{$>$}{>}data to identify user vs peer. \\
+\hline
+{\em current\+Screen} & the current scren the user is on. \\
+\hline
+{\em state} & the user\textquotesingle{}s current state, if applicable. \\
+\hline
+{\em user\+Name} & the username. \\
+\hline
+{\em level} & the user\textquotesingle{}s player level. \\
+\hline
+{\em misc\+Bytes} & placeholder bytes for size reasons. \\
+\hline
+\end{DoxyParams}

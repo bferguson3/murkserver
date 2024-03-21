@@ -1,4 +1,6 @@
-// murk ansi.h
+//! @file ansi.h 
+//! @brief ANSI shortcuts. Only used in certain situations.
+
 
 #define _Esc "\x1b["
 #define _Col(n) "[38;5;#nm"

@@ -1,0 +1,316 @@
+\doxysection{json.\+h File Reference}
+\hypertarget{json_8h}{}\label{json_8h}\index{json.h@{json.h}}
+
+
+JSON-\/C implementation by sheredom.  
+
+
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$inttypes.\+h$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structjson__string__s}{json\+\_\+string\+\_\+s}}
+\item 
+struct \mbox{\hyperlink{structjson__string__ex__s}{json\+\_\+string\+\_\+ex\+\_\+s}}
+\item 
+struct \mbox{\hyperlink{structjson__number__s}{json\+\_\+number\+\_\+s}}
+\item 
+struct \mbox{\hyperlink{structjson__object__element__s}{json\+\_\+object\+\_\+element\+\_\+s}}
+\item 
+struct \mbox{\hyperlink{structjson__object__s}{json\+\_\+object\+\_\+s}}
+\item 
+struct \mbox{\hyperlink{structjson__array__element__s}{json\+\_\+array\+\_\+element\+\_\+s}}
+\item 
+struct \mbox{\hyperlink{structjson__array__s}{json\+\_\+array\+\_\+s}}
+\item 
+struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}}
+\item 
+struct \mbox{\hyperlink{structjson__value__ex__s}{json\+\_\+value\+\_\+ex\+\_\+s}}
+\item 
+struct \mbox{\hyperlink{structjson__parse__result__s}{json\+\_\+parse\+\_\+result\+\_\+s}}
+\item 
+struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}}
+\item 
+struct \mbox{\hyperlink{structjson__extract__result__s}{json\+\_\+extract\+\_\+result\+\_\+s}}
+\item 
+struct \mbox{\hyperlink{structjson__extract__state__s}{json\+\_\+extract\+\_\+state\+\_\+s}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{json_8h_a24635951199bf4db767ccf7aabb9cf72}\label{json_8h_a24635951199bf4db767ccf7aabb9cf72} 
+\#define {\bfseries json\+\_\+uintmax\+\_\+t}~uintmax\+\_\+t
+\item 
+\Hypertarget{json_8h_aebca4d3c3a16297efc3f98590cacc6cd}\label{json_8h_aebca4d3c3a16297efc3f98590cacc6cd} 
+\#define {\bfseries json\+\_\+strtoumax}~strtoumax
+\item 
+\Hypertarget{json_8h_a5bff6000121532e9370056de54bf839d}\label{json_8h_a5bff6000121532e9370056de54bf839d} 
+\#define {\bfseries json\+\_\+null}~0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{json_8h_a88eec21b049d05a1ad9e3d2e9053502f}\label{json_8h_a88eec21b049d05a1ad9e3d2e9053502f} 
+typedef enum json\+\_\+type\+\_\+e {\bfseries json\+\_\+type\+\_\+t}
+\item 
+\Hypertarget{json_8h_a35ae4054543bd839accab71a725ce7e9}\label{json_8h_a35ae4054543bd839accab71a725ce7e9} 
+typedef struct \mbox{\hyperlink{structjson__string__s}{json\+\_\+string\+\_\+s}} {\bfseries json\+\_\+string\+\_\+t}
+\item 
+\Hypertarget{json_8h_abf18478a0825def9dc134e8446fe8e3b}\label{json_8h_abf18478a0825def9dc134e8446fe8e3b} 
+typedef struct \mbox{\hyperlink{structjson__string__ex__s}{json\+\_\+string\+\_\+ex\+\_\+s}} {\bfseries json\+\_\+string\+\_\+ex\+\_\+t}
+\item 
+\Hypertarget{json_8h_a096c78b5f500e47b3eef5e8456518dd0}\label{json_8h_a096c78b5f500e47b3eef5e8456518dd0} 
+typedef struct \mbox{\hyperlink{structjson__number__s}{json\+\_\+number\+\_\+s}} {\bfseries json\+\_\+number\+\_\+t}
+\item 
+\Hypertarget{json_8h_a9c7d40947acdb86b3dd0005623b1a042}\label{json_8h_a9c7d40947acdb86b3dd0005623b1a042} 
+typedef struct \mbox{\hyperlink{structjson__object__element__s}{json\+\_\+object\+\_\+element\+\_\+s}} {\bfseries json\+\_\+object\+\_\+element\+\_\+t}
+\item 
+\Hypertarget{json_8h_a9762740fb04e0b23373ba77dd49578b7}\label{json_8h_a9762740fb04e0b23373ba77dd49578b7} 
+typedef struct \mbox{\hyperlink{structjson__object__s}{json\+\_\+object\+\_\+s}} {\bfseries json\+\_\+object\+\_\+t}
+\item 
+\Hypertarget{json_8h_a32001f8ca7cb59162486a32554bfbafe}\label{json_8h_a32001f8ca7cb59162486a32554bfbafe} 
+typedef struct \mbox{\hyperlink{structjson__array__element__s}{json\+\_\+array\+\_\+element\+\_\+s}} {\bfseries json\+\_\+array\+\_\+element\+\_\+t}
+\item 
+\Hypertarget{json_8h_a8a574fa184f99757864530e2f9afd706}\label{json_8h_a8a574fa184f99757864530e2f9afd706} 
+typedef struct \mbox{\hyperlink{structjson__array__s}{json\+\_\+array\+\_\+s}} {\bfseries json\+\_\+array\+\_\+t}
+\item 
+\Hypertarget{json_8h_a0a2f9d37bd5591d1e29c4bf8962b721a}\label{json_8h_a0a2f9d37bd5591d1e29c4bf8962b721a} 
+typedef struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} {\bfseries json\+\_\+value\+\_\+t}
+\item 
+\Hypertarget{json_8h_a0e9a882beeda2ed148185a38d524d7a1}\label{json_8h_a0e9a882beeda2ed148185a38d524d7a1} 
+typedef struct \mbox{\hyperlink{structjson__value__ex__s}{json\+\_\+value\+\_\+ex\+\_\+s}} {\bfseries json\+\_\+value\+\_\+ex\+\_\+t}
+\item 
+\Hypertarget{json_8h_a1b7303fde69a0867d4d7d9a854adeeee}\label{json_8h_a1b7303fde69a0867d4d7d9a854adeeee} 
+typedef struct \mbox{\hyperlink{structjson__parse__result__s}{json\+\_\+parse\+\_\+result\+\_\+s}} {\bfseries json\+\_\+parse\+\_\+result\+\_\+t}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{json_8h_a017de609c8218017b6e1c347481e7fd8}\label{json_8h_a017de609c8218017b6e1c347481e7fd8} 
+enum {\bfseries json\+\_\+parse\+\_\+flags\+\_\+e} \{ \newline
+{\bfseries json\+\_\+parse\+\_\+flags\+\_\+default} = 0
+, {\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+trailing\+\_\+comma} = 0x1
+, {\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+unquoted\+\_\+keys} = 0x2
+, {\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+global\+\_\+object} = 0x4
+, \newline
+{\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+equals\+\_\+in\+\_\+object} = 0x8
+, {\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+no\+\_\+commas} = 0x10
+, {\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+c\+\_\+style\+\_\+comments} = 0x20
+, {\bfseries json\+\_\+parse\+\_\+flags\+\_\+deprecated} = 0x40
+, \newline
+{\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+location\+\_\+information} = 0x80
+, {\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+single\+\_\+quoted\+\_\+strings} = 0x100
+, {\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+hexadecimal\+\_\+numbers} = 0x200
+, {\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+leading\+\_\+plus\+\_\+sign} = 0x400
+, \newline
+{\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+leading\+\_\+or\+\_\+trailing\+\_\+decimal\+\_\+point} = 0x800
+, {\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+inf\+\_\+and\+\_\+nan} = 0x1000
+, {\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+multi\+\_\+line\+\_\+strings} = 0x2000
+, {\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+simplified\+\_\+json}
+, \newline
+{\bfseries json\+\_\+parse\+\_\+flags\+\_\+allow\+\_\+json5}
+ \}
+\item 
+\Hypertarget{json_8h_a74e7273e28e225ba91f3132f21d09fb5}\label{json_8h_a74e7273e28e225ba91f3132f21d09fb5} 
+enum {\bfseries json\+\_\+type\+\_\+e} \{ \newline
+{\bfseries json\+\_\+type\+\_\+string}
+, {\bfseries json\+\_\+type\+\_\+number}
+, {\bfseries json\+\_\+type\+\_\+object}
+, {\bfseries json\+\_\+type\+\_\+array}
+, \newline
+{\bfseries json\+\_\+type\+\_\+true}
+, {\bfseries json\+\_\+type\+\_\+false}
+, {\bfseries json\+\_\+type\+\_\+null}
+ \}
+\item 
+\Hypertarget{json_8h_aa4a6bb4abe1a9739cc5dcb18ea4903be}\label{json_8h_aa4a6bb4abe1a9739cc5dcb18ea4903be} 
+enum {\bfseries json\+\_\+parse\+\_\+error\+\_\+e} \{ \newline
+{\bfseries json\+\_\+parse\+\_\+error\+\_\+none} = 0
+, {\bfseries json\+\_\+parse\+\_\+error\+\_\+expected\+\_\+comma\+\_\+or\+\_\+closing\+\_\+bracket}
+, {\bfseries json\+\_\+parse\+\_\+error\+\_\+expected\+\_\+colon}
+, {\bfseries json\+\_\+parse\+\_\+error\+\_\+expected\+\_\+opening\+\_\+quote}
+, \newline
+{\bfseries json\+\_\+parse\+\_\+error\+\_\+invalid\+\_\+string\+\_\+escape\+\_\+sequence}
+, {\bfseries json\+\_\+parse\+\_\+error\+\_\+invalid\+\_\+number\+\_\+format}
+, {\bfseries json\+\_\+parse\+\_\+error\+\_\+invalid\+\_\+value}
+, {\bfseries json\+\_\+parse\+\_\+error\+\_\+premature\+\_\+end\+\_\+of\+\_\+buffer}
+, \newline
+{\bfseries json\+\_\+parse\+\_\+error\+\_\+invalid\+\_\+string}
+, {\bfseries json\+\_\+parse\+\_\+error\+\_\+allocator\+\_\+failed}
+, {\bfseries json\+\_\+parse\+\_\+error\+\_\+unexpected\+\_\+trailing\+\_\+characters}
+, {\bfseries json\+\_\+parse\+\_\+error\+\_\+unknown}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{json_8h_ae23d2838827851a0b9162110937982e3}\label{json_8h_ae23d2838827851a0b9162110937982e3} 
+json\+\_\+weak struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+parse} (const void \texorpdfstring{$\ast$}{*}src, size\+\_\+t src\+\_\+size)
+\item 
+\Hypertarget{json_8h_aeed052e9aa7bc3b19022facaa94b7735}\label{json_8h_aeed052e9aa7bc3b19022facaa94b7735} 
+json\+\_\+weak struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+parse\+\_\+ex} (const void \texorpdfstring{$\ast$}{*}src, size\+\_\+t src\+\_\+size, size\+\_\+t flags\+\_\+bitset, void \texorpdfstring{$\ast$}{*}(\texorpdfstring{$\ast$}{*}alloc\+\_\+func\+\_\+ptr)(void \texorpdfstring{$\ast$}{*}, size\+\_\+t), void \texorpdfstring{$\ast$}{*}user\+\_\+data, struct \mbox{\hyperlink{structjson__parse__result__s}{json\+\_\+parse\+\_\+result\+\_\+s}} \texorpdfstring{$\ast$}{*}result)
+\item 
+\Hypertarget{json_8h_ad0c039f7028a918bfdac532e74054341}\label{json_8h_ad0c039f7028a918bfdac532e74054341} 
+json\+\_\+weak struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+extract\+\_\+value} (const struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}value)
+\item 
+\Hypertarget{json_8h_a8e3ef20b7b6aab8a1be280156d2461db}\label{json_8h_a8e3ef20b7b6aab8a1be280156d2461db} 
+json\+\_\+weak struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+extract\+\_\+value\+\_\+ex} (const struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}value, void \texorpdfstring{$\ast$}{*}(\texorpdfstring{$\ast$}{*}alloc\+\_\+func\+\_\+ptr)(void \texorpdfstring{$\ast$}{*}, size\+\_\+t), void \texorpdfstring{$\ast$}{*}user\+\_\+data)
+\item 
+\Hypertarget{json_8h_ad6e186ea539645b3eb20e2a6fd84ace8}\label{json_8h_ad6e186ea539645b3eb20e2a6fd84ace8} 
+json\+\_\+weak void \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+write\+\_\+minified} (const struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}value, size\+\_\+t \texorpdfstring{$\ast$}{*}out\+\_\+size)
+\item 
+\Hypertarget{json_8h_a67421c6f8a8399f82a68f4d93e359eb9}\label{json_8h_a67421c6f8a8399f82a68f4d93e359eb9} 
+json\+\_\+weak void \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+write\+\_\+pretty} (const struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}value, const char \texorpdfstring{$\ast$}{*}indent, const char \texorpdfstring{$\ast$}{*}newline, size\+\_\+t \texorpdfstring{$\ast$}{*}out\+\_\+size)
+\item 
+\Hypertarget{json_8h_a983aa6cf3bbe97accf82b989ac2db878}\label{json_8h_a983aa6cf3bbe97accf82b989ac2db878} 
+json\+\_\+weak struct \mbox{\hyperlink{structjson__string__s}{json\+\_\+string\+\_\+s}} \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+value\+\_\+as\+\_\+string} (struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}const value)
+\item 
+\Hypertarget{json_8h_a364bed75f4c7dd3c0ff86ff2dee1e2fc}\label{json_8h_a364bed75f4c7dd3c0ff86ff2dee1e2fc} 
+json\+\_\+weak struct \mbox{\hyperlink{structjson__number__s}{json\+\_\+number\+\_\+s}} \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+value\+\_\+as\+\_\+number} (struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}const value)
+\item 
+\Hypertarget{json_8h_ad08e59d0a5259ec0f1a40ce3eeb5c80b}\label{json_8h_ad08e59d0a5259ec0f1a40ce3eeb5c80b} 
+json\+\_\+weak struct \mbox{\hyperlink{structjson__object__s}{json\+\_\+object\+\_\+s}} \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+value\+\_\+as\+\_\+object} (struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}const value)
+\item 
+\Hypertarget{json_8h_a511ae75d70a6470167a0bab2ce4b4be0}\label{json_8h_a511ae75d70a6470167a0bab2ce4b4be0} 
+json\+\_\+weak struct \mbox{\hyperlink{structjson__array__s}{json\+\_\+array\+\_\+s}} \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+value\+\_\+as\+\_\+array} (struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}const value)
+\item 
+\Hypertarget{json_8h_a2edda36002fc96b9f021b5802739023d}\label{json_8h_a2edda36002fc96b9f021b5802739023d} 
+json\+\_\+weak int {\bfseries json\+\_\+value\+\_\+is\+\_\+true} (const struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}const value)
+\item 
+\Hypertarget{json_8h_a3df977eb2125ede7d2e3fe60046e0c4e}\label{json_8h_a3df977eb2125ede7d2e3fe60046e0c4e} 
+json\+\_\+weak int {\bfseries json\+\_\+value\+\_\+is\+\_\+false} (const struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}const value)
+\item 
+\Hypertarget{json_8h_a6d47c2cd4fd0fba2bda62906e09d75db}\label{json_8h_a6d47c2cd4fd0fba2bda62906e09d75db} 
+json\+\_\+weak int {\bfseries json\+\_\+value\+\_\+is\+\_\+null} (const struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}const value)
+\item 
+\Hypertarget{json_8h_a19dc3009a6a31325a76659e7b1869111}\label{json_8h_a19dc3009a6a31325a76659e7b1869111} 
+json\+\_\+weak int {\bfseries json\+\_\+hexadecimal\+\_\+digit} (const char c)
+\item 
+\Hypertarget{json_8h_acb6374aec19221a989eab6f3561fc458}\label{json_8h_acb6374aec19221a989eab6f3561fc458} 
+json\+\_\+weak int {\bfseries json\+\_\+hexadecimal\+\_\+value} (const char \texorpdfstring{$\ast$}{*}c, const unsigned long size, unsigned long \texorpdfstring{$\ast$}{*}result)
+\item 
+\Hypertarget{json_8h_a06e05042b66fb0d9400294747241b54b}\label{json_8h_a06e05042b66fb0d9400294747241b54b} 
+json\+\_\+weak int {\bfseries json\+\_\+skip\+\_\+whitespace} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state)
+\item 
+\Hypertarget{json_8h_a87683f948796b13867fcfd41279fef88}\label{json_8h_a87683f948796b13867fcfd41279fef88} 
+json\+\_\+weak int {\bfseries json\+\_\+skip\+\_\+c\+\_\+style\+\_\+comments} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state)
+\item 
+\Hypertarget{json_8h_a369be357dad4f74be7bf0fcdca8f6210}\label{json_8h_a369be357dad4f74be7bf0fcdca8f6210} 
+json\+\_\+weak int {\bfseries json\+\_\+skip\+\_\+all\+\_\+skippables} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state)
+\item 
+\Hypertarget{json_8h_ab1357579e070688f14fdac28a89a5c09}\label{json_8h_ab1357579e070688f14fdac28a89a5c09} 
+json\+\_\+weak int {\bfseries json\+\_\+get\+\_\+value\+\_\+size} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state, int is\+\_\+global\+\_\+object)
+\item 
+\Hypertarget{json_8h_af046ab76129a4b0281c6024e443d7225}\label{json_8h_af046ab76129a4b0281c6024e443d7225} 
+json\+\_\+weak int {\bfseries json\+\_\+get\+\_\+string\+\_\+size} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state, size\+\_\+t is\+\_\+key)
+\item 
+\Hypertarget{json_8h_af5f05a55fb6eed2ddc2006c1fe766189}\label{json_8h_af5f05a55fb6eed2ddc2006c1fe766189} 
+json\+\_\+weak int {\bfseries is\+\_\+valid\+\_\+unquoted\+\_\+key\+\_\+char} (const char c)
+\item 
+\Hypertarget{json_8h_aed7b21a39e9a52f93e0fb1e11e687f9e}\label{json_8h_aed7b21a39e9a52f93e0fb1e11e687f9e} 
+json\+\_\+weak int {\bfseries json\+\_\+get\+\_\+key\+\_\+size} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state)
+\item 
+\Hypertarget{json_8h_ad4a577a186ca11c03e591b8cc9ebbb47}\label{json_8h_ad4a577a186ca11c03e591b8cc9ebbb47} 
+json\+\_\+weak int {\bfseries json\+\_\+get\+\_\+object\+\_\+size} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state, int is\+\_\+global\+\_\+object)
+\item 
+\Hypertarget{json_8h_a94b2a9564f5ca701faed0015b2bcf375}\label{json_8h_a94b2a9564f5ca701faed0015b2bcf375} 
+json\+\_\+weak int {\bfseries json\+\_\+get\+\_\+array\+\_\+size} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state)
+\item 
+\Hypertarget{json_8h_ae8f29786d34f73a3fa9a0ade57a7777c}\label{json_8h_ae8f29786d34f73a3fa9a0ade57a7777c} 
+json\+\_\+weak int {\bfseries json\+\_\+get\+\_\+number\+\_\+size} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state)
+\item 
+\Hypertarget{json_8h_a93d37bdc6b321e8e1cacd3dc05a70f92}\label{json_8h_a93d37bdc6b321e8e1cacd3dc05a70f92} 
+json\+\_\+weak void {\bfseries json\+\_\+parse\+\_\+value} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state, int is\+\_\+global\+\_\+object, struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}value)
+\item 
+\Hypertarget{json_8h_a3546a781e3a5954915cdb072507e83ee}\label{json_8h_a3546a781e3a5954915cdb072507e83ee} 
+json\+\_\+weak void {\bfseries json\+\_\+parse\+\_\+string} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state, struct \mbox{\hyperlink{structjson__string__s}{json\+\_\+string\+\_\+s}} \texorpdfstring{$\ast$}{*}string)
+\item 
+\Hypertarget{json_8h_a12baa690fa545388eff0e293cf3e71be}\label{json_8h_a12baa690fa545388eff0e293cf3e71be} 
+json\+\_\+weak void {\bfseries json\+\_\+parse\+\_\+key} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state, struct \mbox{\hyperlink{structjson__string__s}{json\+\_\+string\+\_\+s}} \texorpdfstring{$\ast$}{*}string)
+\item 
+\Hypertarget{json_8h_aa9d3e8909c976ef6bbb54309d3e50fdc}\label{json_8h_aa9d3e8909c976ef6bbb54309d3e50fdc} 
+json\+\_\+weak void {\bfseries json\+\_\+parse\+\_\+object} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state, int is\+\_\+global\+\_\+object, struct \mbox{\hyperlink{structjson__object__s}{json\+\_\+object\+\_\+s}} \texorpdfstring{$\ast$}{*}object)
+\item 
+\Hypertarget{json_8h_a1903a536a78c9c97675b376cc5b81c08}\label{json_8h_a1903a536a78c9c97675b376cc5b81c08} 
+json\+\_\+weak void {\bfseries json\+\_\+parse\+\_\+array} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state, struct \mbox{\hyperlink{structjson__array__s}{json\+\_\+array\+\_\+s}} \texorpdfstring{$\ast$}{*}array)
+\item 
+\Hypertarget{json_8h_a4566ae0c18248ac34797923d16a16811}\label{json_8h_a4566ae0c18248ac34797923d16a16811} 
+json\+\_\+weak void {\bfseries json\+\_\+parse\+\_\+number} (struct \mbox{\hyperlink{structjson__parse__state__s}{json\+\_\+parse\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}state, struct \mbox{\hyperlink{structjson__number__s}{json\+\_\+number\+\_\+s}} \texorpdfstring{$\ast$}{*}number)
+\item 
+\Hypertarget{json_8h_a2e3cbba4f1cc52347fcf871c164a1bee}\label{json_8h_a2e3cbba4f1cc52347fcf871c164a1bee} 
+struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+parse\+\_\+ex} (const void \texorpdfstring{$\ast$}{*}src, size\+\_\+t src\+\_\+size, size\+\_\+t flags\+\_\+bitset, void \texorpdfstring{$\ast$}{*}(\texorpdfstring{$\ast$}{*}alloc\+\_\+func\+\_\+ptr)(void \texorpdfstring{$\ast$}{*}user\+\_\+data, size\+\_\+t size), void \texorpdfstring{$\ast$}{*}user\+\_\+data, struct \mbox{\hyperlink{structjson__parse__result__s}{json\+\_\+parse\+\_\+result\+\_\+s}} \texorpdfstring{$\ast$}{*}result)
+\item 
+\Hypertarget{json_8h_a377737367cef1b800f6cf890cb1da8b8}\label{json_8h_a377737367cef1b800f6cf890cb1da8b8} 
+json\+\_\+weak struct \mbox{\hyperlink{structjson__extract__result__s}{json\+\_\+extract\+\_\+result\+\_\+s}} {\bfseries json\+\_\+extract\+\_\+get\+\_\+number\+\_\+size} (const struct \mbox{\hyperlink{structjson__number__s}{json\+\_\+number\+\_\+s}} \texorpdfstring{$\ast$}{*}const number)
+\item 
+\Hypertarget{json_8h_adc59c7ffecca8cd19bda75c91a600e6f}\label{json_8h_adc59c7ffecca8cd19bda75c91a600e6f} 
+json\+\_\+weak struct \mbox{\hyperlink{structjson__extract__result__s}{json\+\_\+extract\+\_\+result\+\_\+s}} {\bfseries json\+\_\+extract\+\_\+get\+\_\+string\+\_\+size} (const struct \mbox{\hyperlink{structjson__string__s}{json\+\_\+string\+\_\+s}} \texorpdfstring{$\ast$}{*}const string)
+\item 
+\Hypertarget{json_8h_a8790454b13c03e78c09d8e29baeab9eb}\label{json_8h_a8790454b13c03e78c09d8e29baeab9eb} 
+json\+\_\+weak struct \mbox{\hyperlink{structjson__extract__result__s}{json\+\_\+extract\+\_\+result\+\_\+s}} {\bfseries json\+\_\+extract\+\_\+get\+\_\+object\+\_\+size} (const struct \mbox{\hyperlink{structjson__object__s}{json\+\_\+object\+\_\+s}} \texorpdfstring{$\ast$}{*}const object)
+\item 
+\Hypertarget{json_8h_ac0cbf836c2089febd388439bb7b9a45e}\label{json_8h_ac0cbf836c2089febd388439bb7b9a45e} 
+json\+\_\+weak struct \mbox{\hyperlink{structjson__extract__result__s}{json\+\_\+extract\+\_\+result\+\_\+s}} {\bfseries json\+\_\+extract\+\_\+get\+\_\+array\+\_\+size} (const struct \mbox{\hyperlink{structjson__array__s}{json\+\_\+array\+\_\+s}} \texorpdfstring{$\ast$}{*}const array)
+\item 
+\Hypertarget{json_8h_af95dbebda0aa10d67d4f53c6ca8259fa}\label{json_8h_af95dbebda0aa10d67d4f53c6ca8259fa} 
+json\+\_\+weak struct \mbox{\hyperlink{structjson__extract__result__s}{json\+\_\+extract\+\_\+result\+\_\+s}} {\bfseries json\+\_\+extract\+\_\+get\+\_\+value\+\_\+size} (const struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}const value)
+\item 
+\Hypertarget{json_8h_abb5d8b68bd55ff31ef9d6e33da6f30c9}\label{json_8h_abb5d8b68bd55ff31ef9d6e33da6f30c9} 
+json\+\_\+weak void {\bfseries json\+\_\+extract\+\_\+copy\+\_\+value} (struct \mbox{\hyperlink{structjson__extract__state__s}{json\+\_\+extract\+\_\+state\+\_\+s}} \texorpdfstring{$\ast$}{*}const state, const struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}const value)
+\item 
+\Hypertarget{json_8h_a07aeeafc56274266fafe7e035b4de070}\label{json_8h_a07aeeafc56274266fafe7e035b4de070} 
+json\+\_\+weak int {\bfseries json\+\_\+write\+\_\+minified\+\_\+get\+\_\+value\+\_\+size} (const struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}value, size\+\_\+t \texorpdfstring{$\ast$}{*}size)
+\item 
+\Hypertarget{json_8h_a0abbece4516223a8b7721d8eb6d2a354}\label{json_8h_a0abbece4516223a8b7721d8eb6d2a354} 
+json\+\_\+weak int {\bfseries json\+\_\+write\+\_\+get\+\_\+number\+\_\+size} (const struct \mbox{\hyperlink{structjson__number__s}{json\+\_\+number\+\_\+s}} \texorpdfstring{$\ast$}{*}number, size\+\_\+t \texorpdfstring{$\ast$}{*}size)
+\item 
+\Hypertarget{json_8h_af904f76528268a79493755bce2ac7405}\label{json_8h_af904f76528268a79493755bce2ac7405} 
+json\+\_\+weak int {\bfseries json\+\_\+write\+\_\+get\+\_\+string\+\_\+size} (const struct \mbox{\hyperlink{structjson__string__s}{json\+\_\+string\+\_\+s}} \texorpdfstring{$\ast$}{*}string, size\+\_\+t \texorpdfstring{$\ast$}{*}size)
+\item 
+\Hypertarget{json_8h_a4d07fd9c71c86aad25501d023e38915f}\label{json_8h_a4d07fd9c71c86aad25501d023e38915f} 
+json\+\_\+weak int {\bfseries json\+\_\+write\+\_\+minified\+\_\+get\+\_\+array\+\_\+size} (const struct \mbox{\hyperlink{structjson__array__s}{json\+\_\+array\+\_\+s}} \texorpdfstring{$\ast$}{*}array, size\+\_\+t \texorpdfstring{$\ast$}{*}size)
+\item 
+\Hypertarget{json_8h_a5f3f111a3d81f21fcc5b6e562c4fffeb}\label{json_8h_a5f3f111a3d81f21fcc5b6e562c4fffeb} 
+json\+\_\+weak int {\bfseries json\+\_\+write\+\_\+minified\+\_\+get\+\_\+object\+\_\+size} (const struct \mbox{\hyperlink{structjson__object__s}{json\+\_\+object\+\_\+s}} \texorpdfstring{$\ast$}{*}object, size\+\_\+t \texorpdfstring{$\ast$}{*}size)
+\item 
+\Hypertarget{json_8h_a5b6236c85b5333d725c0a246d6caee40}\label{json_8h_a5b6236c85b5333d725c0a246d6caee40} 
+json\+\_\+weak char \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+write\+\_\+minified\+\_\+value} (const struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}value, char \texorpdfstring{$\ast$}{*}data)
+\item 
+\Hypertarget{json_8h_a2e6ed3aa6269f3e480b24fbcdeb8c3a2}\label{json_8h_a2e6ed3aa6269f3e480b24fbcdeb8c3a2} 
+json\+\_\+weak char \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+write\+\_\+number} (const struct \mbox{\hyperlink{structjson__number__s}{json\+\_\+number\+\_\+s}} \texorpdfstring{$\ast$}{*}number, char \texorpdfstring{$\ast$}{*}data)
+\item 
+\Hypertarget{json_8h_aa22bc118f97de97f644a72ad3bb33ab9}\label{json_8h_aa22bc118f97de97f644a72ad3bb33ab9} 
+json\+\_\+weak char \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+write\+\_\+string} (const struct \mbox{\hyperlink{structjson__string__s}{json\+\_\+string\+\_\+s}} \texorpdfstring{$\ast$}{*}string, char \texorpdfstring{$\ast$}{*}data)
+\item 
+\Hypertarget{json_8h_a309f510fab163bb529122830c03ef8fb}\label{json_8h_a309f510fab163bb529122830c03ef8fb} 
+json\+\_\+weak char \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+write\+\_\+minified\+\_\+array} (const struct \mbox{\hyperlink{structjson__array__s}{json\+\_\+array\+\_\+s}} \texorpdfstring{$\ast$}{*}array, char \texorpdfstring{$\ast$}{*}data)
+\item 
+\Hypertarget{json_8h_ab5da35367cefdb44629d1128cf12a22f}\label{json_8h_ab5da35367cefdb44629d1128cf12a22f} 
+json\+\_\+weak char \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+write\+\_\+minified\+\_\+object} (const struct \mbox{\hyperlink{structjson__object__s}{json\+\_\+object\+\_\+s}} \texorpdfstring{$\ast$}{*}object, char \texorpdfstring{$\ast$}{*}data)
+\item 
+\Hypertarget{json_8h_a02751d0b88647f89b2ed072d019a3948}\label{json_8h_a02751d0b88647f89b2ed072d019a3948} 
+json\+\_\+weak int {\bfseries json\+\_\+write\+\_\+pretty\+\_\+get\+\_\+value\+\_\+size} (const struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}value, size\+\_\+t depth, size\+\_\+t indent\+\_\+size, size\+\_\+t newline\+\_\+size, size\+\_\+t \texorpdfstring{$\ast$}{*}size)
+\item 
+\Hypertarget{json_8h_a8735c132137bc3345f26ea046e4c9472}\label{json_8h_a8735c132137bc3345f26ea046e4c9472} 
+json\+\_\+weak int {\bfseries json\+\_\+write\+\_\+pretty\+\_\+get\+\_\+array\+\_\+size} (const struct \mbox{\hyperlink{structjson__array__s}{json\+\_\+array\+\_\+s}} \texorpdfstring{$\ast$}{*}array, size\+\_\+t depth, size\+\_\+t indent\+\_\+size, size\+\_\+t newline\+\_\+size, size\+\_\+t \texorpdfstring{$\ast$}{*}size)
+\item 
+\Hypertarget{json_8h_aaab103f8568609a94fb69a415b23216c}\label{json_8h_aaab103f8568609a94fb69a415b23216c} 
+json\+\_\+weak int {\bfseries json\+\_\+write\+\_\+pretty\+\_\+get\+\_\+object\+\_\+size} (const struct \mbox{\hyperlink{structjson__object__s}{json\+\_\+object\+\_\+s}} \texorpdfstring{$\ast$}{*}object, size\+\_\+t depth, size\+\_\+t indent\+\_\+size, size\+\_\+t newline\+\_\+size, size\+\_\+t \texorpdfstring{$\ast$}{*}size)
+\item 
+\Hypertarget{json_8h_a7b61c110730cedf61ae59cbd27612d94}\label{json_8h_a7b61c110730cedf61ae59cbd27612d94} 
+json\+\_\+weak char \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+write\+\_\+pretty\+\_\+value} (const struct \mbox{\hyperlink{structjson__value__s}{json\+\_\+value\+\_\+s}} \texorpdfstring{$\ast$}{*}value, size\+\_\+t depth, const char \texorpdfstring{$\ast$}{*}indent, const char \texorpdfstring{$\ast$}{*}newline, char \texorpdfstring{$\ast$}{*}data)
+\item 
+\Hypertarget{json_8h_a719c2fc9919dd2937e954ca85bc41c5c}\label{json_8h_a719c2fc9919dd2937e954ca85bc41c5c} 
+json\+\_\+weak char \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+write\+\_\+pretty\+\_\+array} (const struct \mbox{\hyperlink{structjson__array__s}{json\+\_\+array\+\_\+s}} \texorpdfstring{$\ast$}{*}array, size\+\_\+t depth, const char \texorpdfstring{$\ast$}{*}indent, const char \texorpdfstring{$\ast$}{*}newline, char \texorpdfstring{$\ast$}{*}data)
+\item 
+\Hypertarget{json_8h_a126e871a76e6131a36bf7764fa286c56}\label{json_8h_a126e871a76e6131a36bf7764fa286c56} 
+json\+\_\+weak char \texorpdfstring{$\ast$}{*} {\bfseries json\+\_\+write\+\_\+pretty\+\_\+object} (const struct \mbox{\hyperlink{structjson__object__s}{json\+\_\+object\+\_\+s}} \texorpdfstring{$\ast$}{*}object, size\+\_\+t depth, const char \texorpdfstring{$\ast$}{*}indent, const char \texorpdfstring{$\ast$}{*}newline, char \texorpdfstring{$\ast$}{*}data)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+JSON-\/C implementation by sheredom. 
+

@@ -1,0 +1,34 @@
+\doxysection{server.\+h}
+\hypertarget{server_8h_source}{}\label{server_8h_source}\mbox{\hyperlink{server_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <enet/enet.h>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{server_8h_a583e88153af91b4683a0a2eb4ae1d749}{g\_copy}}(\textcolor{keywordtype}{char}\ *src,\ \textcolor{keywordtype}{char}\ *dst,\ \textcolor{keywordtype}{size\_t}\ len);}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ bloblen\_callback(\textcolor{keywordtype}{void}\ *\_notused,\ \textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ **argv,}
+\DoxyCodeLine{00011\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ **azColName);}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ pw\_callback(\textcolor{keywordtype}{void}\ *\_notused,\ \textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ **argv,\ \textcolor{keywordtype}{char}\ **azColName);}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00017\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{server_8h_af3ee91caad1820881fc7efb19db4dd6f}{bytecmp}}(\textcolor{keywordtype}{void}\ *src,\ \textcolor{keywordtype}{void}\ *dst,\ \textcolor{keywordtype}{size\_t}\ count);}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ callback(\textcolor{keywordtype}{void}\ *NotUsed,\ \textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ **argv,\ \textcolor{keywordtype}{char}\ **azColName);}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00023\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{server_8h_a5bc36bb63cbba0dd5853283e283f0603}{ProcessPacket}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *pkt,\ \textcolor{keywordtype}{size\_t}\ len,\ ENetPeer\ *peer);}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00026\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{server_8h_a1d3fdf16ed3c9521b8151b42e2135d00}{ProcessMenu}}(ENetPeer*\ peer,\ \mbox{\hyperlink{struct__screen}{Screen}}*\ menu,\ \textcolor{keywordtype}{char}\ s);}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00029\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{server_8h_a0749679444220420f65fcb764cdfcc7f}{ProcessEvent}}(ENetEvent\ event);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00032\ \mbox{\hyperlink{murk_8h_a40ffc6559626c06df42676cd5f3be6a3}{ProcessAction}}\ \mbox{\hyperlink{server_8h_a6ab1e722b9b8ed89a07dfe84b6b23570}{ProcessPacketAction}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *pkt,\ \textcolor{keywordtype}{size\_t}\ len,\ ENetPeer\ *peer);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00035\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{server_8h_ab09354fa28535e041149ad3a76d58eee}{SendMessagePacket}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ msg,\ ENetPeer*\ peer);}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00038\ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{server_8h_a1cd04cde7fd240ed4fc856f4e133dfc9}{str\_append}}(\textcolor{keywordtype}{char}*\ a,\ \textcolor{keywordtype}{char}*\ b);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ TICK\_RATE\ 250}}
+
+\end{DoxyCode}

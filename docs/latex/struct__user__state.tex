@@ -1,0 +1,50 @@
+\doxysection{\+\_\+user\+\_\+state Struct Reference}
+\hypertarget{struct__user__state}{}\label{struct__user__state}\index{\_user\_state@{\_user\_state}}
+
+
+{\ttfamily \#include $<$murk.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct__user__state_ae9ec107e198e7168e61a3d8a614dd837}\label{struct__user__state_ae9ec107e198e7168e61a3d8a614dd837} 
+char {\bfseries id} \mbox{[}16\mbox{]}
+\item 
+\Hypertarget{struct__user__state_acf5414c4ec1dc030b1ced6589283b336}\label{struct__user__state_acf5414c4ec1dc030b1ced6589283b336} 
+\mbox{\hyperlink{murk_8h_a073591a64c3c883b9bd2cdaded5e2276}{Screen}} \texorpdfstring{$\ast$}{*} {\bfseries current\+Screen}
+\item 
+\Hypertarget{struct__user__state_a723f418f073bdffe548c4abfaa69616b}\label{struct__user__state_a723f418f073bdffe548c4abfaa69616b} 
+enum Player\+State {\bfseries state}
+\item 
+\Hypertarget{struct__user__state_add5b34c444664e1071615f16b14652a8}\label{struct__user__state_add5b34c444664e1071615f16b14652a8} 
+char {\bfseries user\+Name} \mbox{[}64\mbox{]}
+\item 
+\Hypertarget{struct__user__state_a57027ebcb2600e6f9be6b2aef1989dca}\label{struct__user__state_a57027ebcb2600e6f9be6b2aef1989dca} 
+int {\bfseries level}
+\item 
+\Hypertarget{struct__user__state_a2224d7a8c57ec08ef3e87109534225f3}\label{struct__user__state_a2224d7a8c57ec08ef3e87109534225f3} 
+char {\bfseries misc\+Bytes} \mbox{[}256\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The user data itself. Note that all of this is prone to change. 
+\begin{DoxyParams}{Parameters}
+{\em id} & peer-\/\texorpdfstring{$>$}{>}data to identify user vs peer. \\
+\hline
+{\em current\+Screen} & the current scren the user is on. \\
+\hline
+{\em state} & the user\textquotesingle{}s current state, if applicable. \\
+\hline
+{\em user\+Name} & the username. \\
+\hline
+{\em level} & the user\textquotesingle{}s player level. \\
+\hline
+{\em misc\+Bytes} & placeholder bytes for size reasons. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{murk_8h}{murk.\+h}}\end{DoxyCompactItemize}

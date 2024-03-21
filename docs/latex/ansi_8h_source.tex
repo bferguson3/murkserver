@@ -1,0 +1,63 @@
+\doxysection{ansi.\+h}
+\hypertarget{ansi_8h_source}{}\label{ansi_8h_source}\mbox{\hyperlink{ansi_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#define\ \_Esc\ "{}\(\backslash\)x1b["{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#define\ \_Col(n)\ "{}[38;5;\#nm"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\#define\ \_FG\_Black\ \_Esc\ "{}[38;5;0m"{}}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\#define\ \_FG\_Red\ \_Esc\ "{}[38;5;1m"{}}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\#define\ \_FG\_Green\ \_Esc\ "{}[38;5;2m"{}}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\#define\ \_FG\_Yellow\ \_Esc\ "{}[38;5;3m"{}}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\#define\ \_FG\_Blue\ \_Esc\ "{}[38;5;4m"{}}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\#define\ \_FG\_Purple\ \_Esc\ "{}[38;5;5m"{}}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\#define\ \_FG\_Cyan\ \_Esc\ "{}[38;5;6m"{}}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\#define\ \_FG\_Grey\ \_Esc\ "{}[38;5;7m"{}}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\#define\ \_FG\_BBlack\ \_Esc\ "{}[38;5;8m"{}}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\#define\ \_FG\_BRed\ \_Esc\ "{}[38;5;9m"{}}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\#define\ \_FG\_BGreen\ \_Esc\ "{}[38;5;10m"{}}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\#define\ \_FG\_BYellow\ \_Esc\ "{}[38;5;11m"{}}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\#define\ \_FG\_BBlue\ \_Esc\ "{}[38;5;12m"{}}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\#define\ \_FG\_BPurple\ \_Esc\ "{}[38;5;13m"{}}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\#define\ \_FG\_BCyan\ \_Esc\ "{}[38;5;14m"{}}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\#define\ \_FG\_White\ \_Esc\ "{}[38;5;15m"{}}}
+\DoxyCodeLine{00025\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#define\ \_FG\_Black\ \_Esc\ "{}30;m"{}}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#define\ \_FG\_Red\ \_Esc\ "{}31;m"{}}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#define\ \_FG\_Green\ \_Esc\ "{}32;m"{}}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#define\ \_FG\_Yellow\ \_Esc\ "{}33;m"{}}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#define\ \_FG\_Blue\ \_Esc\ "{}34;m"{}}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#define\ \_FG\_Magenta\ \_Esc\ "{}35;m"{}}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ \_FG\_Cyan\ \_Esc\ "{}36;m"{}}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ \_FG\_White\ \_Esc\ "{}37;m"{}}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ \_BG\_Black\ \_Esc\ "{}40;m"{}}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ \_BG\_Red\ \_Esc\ "{}41;m"{}}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ \_BG\_Green\ \_Esc\ "{}42;m"{}}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ \_BG\_Yellow\ \_Esc\ "{}43;m"{}}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ \_BG\_Blue\ \_Esc\ "{}44;m"{}}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ \_BG\_Magenta\ \_Esc\ "{}45;m"{}}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ \_BG\_Cyan\ \_Esc\ "{}46;m"{}}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ \_BG\_White\ \_Esc\ "{}47;m"{}}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#define\ \_SetPos(x,\ y)\ \_Esc\ \#y\ "{};"{}\ \#x\ "{}H"{}}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ \_Rst\ \_Esc\ "{}0m"{}}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#define\ \_Cls\ \_Esc\ "{}2J"{}}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#define\ \_Br\ \_Esc\ "{}E"{}}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ SGR\ extended:}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#define\ \_FG\_Grey\ \_Esc\ "{}1;30;m"{}}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#define\ \_FG\_BRed\ \_Esc\ "{}1;31;m"{}}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#define\ \_FG\_BGreen\ \_Esc\ "{}1;32;m"{}}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#define\ \_FG\_BYellow\ \_Esc\ "{}1;33;m"{}}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#define\ \_FG\_BBlue\ \_Esc\ "{}1;34;m"{}}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#define\ \_FG\_BMagenta\ \_Esc\ "{}1;35;m"{}}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#define\ \_FG\_BCyan\ \_Esc\ "{}1;36;m"{}}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#define\ \_FG\_BWhite\ \_Esc\ "{}1;37;m"{}}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#define\ \_ResetCol\ \_Esc\ "{}39;49m"{}}}
+
+\end{DoxyCode}

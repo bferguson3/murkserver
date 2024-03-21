@@ -1,14 +1,7 @@
+
 #include <string.h>
-////////////////////////////
-// code by David Rankin:
-////////////////////////////
-////////////////////////////
-#define MAXPW 64
-/* read a string from fp into pw masking keypress with mask char.
-getpasswd will read upto sz - 1 chars into pw, null-terminating
-the resulting string. On success, the number of characters in
-pw are returned, -1 otherwise.
-*/
+#include "getpasswd.h"
+
 ssize_t getpasswd(char **pw, size_t sz, int mask, FILE *fp)
 {
     if (!pw || !sz || !fp)

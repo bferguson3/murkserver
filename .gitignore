@@ -8,3 +8,4 @@ tools/enc/**
 .nanorc
 .clang-format
 users.db
+.docs

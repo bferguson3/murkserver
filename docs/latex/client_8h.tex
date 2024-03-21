@@ -1,0 +1,68 @@
+\doxysection{client.\+h File Reference}
+\hypertarget{client_8h}{}\label{client_8h}\index{client.h@{client.h}}
+
+
+Client processing stuff.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{client_8h_a3e4433074cc5724e0e342beacbe2f919}\label{client_8h_a3e4433074cc5724e0e342beacbe2f919} 
+char \texorpdfstring{$\ast$}{*} {\bfseries Construct\+Login\+Packet} (char \texorpdfstring{$\ast$}{*}un, void \texorpdfstring{$\ast$}{*}pw)
+\begin{DoxyCompactList}\small\item\em Creates a JSON string for logging in. \end{DoxyCompactList}\item 
+\Hypertarget{client_8h_ae0d91fdd23f796191e8224b5ae8a335d}\label{client_8h_ae0d91fdd23f796191e8224b5ae8a335d} 
+char \texorpdfstring{$\ast$}{*} {\bfseries Construct\+Menu\+Packet} (char sel)
+\begin{DoxyCompactList}\small\item\em Creates a JSON string with a single character selection. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{client_8h_a5bc36bb63cbba0dd5853283e283f0603}{Process\+Packet}} (const char \texorpdfstring{$\ast$}{*}pkt, size\+\_\+t len, ENet\+Peer \texorpdfstring{$\ast$}{*}peer)
+\begin{DoxyCompactList}\small\item\em The primary packet processing function. \end{DoxyCompactList}\item 
+\Hypertarget{client_8h_ad6123a818c252a27d574ed76f095f3af}\label{client_8h_ad6123a818c252a27d574ed76f095f3af} 
+ssize\+\_\+t {\bfseries getpasswd} (char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}pw, size\+\_\+t sz, int mask, FILE \texorpdfstring{$\ast$}{*}fp)
+\item 
+\Hypertarget{client_8h_a583e88153af91b4683a0a2eb4ae1d749}\label{client_8h_a583e88153af91b4683a0a2eb4ae1d749} 
+void {\bfseries g\+\_\+copy} (char \texorpdfstring{$\ast$}{*}src, char \texorpdfstring{$\ast$}{*}dst, size\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em A byte-\/copy. Not fast. \end{DoxyCompactList}\item 
+\Hypertarget{client_8h_a9850796a3c17c953d3bd44eae650e773}\label{client_8h_a9850796a3c17c953d3bd44eae650e773} 
+void \texorpdfstring{$\ast$}{*} {\bfseries encrypt\+\_\+pass} (char \texorpdfstring{$\ast$}{*}pass)
+\begin{DoxyCompactList}\small\item\em Converts the password into a 64-\/character encryption. \end{DoxyCompactList}\item 
+\Hypertarget{client_8h_af81cf003c6b93af6b61c42112cace97f}\label{client_8h_af81cf003c6b93af6b61c42112cace97f} 
+void {\bfseries assert} (bool tf)
+\item 
+\Hypertarget{client_8h_a8ddb0b1a7cf8acddced462b7ce24fc36}\label{client_8h_a8ddb0b1a7cf8acddced462b7ce24fc36} 
+const char \texorpdfstring{$\ast$}{*} {\bfseries Cmd\+Prompt} (const char \texorpdfstring{$\ast$}{*}prompt)
+\begin{DoxyCompactList}\small\item\em Gets text from a command prompt until enter is pressed. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{client_8h_a745944e5e9c8c3684e76612e63c01581}{Process\+Client\+Packet}} (ENet\+Event \texorpdfstring{$\ast$}{*}event)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Client processing stuff. 
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{client_8h_a745944e5e9c8c3684e76612e63c01581}\label{client_8h_a745944e5e9c8c3684e76612e63c01581} 
+\index{client.h@{client.h}!ProcessClientPacket@{ProcessClientPacket}}
+\index{ProcessClientPacket@{ProcessClientPacket}!client.h@{client.h}}
+\doxysubsubsection{\texorpdfstring{ProcessClientPacket()}{ProcessClientPacket()}}
+{\footnotesize\ttfamily void Process\+Client\+Packet (\begin{DoxyParamCaption}\item[{ENet\+Event \texorpdfstring{$\ast$}{*}}]{event }\end{DoxyParamCaption})}
+
+Standard packet processing function. Completes processing of any data loaded by \doxylink{client_8h_a5bc36bb63cbba0dd5853283e283f0603}{Process\+Packet()}. \Hypertarget{client_8h_a5bc36bb63cbba0dd5853283e283f0603}\label{client_8h_a5bc36bb63cbba0dd5853283e283f0603} 
+\index{client.h@{client.h}!ProcessPacket@{ProcessPacket}}
+\index{ProcessPacket@{ProcessPacket}!client.h@{client.h}}
+\doxysubsubsection{\texorpdfstring{ProcessPacket()}{ProcessPacket()}}
+{\footnotesize\ttfamily void Process\+Packet (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{pkt,  }\item[{size\+\_\+t}]{len,  }\item[{ENet\+Peer \texorpdfstring{$\ast$}{*}}]{peer }\end{DoxyParamCaption})}
+
+
+
+The primary packet processing function. 
+
+Sorts through all packet data, stores in a struct, and then executes any remaining commands if necessary. 
+\begin{DoxyParams}{Parameters}
+{\em pkt} & The raw contents of the packet. \\
+\hline
+{\em len} & The length of the packet. \\
+\hline
+{\em peer} & Pointer to the peer that sent the packet. \\
+\hline
+\end{DoxyParams}
