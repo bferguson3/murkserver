@@ -29,6 +29,7 @@ void ProcessMenu(ENetPeer* peer, Screen* menu, char s);
 void ProcessEvent(ENetEvent event);
 
 //! Performs secondary processing of packet action. 
+//! The equivalent is called "ProcessPacket_Type()" on the client.
 ProcessAction ProcessPacketAction(const char *pkt, size_t len, ENetPeer *peer);
 
 //! Sends a message to a single peer. Messages have no callback or reply needed, just messages. 
@@ -36,6 +37,11 @@ void SendMessagePacket(const char* msg, ENetPeer* peer);
 
 //! Allocates and returns a concatenated string. 
 char* str_append(char* a, char* b);
+
+//! Final processing loop for packets, if needed.
+//! Note that the peer->data pointer at this point is already pointing to the user's
+//! player data in server memory and therefore is easy to directly access.
+void ProcessPacket_Final(PacketAction p_act, ENetPeer* peer);
 
 //! Defines the desired tick rate of the server - how many m/s between each user's update.
 #define TICK_RATE 250

@@ -124,6 +124,12 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
     p_act = ProcessPacketAction(pkt, len, peer);
 
     // Final processing loop
+    ProcessPacket_Final(p_act, peer);
+
+}
+
+void ProcessPacket_Final(PacketAction p_act, ENetPeer* peer)
+{
     if (p_act == PRA_PROCESSLOGIN)
     {
         if (CheckUserPass(user.userName, (byte *)user.password))
@@ -158,7 +164,6 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
     {
         
     }
-
 }
 
 void ProcessMenu(ENetPeer* peer, Screen* menu, char s)

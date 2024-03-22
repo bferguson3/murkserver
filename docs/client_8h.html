@@ -77,9 +77,6 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Client processing stuff.  
-<a href="#details">More...</a></p>
-
 <p><a href="client_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -118,15 +115,20 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>CmdPrompt</b>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessEvent</b> (ENetEvent *event)</td></tr>
 <tr class="memdesc:ab6d9c87f0424cac6d2694fe2aeb6948a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard event processing loop. <br /></td></tr>
 <tr class="separator:ab6d9c87f0424cac6d2694fe2aeb6948a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af001bca179a5d0f6dcb2313d7da3c55b" id="r_af001bca179a5d0f6dcb2313d7da3c55b"><td class="memItemLeft" align="right" valign="top"><a id="af001bca179a5d0f6dcb2313d7da3c55b" name="af001bca179a5d0f6dcb2313d7da3c55b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessPacketType</b> (<a class="el" href="structjson__object__element__s.html">JSONElement</a> next_j, <a class="el" href="murk_8h.html#a303dec954a61c8f171b46c19ead4683f">PacketAction</a> *p_act, const char *pType)</td></tr>
-<tr class="memdesc:af001bca179a5d0f6dcb2313d7da3c55b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns the p_act variable and player process struct data. <br /></td></tr>
-<tr class="separator:af001bca179a5d0f6dcb2313d7da3c55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ade68a6dc0c8c3568703fa0b216a89c" id="r_a3ade68a6dc0c8c3568703fa0b216a89c"><td class="memItemLeft" align="right" valign="top"><a id="a3ade68a6dc0c8c3568703fa0b216a89c" name="a3ade68a6dc0c8c3568703fa0b216a89c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessPacket_Type</b> (<a class="el" href="structjson__object__element__s.html">JSONElement</a> next_j, <a class="el" href="murk_8h.html#a303dec954a61c8f171b46c19ead4683f">PacketAction</a> *p_act, const char *pType)</td></tr>
+<tr class="memdesc:a3ade68a6dc0c8c3568703fa0b216a89c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns the p_act variable and player process struct data. <br /></td></tr>
+<tr class="separator:a3ade68a6dc0c8c3568703fa0b216a89c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2818de022920c38b8c0fafe78499ad31" id="r_a2818de022920c38b8c0fafe78499ad31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2818de022920c38b8c0fafe78499ad31">ProcessPacket_Final</a> (<a class="el" href="murk_8h.html#a303dec954a61c8f171b46c19ead4683f">PacketAction</a> p_act, ENetPeer *peer)</td></tr>
 <tr class="separator:a2818de022920c38b8c0fafe78499ad31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Client processing stuff. </p>
+<div class="textblock"><p>Client processing stuff. The client loop is such:</p><ul>
+<li><a class="el" href="#ab6d9c87f0424cac6d2694fe2aeb6948a" title="Standard event processing loop.">ProcessEvent()</a></li>
+<li><a class="el" href="#a5bc36bb63cbba0dd5853283e283f0603" title="The primary packet processing function.">ProcessPacket()</a> (if exists)</li>
+<li><a class="el" href="#a3ade68a6dc0c8c3568703fa0b216a89c" title="Assigns the p_act variable and player process struct data.">ProcessPacket_Type()</a> fills out the user's command struct</li>
+<li><a class="el" href="#a2818de022920c38b8c0fafe78499ad31">ProcessPacket_Final()</a> will finalize any remaining output if needed </li>
+</ul>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a5bc36bb63cbba0dd5853283e283f0603" name="a5bc36bb63cbba0dd5853283e283f0603"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5bc36bb63cbba0dd5853283e283f0603">&#9670;&#160;</a></span>ProcessPacket()</h2>

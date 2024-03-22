@@ -164,7 +164,8 @@ void ProcessEvent(ENetEvent event)
                 /* Disconnect event */
                 printf("%s disconnected.\n", (char *)event.peer->data);
                 
-                free(event.peer->data);
+                // This should not be freed - check this later TODO 
+                //free(event.peer->data);
                 break;
 
             case ENET_EVENT_TYPE_NONE:

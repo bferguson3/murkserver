@@ -20,6 +20,106 @@ char *menuselpkt;
 
 char menuInput = 0;
 
+
+void ProcessEvent(ENetEvent* event)
+{
+    char *mypacket;
+
+    switch (event->type)
+    {
+        /* Handle connection event */
+        case ENET_EVENT_TYPE_CONNECT:
+            printf(
+                "A packet of length %u containing %s was received from "
+                "%s on "
+                "channel %u.\n",
+                (unsigned int)event->packet->dataLength,
+                (char *)event->packet->data, (char *)event->peer->data,
+                event->channelID);
+            break;
+
+        /* Handle all other events */
+        case ENET_EVENT_TYPE_RECEIVE:
+            printf("[Debug] EVENT RECEIVE\n");
+            // allocate for data
+            size_t len = event->packet->dataLength;
+            mypacket = (char *)malloc(len);
+            // copy it in
+            memcpy(mypacket, event->packet->data, len);
+
+            // parse it
+            ProcessPacket(mypacket, len, event->peer);
+
+            // delete packet
+            enet_packet_destroy(event->packet);
+            // free the mem
+            free(mypacket);
+            break;
+
+        case ENET_EVENT_TYPE_DISCONNECT:
+            printf("%s disconnected.\n", (char *)event->peer->data);
+            
+            break;
+
+        case ENET_EVENT_TYPE_NONE:
+            printf("sfasdf");
+            break;
+    }
+}
+
+
+void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
+{
+    printf("[Debug] Packet length: %zu len\n", len);
+    //printf("%s\n", pkt);
+    // parse json object
+    struct json_value_s *j = json_parse(pkt, len);
+    // into a struct
+    if(j == 0){
+        printf("ERROR\n");
+    }
+    
+    struct json_object_s *object = (struct json_object_s *)j->payload;
+    struct json_object_element_s *p_type = object->start;
+    struct json_string_s *p_type_str = p_type->name;
+    
+    // error out if element 0 is not packetType (change later)
+    if (strcmp(p_type_str->string, "packetType") != 0)
+    {
+        printf("Error: packetType not found\n");
+        return;
+    }
+
+    PacketAction p_act = PA_NONE;
+
+    // get the packet type
+    JSONVal p_type_val = p_type->value;
+    JSONString p_type_valstr = p_type_val->payload;
+    
+    // Debug print the packet type
+    printf("[Debug] packetType: %s\n", p_type_valstr->string);
+
+    // assign last json element
+    JSONElement last_j = p_type;
+
+    // continue while there are still elements in the blob
+    while (last_j->next != json_null)
+    {
+        last_j = last_j->next;
+        ProcessPacket_Type(last_j, &p_act, p_type_valstr->string);   
+    }
+
+    //
+    // Final processing loop
+    // After the json is fully parsed, complete the processes here.
+    //
+    ProcessPacket_Final(p_act, peer);
+
+
+    free(j);
+}
+
+
 void ProcessPacket_Type(JSONElement next_j, PacketAction* p_act, const char* pType)
 {
     // get next element:
@@ -100,57 +200,6 @@ void ProcessPacket_Type(JSONElement next_j, PacketAction* p_act, const char* pTy
     return;
 }
 
-void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
-{
-    printf("[Debug] Packet length: %zu len\n", len);
-    //printf("%s\n", pkt);
-    // parse json object
-    struct json_value_s *j = json_parse(pkt, len);
-    // into a struct
-    if(j == 0){
-        printf("ERROR\n");
-    }
-    
-    struct json_object_s *object = (struct json_object_s *)j->payload;
-    struct json_object_element_s *p_type = object->start;
-    struct json_string_s *p_type_str = p_type->name;
-    
-    // error out if element 0 is not packetType (change later)
-    if (strcmp(p_type_str->string, "packetType") != 0)
-    {
-        printf("Error: packetType not found\n");
-        return;
-    }
-
-    PacketAction p_act = PA_NONE;
-
-    // get the packet type
-    JSONVal p_type_val = p_type->value;
-    JSONString p_type_valstr = p_type_val->payload;
-    
-    // Debug print the packet type
-    printf("[Debug] packetType: %s\n", p_type_valstr->string);
-
-    // assign last json element
-    JSONElement last_j = p_type;
-
-    // continue while there are still elements in the blob
-    while (last_j->next != json_null)
-    {
-        last_j = last_j->next;
-        ProcessPacket_Type(last_j, &p_act, p_type_valstr->string);   
-    }
-
-    //
-    // Final processing loop
-    // After the json is fully parsed, complete the processes here.
-    //
-    ProcessPacket_Final(p_act, peer);
-
-
-    free(j);
-}
-
 void ProcessPacket_Final(PacketAction p_act, ENetPeer* peer)
 {
 
@@ -198,52 +247,6 @@ void ProcessPacket_Final(PacketAction p_act, ENetPeer* peer)
 
 }
 
-
-void ProcessEvent(ENetEvent* event)
-{
-    char *mypacket;
-
-    switch (event->type)
-    {
-        /* Handle connection event */
-        case ENET_EVENT_TYPE_CONNECT:
-            printf(
-                "A packet of length %u containing %s was received from "
-                "%s on "
-                "channel %u.\n",
-                (unsigned int)event->packet->dataLength,
-                (char *)event->packet->data, (char *)event->peer->data,
-                event->channelID);
-            break;
-
-        /* Handle all other events */
-        case ENET_EVENT_TYPE_RECEIVE:
-            printf("[Debug] EVENT RECEIVE\n");
-            // allocate for data
-            size_t len = event->packet->dataLength;
-            mypacket = (char *)malloc(len);
-            // copy it in
-            memcpy(mypacket, event->packet->data, len);
-
-            // parse it
-            ProcessPacket(mypacket, len, event->peer);
-
-            // delete packet
-            enet_packet_destroy(event->packet);
-            // free the mem
-            free(mypacket);
-            break;
-
-        case ENET_EVENT_TYPE_DISCONNECT:
-            printf("%s disconnected.\n", (char *)event->peer->data);
-            
-            break;
-
-        case ENET_EVENT_TYPE_NONE:
-            printf("sfasdf");
-            break;
-    }
-}
 
 char* ConstructMenuPacket(char sel)
 {

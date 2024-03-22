@@ -1,4 +1,9 @@
 //! @file client.h Client processing stuff.
+//! The client loop is such: 
+//! - ProcessEvent()
+//! - ProcessPacket() (if exists)
+//! - ProcessPacket_Type() fills out the user's command struct 
+//! - ProcessPacket_Final() will finalize any remaining output if needed
 
 #ifndef __MURKCLIENT_H__
 #define __MURKCLIENT_H__
@@ -37,7 +42,7 @@ const char *CmdPrompt(const char *prompt);
 void ProcessEvent(ENetEvent* event);
 
 //! Assigns the p_act variable and player process struct data. 
-void ProcessPacketType(JSONElement next_j, PacketAction* p_act, const char* pType);
+void ProcessPacket_Type(JSONElement next_j, PacketAction* p_act, const char* pType);
 
 //! Secondary processs loop, if needed.
 //! Completes processing of any data loaded by ProcessPacket().

@@ -109,9 +109,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessMenu</b> (ENet
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessEvent</b> (ENetEvent event)</td></tr>
 <tr class="memdesc:a0749679444220420f65fcb764cdfcc7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard ENet event processor. <br /></td></tr>
 <tr class="separator:a0749679444220420f65fcb764cdfcc7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ab1e722b9b8ed89a07dfe84b6b23570" id="r_a6ab1e722b9b8ed89a07dfe84b6b23570"><td class="memItemLeft" align="right" valign="top"><a id="a6ab1e722b9b8ed89a07dfe84b6b23570" name="a6ab1e722b9b8ed89a07dfe84b6b23570"></a>
-<a class="el" href="murk_8h.html#a40ffc6559626c06df42676cd5f3be6a3">ProcessAction</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessPacketAction</b> (const char *pkt, size_t len, ENetPeer *peer)</td></tr>
-<tr class="memdesc:a6ab1e722b9b8ed89a07dfe84b6b23570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs secondary processing of packet action. <br /></td></tr>
+<tr class="memitem:a6ab1e722b9b8ed89a07dfe84b6b23570" id="r_a6ab1e722b9b8ed89a07dfe84b6b23570"><td class="memItemLeft" align="right" valign="top"><a class="el" href="murk_8h.html#a40ffc6559626c06df42676cd5f3be6a3">ProcessAction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ab1e722b9b8ed89a07dfe84b6b23570">ProcessPacketAction</a> (const char *pkt, size_t len, ENetPeer *peer)</td></tr>
 <tr class="separator:a6ab1e722b9b8ed89a07dfe84b6b23570"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab09354fa28535e041149ad3a76d58eee" id="r_ab09354fa28535e041149ad3a76d58eee"><td class="memItemLeft" align="right" valign="top"><a id="ab09354fa28535e041149ad3a76d58eee" name="ab09354fa28535e041149ad3a76d58eee"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SendMessagePacket</b> (const char *msg, ENetPeer *peer)</td></tr>
@@ -121,6 +119,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SendMessagePacket</b>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>str_append</b> (char *a, char *b)</td></tr>
 <tr class="memdesc:a1cd04cde7fd240ed4fc856f4e133dfc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates and returns a concatenated string. <br /></td></tr>
 <tr class="separator:a1cd04cde7fd240ed4fc856f4e133dfc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2818de022920c38b8c0fafe78499ad31" id="r_a2818de022920c38b8c0fafe78499ad31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2818de022920c38b8c0fafe78499ad31">ProcessPacket_Final</a> (<a class="el" href="murk_8h.html#a303dec954a61c8f171b46c19ead4683f">PacketAction</a> p_act, ENetPeer *peer)</td></tr>
+<tr class="separator:a2818de022920c38b8c0fafe78499ad31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Most non-packet server-side code is here. </p>
@@ -159,6 +159,56 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>str_append</b> (cha
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a2818de022920c38b8c0fafe78499ad31" name="a2818de022920c38b8c0fafe78499ad31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2818de022920c38b8c0fafe78499ad31">&#9670;&#160;</a></span>ProcessPacket_Final()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ProcessPacket_Final </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="murk_8h.html#a303dec954a61c8f171b46c19ead4683f">PacketAction</a></td>          <td class="paramname"><span class="paramname"><em>p_act</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ENetPeer *</td>          <td class="paramname"><span class="paramname"><em>peer</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Final processing loop for packets, if needed. Note that the peer-&gt;data pointer at this point is already pointing to the user's player data in server memory and therefore is easy to directly access.</p>
+<p>Secondary processs loop, if needed. Completes processing of any data loaded by <a class="el" href="client_8h.html#a5bc36bb63cbba0dd5853283e283f0603" title="The primary packet processing function.">ProcessPacket()</a>. </p>
+
+</div>
+</div>
+<a id="a6ab1e722b9b8ed89a07dfe84b6b23570" name="a6ab1e722b9b8ed89a07dfe84b6b23570"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ab1e722b9b8ed89a07dfe84b6b23570">&#9670;&#160;</a></span>ProcessPacketAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="murk_8h.html#a40ffc6559626c06df42676cd5f3be6a3">ProcessAction</a> ProcessPacketAction </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>pkt</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>len</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ENetPeer *</td>          <td class="paramname"><span class="paramname"><em>peer</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Performs secondary processing of packet action. The equivalent is called "ProcessPacket_Type()" on the client. </p>
 
 </div>
 </div>
