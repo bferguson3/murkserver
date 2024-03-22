@@ -36,4 +36,10 @@ const char *CmdPrompt(const char *prompt);
 //! Completes processing of any data loaded by ProcessPacket().
 void ProcessClientPacket(ENetEvent* event);
 
+//! Assigns the p_act variable and player process struct data. 
+void ProcessPacketType(JSONElement next_j, PacketAction* p_act, const char* pType);
+
+//! Secondary processs loop, if needed.
+void ProcessPacket_Final(PacketAction p_act, ENetPeer* peer);
+
 #endif 

@@ -20,6 +20,85 @@ char *menuselpkt;
 
 char menuInput = 0;
 
+void ProcessPacket_Type(JSONElement next_j, PacketAction* p_act, const char* pType)
+{
+    // get next element:
+    //JSONElement next_j = last_j->next;
+    JSONString next_name = next_j->name;
+    JSONVal next_val = next_j->value;
+    //PacketAction p_act;
+
+    printf("%s\n", next_j);
+    //
+    // LOGIN_WELCOME packet
+    //
+    // This is the first packet received by the server.
+    //  In response, the user's login and pw are expected.
+    if (strcmp(pType, "LOGIN_WELCOME") == 0)
+    {
+        //
+        *p_act = PA_LOGIN;
+
+        if (JNEXT("text"))
+        {
+            JSONString next_str = next_val->payload;
+            printf("%s\n", next_str->string);
+        }
+        else if (JNEXT("tickRate"))
+        {
+            struct json_number_s *j_tr = next_val->payload;
+            int tr = atoi(j_tr->number);
+            printf("Tick rate requested: %d\n", tr);
+            currentTickRate = tr;
+        }
+        //
+    }
+    //
+    // MENU_MAIN PACKET
+    //
+    else if (strcmp(pType, "MENU_MAIN") == 0)
+    {
+        *p_act = PA_MENUSELECT;
+
+        if (JNEXT("text"))
+        {
+            JSONString next_str = next_val->payload;
+            printf("%s\n", next_str->string);
+        }
+        else if (JNEXT("menuOptions"))
+        {
+            printf(_Rst);  // Reset ansi just in case
+            
+            // get list of menu options
+            struct json_array_s *array = json_value_as_array(next_val);
+            int arlen = array->length;  // and length
+            
+            // get first element
+            struct json_array_element_s *this_ele = array->start;
+            JSONString ele_str = json_value_as_string(this_ele->value);
+            printf("%s\n", ele_str->string);  // and print it
+            for (int c = 1; c < arlen; c++)
+            {
+                this_ele = this_ele->next;
+                ele_str = json_value_as_string(this_ele->value);
+                printf("%s\n", ele_str->string);
+            }  // and the remaning options
+        }
+    }
+    else if (strcmp(pType, "MESSAGE_GEN") == 0)
+    {
+        *p_act = PA_NONE;
+        if(JNEXT("message")){
+            JSONString next_str = next_val->payload;
+            printf(": %s\n", next_str->string);
+        }
+    }
+    // other packets
+
+    //last_j = next_j;
+
+    return;
+}
 
 void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
 {
@@ -58,84 +137,22 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
     // continue while there are still elements in the blob
     while (last_j->next != json_null)
     {
-        // get next element:
-        JSONElement next_j = last_j->next;
-        JSONString next_name = next_j->name;
-        JSONVal next_val = next_j->value;
-
-        //
-        // LOGIN_WELCOME packet
-        //
-        // This is the first packet received by the server.
-        //  In response, the user's login and pw are expected.
-        if (strcmp(p_type_valstr->string, "LOGIN_WELCOME") == 0)
-        {
-            //
-            p_act = PA_LOGIN;
-
-            if (JNEXT("text"))
-            {
-                JSONString next_str = next_val->payload;
-                printf("%s\n", next_str->string);
-            }
-            else if (JNEXT("tickRate"))
-            {
-                struct json_number_s *j_tr = next_val->payload;
-                int tr = atoi(j_tr->number);
-                printf("Tick rate requested: %d\n", tr);
-                currentTickRate = tr;
-            }
-            //
-        }
-        //
-        // MENU_MAIN PACKET
-        //
-        else if (PACKETTYPEIS(MENU_MAIN))
-        {
-            p_act = PA_MENUSELECT;
-
-            if (JNEXT("text"))
-            {
-                JSONString next_str = next_val->payload;
-                printf("%s\n", next_str->string);
-            }
-            else if (JNEXT("menuOptions"))
-            {
-                printf(_Rst);  // Reset ansi just in case
-                
-                // get list of menu options
-                struct json_array_s *array = json_value_as_array(next_val);
-                int arlen = array->length;  // and length
-                
-                // get first element
-                struct json_array_element_s *this_ele = array->start;
-                JSONString ele_str = json_value_as_string(this_ele->value);
-                printf("%s\n", ele_str->string);  // and print it
-                for (int c = 1; c < arlen; c++)
-                {
-                    this_ele = this_ele->next;
-                    ele_str = json_value_as_string(this_ele->value);
-                    printf("%s\n", ele_str->string);
-                }  // and the remaning options
-            }
-        }
-        else if (PACKETTYPEIS(MESSAGE_GEN))
-        {
-            p_act = PA_NONE;
-            if(JNEXT("message")){
-                JSONString next_str = next_val->payload;
-                printf(": %s\n", next_str->string);
-            }
-        }
-        // other packets
-
-        last_j = next_j;
+        last_j = last_j->next;
+        ProcessPacket_Type(last_j, &p_act, p_type_valstr->string);   
     }
 
     //
     // Final processing loop
     // After the json is fully parsed, complete the processes here.
     //
+    ProcessPacket_Final(p_act, peer);
+
+
+    free(j);
+}
+
+void ProcessPacket_Final(PacketAction p_act, ENetPeer* peer)
+{
 
     //
     // LOGIN PACKET PROCESS
@@ -179,7 +196,6 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
         free(menuselpkt);
     }
 
-    free(j);
 }
 
 
