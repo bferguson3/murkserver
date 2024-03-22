@@ -97,6 +97,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>ConstructMenuPacket
 <tr class="separator:a5bc36bb63cbba0dd5853283e283f0603"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6123a818c252a27d574ed76f095f3af" id="r_ad6123a818c252a27d574ed76f095f3af"><td class="memItemLeft" align="right" valign="top"><a id="ad6123a818c252a27d574ed76f095f3af" name="ad6123a818c252a27d574ed76f095f3af"></a>
 ssize_t&#160;</td><td class="memItemRight" valign="bottom"><b>getpasswd</b> (char **pw, size_t sz, int mask, FILE *fp)</td></tr>
+<tr class="memdesc:ad6123a818c252a27d574ed76f095f3af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets password from command line masked with *s. <br /></td></tr>
 <tr class="separator:ad6123a818c252a27d574ed76f095f3af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a583e88153af91b4683a0a2eb4ae1d749" id="r_a583e88153af91b4683a0a2eb4ae1d749"><td class="memItemLeft" align="right" valign="top"><a id="a583e88153af91b4683a0a2eb4ae1d749" name="a583e88153af91b4683a0a2eb4ae1d749"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>g_copy</b> (char *src, char *dst, size_t len)</td></tr>
@@ -113,30 +114,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>assert</b> (bool tf)<
 const char *&#160;</td><td class="memItemRight" valign="bottom"><b>CmdPrompt</b> (const char *prompt)</td></tr>
 <tr class="memdesc:a8ddb0b1a7cf8acddced462b7ce24fc36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets text from a command prompt until enter is pressed. <br /></td></tr>
 <tr class="separator:a8ddb0b1a7cf8acddced462b7ce24fc36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a745944e5e9c8c3684e76612e63c01581" id="r_a745944e5e9c8c3684e76612e63c01581"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a745944e5e9c8c3684e76612e63c01581">ProcessClientPacket</a> (ENetEvent *event)</td></tr>
-<tr class="separator:a745944e5e9c8c3684e76612e63c01581"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6d9c87f0424cac6d2694fe2aeb6948a" id="r_ab6d9c87f0424cac6d2694fe2aeb6948a"><td class="memItemLeft" align="right" valign="top"><a id="ab6d9c87f0424cac6d2694fe2aeb6948a" name="ab6d9c87f0424cac6d2694fe2aeb6948a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessEvent</b> (ENetEvent *event)</td></tr>
+<tr class="memdesc:ab6d9c87f0424cac6d2694fe2aeb6948a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard event processing loop. <br /></td></tr>
+<tr class="separator:ab6d9c87f0424cac6d2694fe2aeb6948a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af001bca179a5d0f6dcb2313d7da3c55b" id="r_af001bca179a5d0f6dcb2313d7da3c55b"><td class="memItemLeft" align="right" valign="top"><a id="af001bca179a5d0f6dcb2313d7da3c55b" name="af001bca179a5d0f6dcb2313d7da3c55b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessPacketType</b> (JSONElement next_j, <a class="el" href="murk_8h.html#a303dec954a61c8f171b46c19ead4683f">PacketAction</a> *p_act, const char *pType)</td></tr>
+<tr class="memdesc:af001bca179a5d0f6dcb2313d7da3c55b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns the p_act variable and player process struct data. <br /></td></tr>
+<tr class="separator:af001bca179a5d0f6dcb2313d7da3c55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2818de022920c38b8c0fafe78499ad31" id="r_a2818de022920c38b8c0fafe78499ad31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2818de022920c38b8c0fafe78499ad31">ProcessPacket_Final</a> (<a class="el" href="murk_8h.html#a303dec954a61c8f171b46c19ead4683f">PacketAction</a> p_act, ENetPeer *peer)</td></tr>
+<tr class="separator:a2818de022920c38b8c0fafe78499ad31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Client processing stuff. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a745944e5e9c8c3684e76612e63c01581" name="a745944e5e9c8c3684e76612e63c01581"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a745944e5e9c8c3684e76612e63c01581">&#9670;&#160;</a></span>ProcessClientPacket()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ProcessClientPacket </td>
-          <td>(</td>
-          <td class="paramtype">ENetEvent *</td>          <td class="paramname"><span class="paramname"><em>event</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Standard packet processing function. Completes processing of any data loaded by <a class="el" href="#a5bc36bb63cbba0dd5853283e283f0603" title="The primary packet processing function.">ProcessPacket()</a>. </p>
-
-</div>
-</div>
 <a id="a5bc36bb63cbba0dd5853283e283f0603" name="a5bc36bb63cbba0dd5853283e283f0603"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5bc36bb63cbba0dd5853283e283f0603">&#9670;&#160;</a></span>ProcessPacket()</h2>
 
@@ -170,6 +161,28 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>CmdPrompt</b>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a2818de022920c38b8c0fafe78499ad31" name="a2818de022920c38b8c0fafe78499ad31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2818de022920c38b8c0fafe78499ad31">&#9670;&#160;</a></span>ProcessPacket_Final()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ProcessPacket_Final </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="murk_8h.html#a303dec954a61c8f171b46c19ead4683f">PacketAction</a></td>          <td class="paramname"><span class="paramname"><em>p_act</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ENetPeer *</td>          <td class="paramname"><span class="paramname"><em>peer</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Secondary processs loop, if needed. Completes processing of any data loaded by <a class="el" href="#a5bc36bb63cbba0dd5853283e283f0603" title="The primary packet processing function.">ProcessPacket()</a>. </p>
 
 </div>
 </div>

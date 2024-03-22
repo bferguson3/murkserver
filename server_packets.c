@@ -6,9 +6,9 @@
 #include <sqlite3.h>
 #include <stdio.h>
 
-#include "base64.h"
-#include "guid.h"
-#include "json.h"
+#include "res/base64.h"
+#include "res/guid.h"
+#include "res/json.h"
 #include "jsonres.h"
 #include "murk.h"
 #include "server_sql.h"

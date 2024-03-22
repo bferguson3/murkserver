@@ -4,9 +4,9 @@
 #include <sqlite3.h>
 #include <stdio.h>
 
-#include "base64.h"
-#include "guid.h"
-#include "json.h"
+#include "res/base64.h"
+#include "res/guid.h"
+#include "res/json.h"
 #include "murk.h"
 #include "server_sql.h"
 #include "server.h"
@@ -108,6 +108,24 @@ int main(int argc, char **argv)
     return 0;
 }
 
+void CreatePlayerStruct(ENetPeer* peer)
+{
+    for(int i = 0; i < PLAYERS_MAX; i++)
+    {
+        if(activePlayerDatabase[i].state == STATE_OFFLINE)
+        {
+            // this is where we will set the data 
+            peer->data = &activePlayerDatabase[i]; // Until the user is disconnected, it will point TO THIS ADDRESS.
+            
+            char* _g = generate_new_guid();
+            g_copy(_g, &activePlayerDatabase[i].id, 16); // copy a guid into the memory block 
+            free(_g);
+            
+            i = PLAYERS_MAX;
+        }
+    }
+}
+
 void ProcessEvent(ENetEvent event)
 {
     char *mypacket;
@@ -118,8 +136,9 @@ void ProcessEvent(ENetEvent event)
                 printf("Client connected from %x:%u.\n",
                         event.peer->address.host, event.peer->address.port);
 
-                event.peer->data =
-                    generate_new_guid();  //"Test"; // Generate user ID here
+                //event.peer->data =
+                    //generate_new_guid();  //"Test"; // Generate user ID here
+                CreatePlayerStruct(event.peer);
 
                 ENetPacket *packet = enet_packet_create(
                     welcome_packet, strlen(welcome_packet),

@@ -102,8 +102,8 @@ enum PlayerState {
 //! @param userName the username.
 //! @param level the user's player level. 
 //! @param miscBytes placeholder bytes for size reasons.
-typedef struct _user_state { 
-    char id[16];
+typedef struct _user_state {  // this is pointed to by user->data.
+    char id[16]; // current GUID
     Screen* currentScreen; 
     enum PlayerState state;
     char userName[64];

@@ -19,6 +19,7 @@ char *ConstructMenuPacket(char sel);
 */
 void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer);
 
+//! Gets password from command line masked with *s.
 ssize_t getpasswd(char **pw, size_t sz, int mask, FILE *fp);
 
 //! A byte-copy. Not fast.
@@ -32,14 +33,14 @@ void assert(bool tf);
 //! Gets text from a command prompt until enter is pressed.
 const char *CmdPrompt(const char *prompt);
 
-//! Standard packet processing function. 
-//! Completes processing of any data loaded by ProcessPacket().
-void ProcessClientPacket(ENetEvent* event);
+//! Standard event processing loop. 
+void ProcessEvent(ENetEvent* event);
 
 //! Assigns the p_act variable and player process struct data. 
 void ProcessPacketType(JSONElement next_j, PacketAction* p_act, const char* pType);
 
 //! Secondary processs loop, if needed.
+//! Completes processing of any data loaded by ProcessPacket().
 void ProcessPacket_Final(PacketAction p_act, ENetPeer* peer);
 
 #endif 

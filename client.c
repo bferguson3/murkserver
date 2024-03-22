@@ -5,10 +5,10 @@
 #include <termios.h>
 
 #include "ansi.h"
-#include "base64.h"
-#include "json.h"
+#include "res/base64.h"
+#include "res/json.h"
 #include "murk.h"
-#include "sha3.h"
+#include "res/sha3.h"
 #include "client.h"
 
 ENetHost *client;
@@ -75,7 +75,7 @@ int main(int argc, char **argv)
     {
         while (enet_host_service(client, &event, currentTickRate) > 0)
         {
-            ProcessClientPacket(&event);
+            ProcessEvent(&event);
         }
     }
 

@@ -4,11 +4,11 @@
 #include <termios.h>
 
 #include "ansi.h"
-#include "base64.h"
-#include "getpasswd.c"
-#include "json.h"
+#include "res/base64.h"
+#include "res/getpasswd.c"
+#include "res/json.h"
 #include "murk.h"
-#include "sha3.h"
+#include "res/sha3.h"
 #include "client.h"
 
 extern unsigned int currentTickRate;
@@ -199,50 +199,50 @@ void ProcessPacket_Final(PacketAction p_act, ENetPeer* peer)
 }
 
 
-void ProcessClientPacket(ENetEvent* event)
+void ProcessEvent(ENetEvent* event)
 {
     char *mypacket;
 
-            switch (event->type)
-            {
-                /* Handle connection event */
-                case ENET_EVENT_TYPE_CONNECT:
-                    printf(
-                        "A packet of length %u containing %s was received from "
-                        "%s on "
-                        "channel %u.\n",
-                        (unsigned int)event->packet->dataLength,
-                        (char *)event->packet->data, (char *)event->peer->data,
-                        event->channelID);
-                    break;
+    switch (event->type)
+    {
+        /* Handle connection event */
+        case ENET_EVENT_TYPE_CONNECT:
+            printf(
+                "A packet of length %u containing %s was received from "
+                "%s on "
+                "channel %u.\n",
+                (unsigned int)event->packet->dataLength,
+                (char *)event->packet->data, (char *)event->peer->data,
+                event->channelID);
+            break;
 
-                /* Handle all other events */
-                case ENET_EVENT_TYPE_RECEIVE:
-                    printf("[Debug] EVENT RECEIVE\n");
-                    // allocate for data
-                    size_t len = event->packet->dataLength;
-                    mypacket = (char *)malloc(len);
-                    // copy it in
-                    memcpy(mypacket, event->packet->data, len);
+        /* Handle all other events */
+        case ENET_EVENT_TYPE_RECEIVE:
+            printf("[Debug] EVENT RECEIVE\n");
+            // allocate for data
+            size_t len = event->packet->dataLength;
+            mypacket = (char *)malloc(len);
+            // copy it in
+            memcpy(mypacket, event->packet->data, len);
 
-                    // parse it
-                    ProcessPacket(mypacket, len, event->peer);
+            // parse it
+            ProcessPacket(mypacket, len, event->peer);
 
-                    // delete packet
-                    enet_packet_destroy(event->packet);
-                    // free the mem
-                    free(mypacket);
-                    break;
+            // delete packet
+            enet_packet_destroy(event->packet);
+            // free the mem
+            free(mypacket);
+            break;
 
-                case ENET_EVENT_TYPE_DISCONNECT:
-                    printf("%s disconnected.\n", (char *)event->peer->data);
-                    
-                    break;
+        case ENET_EVENT_TYPE_DISCONNECT:
+            printf("%s disconnected.\n", (char *)event->peer->data);
+            
+            break;
 
-                case ENET_EVENT_TYPE_NONE:
-                    printf("sfasdf");
-                    break;
-            }
+        case ENET_EVENT_TYPE_NONE:
+            printf("sfasdf");
+            break;
+    }
 }
 
 char* ConstructMenuPacket(char sel)

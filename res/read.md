@@ -1,0 +1,1 @@
+All files in this folder are (c) their respective owners.
