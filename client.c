@@ -35,9 +35,9 @@ void reset_term();
 ///
 int main(int argc, char **argv)
 {
-
+#ifdef OSX
     reset_term();
-
+#endif
 #ifdef WIN32
     HANDLE hStdout, hStdin;
     hStdin = GetStdHandle(STD_INPUT_HANDLE);

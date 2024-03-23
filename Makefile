@@ -1,7 +1,7 @@
 # Makefile for Mac
 
-INC = -I/Users/bent/Downloads/enet/include -I/opt/homebrew/opt/sqlite/include
-LIB = -L/usr/local/lib -L/Users/bent/Downloads/sqlite-3450100/ -L/Users/bent/Downloads/enet/build
+INC = -I/home/bent/Downloads/enet-1.3.17/include/ #-I/Users/bent/Downloads/enet/include -I/opt/homebrew/opt/sqlite/include
+LIB = -L/usr/local/lib -L/Users/bent/Downloads/sqlite-3450100/ -L/home/bent/Downloads/enet-1.3.17/build
 
 JSONJ = $(wildcard ./blobs/*.json)
 JSONH = $(patsubst ./blobs/%.json, ./blobs/include/%_json.h, $(JSONJ))

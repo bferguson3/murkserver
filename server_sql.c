@@ -28,24 +28,34 @@ size_t GetBlobLength(char *table, char *row, char *key, char *val)
     // val: ben
     // ';
 
-    char *sqlcmd_f =
-        (char *)malloc(strlen(sqlcmd_a) + strlen(sqlcmd_b) + strlen(sqlcmd_c) +
+    size_t _len = strlen(sqlcmd_a) + strlen(sqlcmd_b) + strlen(sqlcmd_c) +
                        strlen(sqlcmd_d) + strlen(key) + strlen(table) +
-                       strlen(row) + strlen(val) + 2);
+                       strlen(row) + strlen(val)+3; // huh?
+    char *sqlcmd_f =
+        (char *)malloc(_len);
+    //for(int i = 0; i < _len; i++) sqlcmd_f[i] = '\00';
+    
     char *_loc = sqlcmd_f;
     g_copy(sqlcmd_a, _loc, strlen(sqlcmd_a));
+    
     _loc += strlen(sqlcmd_a);
     g_copy(key, _loc, strlen(key));
+    
     _loc += strlen(key);
     g_copy(sqlcmd_b, _loc, strlen(sqlcmd_b));
+    
     _loc += strlen(sqlcmd_b);
     g_copy(table, _loc, strlen(table));
+    
     _loc += strlen(table);
     g_copy(sqlcmd_c, _loc, strlen(sqlcmd_c));
+    
     _loc += strlen(sqlcmd_c);
     g_copy(row, _loc, strlen(row));
+    
     _loc += strlen(row);
     g_copy(sqlcmd_d, _loc, strlen(sqlcmd_d));
+    
     _loc += strlen(sqlcmd_d);
     g_copy(val, _loc, strlen(val));
     _loc += strlen(val);
@@ -53,6 +63,10 @@ size_t GetBlobLength(char *table, char *row, char *key, char *val)
     // char *p = &sqlcmd_f[strlen(sqlcmd_f) - 2];
     *_loc++ = '\'';
     *_loc++ = ';';
+    *_loc++ = '\00';
+    //*_loc++ = 13;
+    
+    //printf("%s\n", sqlcmd_f);
 
     // the callback assigns _last_buffer_size
     rc = sqlite3_exec(murk_userdb, sqlcmd_f, bloblen_callback, 0, &zErrMsg);
@@ -76,14 +90,18 @@ bool CheckUserPass(char *un, byte *pw)
     int rc;
     char *sqlcmd_a = "select password from users where user_id = '";
     // UID
-    char *sqlcmd_b = "';\x00";
+    char *sqlcmd_b = "';";
+    size_t _len = strlen(sqlcmd_a) + strlen(sqlcmd_b) + strlen(un);
     char *sqlcmd_f =
-        (char *)malloc(strlen(sqlcmd_a) + strlen(sqlcmd_b) + strlen(un));
+        (char *)malloc(_len);
 
     g_copy(sqlcmd_a, sqlcmd_f, strlen(sqlcmd_a));
     g_copy(un, &sqlcmd_f[0] + strlen(sqlcmd_a), strlen(un));
     g_copy(sqlcmd_b, &sqlcmd_f[0] + strlen(sqlcmd_a) + strlen(un),
            strlen(sqlcmd_b));
+    sqlcmd_f[_len] = 0;
+
+    printf("%s\n", sqlcmd_f);
 
     rc = sqlite3_exec(murk_userdb, sqlcmd_f, pw_callback, 0, &zErrMsg);
 

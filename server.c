@@ -10,6 +10,8 @@
 #include "murk.h"
 #include "server_sql.h"
 #include "server.h"
+#include <termios.h>
+
 #ifdef WIN32
 #include <windows.h>
 #endif 

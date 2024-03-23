@@ -130,7 +130,6 @@ void ProcessPacket_Type(JSONElement next_j, PacketAction* p_act, const char* pTy
     JSONVal next_val = next_j->value;
     //PacketAction p_act;
 
-    printf("%s\n", next_j);
     //
     // LOGIN_WELCOME packet
     //
@@ -234,7 +233,7 @@ void ProcessPacket_Final(PacketAction p_act, ENetPeer* peer)
         loginpkt = ConstructLoginPacket(un, myhash);
 
         printf("\nLogging in...\n");
-
+        printf("%s\n", loginpkt);
         ENetPacket *packet = enet_packet_create(loginpkt, strlen(loginpkt),
                                                 ENET_PACKET_FLAG_RELIABLE);
         enet_peer_send(peer, 0, packet);
