@@ -10,7 +10,9 @@
 #include "murk.h"
 #include "server_sql.h"
 #include "server.h"
-
+#ifdef WIN32
+#include <windows.h>
+#endif 
 ENetAddress address;
 ENetHost *server;
 
@@ -39,6 +41,15 @@ const Screen scrMainMenu = {
 //
 int main(int argc, char **argv)
 {
+#ifdef WIN32
+    HANDLE hStdout, hStdin;
+    hStdin = GetStdHandle(STD_INPUT_HANDLE);
+    hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD fdwOldMode;
+    GetConsoleMode(hStdout, &fdwOldMode);
+    fdwOldMode = fdwOldMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hStdout, &fdwOldMode);
+#endif
     //
     /// database
     //
@@ -166,6 +177,7 @@ void ProcessEvent(ENetEvent event)
                 
                 // This should not be freed - check this later TODO 
                 //free(event.peer->data);
+                event.peer->data = NULL;
                 break;
 
             case ENET_EVENT_TYPE_NONE:

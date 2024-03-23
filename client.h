@@ -25,7 +25,7 @@ char *ConstructMenuPacket(char sel);
 void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer);
 
 //! Gets password from command line masked with *s.
-ssize_t getpasswd(char **pw, size_t sz, int mask, FILE *fp);
+size_t getpasswd(char **pw, size_t sz, int mask, FILE *fp);
 
 //! A byte-copy. Not fast.
 void g_copy(char *src, char *dst, size_t len);

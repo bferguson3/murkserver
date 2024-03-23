@@ -1,11 +1,11 @@
 
 #include <enet/enet.h>
 #include <stdio.h>
-#include <termios.h>
+//#include <termios.h>
 
 #include "ansi.h"
 #include "res/base64.h"
-#include "res/getpasswd.c"
+//#include "res/getpasswd.c"
 #include "res/json.h"
 #include "murk.h"
 #include "res/sha3.h"
@@ -17,8 +17,9 @@ char un[64];
 
 char *loginpkt;
 char *menuselpkt;
-
+extern ENetHost* client;
 char menuInput = 0;
+extern bool reconnect_queued;
 
 
 void ProcessEvent(ENetEvent* event)
@@ -57,8 +58,9 @@ void ProcessEvent(ENetEvent* event)
             break;
 
         case ENET_EVENT_TYPE_DISCONNECT:
-            printf("%s disconnected.\n", (char *)event->peer->data);
-            
+            printf("server disconnected.\n");
+            enet_peer_reset(event->peer);
+            reconnect_queued = 1;
             break;
 
         case ENET_EVENT_TYPE_NONE:
@@ -211,12 +213,21 @@ void ProcessPacket_Final(PacketAction p_act, ENetPeer* peer)
         char *p = pw;
         FILE *fp = stdin;
         size_t nchr;
-
+        /*
         printf("\nUsername: ");
+#ifdef WIN32
+        scanf_s("%s", un);
+        fflush(stdin);
+        printf("Password: ");
+        scanf_s("%s", pw);
+#else
         scanf("%s", un);
         fflush(stdin);
         printf("Password: ");
-        nchr = getpasswd(&p, 64, '*', fp);
+        scanf("%s", pw);
+#endif 
+        */
+        //nchr = getpasswd(&p, 64, '*', fp);
 
         void *myhash = encrypt_pass(pw);
 
@@ -301,6 +312,7 @@ char *ConstructLoginPacket(char *un, void *pw)
     // end
     loginPacket[i++] = '"';
     loginPacket[i++] = '}';
+    loginPacket[i++] = '\x00';
 
     //printf("\n%s\n", loginPacket);
 

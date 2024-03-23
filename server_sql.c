@@ -15,6 +15,7 @@ extern byte password_buffer[128];
 
 size_t GetBlobLength(char *table, char *row, char *key, char *val)
 {
+    _last_buffer_size = 0;
     char *zErrMsg = 0;
     int rc;
     char *sqlcmd_a = "select length(";
@@ -53,8 +54,6 @@ size_t GetBlobLength(char *table, char *row, char *key, char *val)
     *_loc++ = '\'';
     *_loc++ = ';';
 
-    // printf("%s\n", sqlcmd_f);
-
     // the callback assigns _last_buffer_size
     rc = sqlite3_exec(murk_userdb, sqlcmd_f, bloblen_callback, 0, &zErrMsg);
     if (rc != SQLITE_OK)
@@ -63,6 +62,8 @@ size_t GetBlobLength(char *table, char *row, char *key, char *val)
         sqlite3_free(zErrMsg);
         return 0;
     }
+
+    printf("%d\n", _last_buffer_size);
 
     return _last_buffer_size;
 }

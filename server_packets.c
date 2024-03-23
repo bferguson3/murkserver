@@ -22,6 +22,7 @@ extern UserState* activePlayerDatabase;
 
 ProcessAction ProcessPacketAction(const char *pkt, size_t len, ENetPeer *peer)
 {
+    last_buffer_size = 0;
     ProcessAction p_act;
     //  parse json object
     JSONVal j = json_parse(pkt, len);
@@ -117,7 +118,7 @@ ProcessAction ProcessPacketAction(const char *pkt, size_t len, ENetPeer *peer)
 void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
 {
     printf("[Debug] Packet length: %zu len\n", len);
-    //printf("%s\n", pkt);
+    printf("%s\n", pkt);
 
     ProcessAction p_act;
 
@@ -130,15 +131,17 @@ void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
 
 void ProcessPacket_Final(PacketAction p_act, ENetPeer* peer)
 {
+
     if (p_act == PRA_PROCESSLOGIN)
     {
+        //printf("%s\n", user.password);
         if (CheckUserPass(user.userName, (byte *)user.password))
         {
-            printf("Login OK!\n");
+            //printf("Login OK!\n");
             // LOGIN SUCCESSFUL !
             
             
-            UserState* ps;
+            UserState* ps = &activePlayerDatabase[0];
             for(int i = 0; i < PLAYERS_MAX; i++){
                 if(activePlayerDatabase[i].state == STATE_OFFLINE){
                     ps = &activePlayerDatabase[i];
