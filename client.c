@@ -27,93 +27,17 @@ ENetAddress address;
 ENetEvent event;
 ENetPeer *peer;
 
-int mygetc() {
-    char ch;
-    int error;
-    static struct termios Otty, Ntty;
-
-    fflush(stdout);
-    tcgetattr(0, &Otty);
-    Ntty = Otty;
-
-    Ntty.c_iflag  =  0;     /* input mode       */
-    Ntty.c_oflag  =  0;     /* output mode      */
-    Ntty.c_lflag &= ~ICANON;    /* line settings    */
-
-#if 0
-    /* disable echoing the char as it is typed */
-    Ntty.c_lflag &= ~ECHO;  /* disable echo     */
-#else
-    /* enable echoing the char as it is typed */
-    Ntty.c_lflag |=  ECHO;  /* enable echo      */
-#endif
-
-    Ntty.c_cc[VMIN]  = 0;    /* minimum chars to wait for */
-    Ntty.c_cc[VTIME] = 1;   /* minimum wait time    */
-
-#if 0
-    /*
-    * use this to flush the input buffer before blocking for new input
-    */
-    #define FLAG TCSAFLUSH
-#else
-    /*
-    * use this to return a char from the current input buffer, or block if
-    * no input is waiting.
-    */
-    #define FLAG TCSANOW
-
-#endif
-
-    if ((error = tcsetattr(0, FLAG, &Ntty)) == 0) 
-    {
-        error = read(0, &ch, 1 );        /* get char from stdin */
-        error += tcsetattr(0, FLAG, &Otty);   /* restore old settings */
-    }
-    //tcsetattr(0, FLAG, &Otty);
-    return (error == 1 ? (int) ch : -1 );
-}
-
-
-void ConnectToServer()
-{
-    client = enet_host_create(NULL, 1, 2, 0, 0);
-    if (client == NULL)
-    {
-        fprintf(stderr, "An error occurred trying to create client.\n");
-        exit(EXIT_FAILURE);
-    }
-
-
-    // localhost target for testing
-    enet_address_set_host(&address, "127.0.0.1");
-    address.port = 1234;
-
-    peer = enet_host_connect(client, &address, 2, 0);
-    if (peer == NULL)
-    {
-        fprintf(stderr, "No peers to connect... Bad address?\n");
-        exit(EXIT_FAILURE);
-    }
-
-    // wait 5 seconds for the connection event
-    if (enet_host_service(client, &event, 5000) > 0 &&
-        event.type == ENET_EVENT_TYPE_CONNECT)
-    {
-        puts("Connection to localhost:1234 succeeded.");
-    }
-    else
-    {
-        enet_peer_reset(peer);
-        puts("Connection failed\n");
-    }
-
-}
+void ConnectToServer();
+int mygetc();
+void reset_term();
 
 
 ///
 int main(int argc, char **argv)
 {
+
+    reset_term();
+
 #ifdef WIN32
     HANDLE hStdout, hStdin;
     hStdin = GetStdHandle(STD_INPUT_HANDLE);
@@ -159,7 +83,7 @@ int main(int argc, char **argv)
     int input_ctr = 0;
     while (1)
     {   
-        while (enet_host_service(client, &event, 25) > 0)
+        while (enet_host_service(client, &event, 1) > 0)
         {
             ProcessEvent(&event);
             //enet_peer_ping(peer);
@@ -171,6 +95,8 @@ int main(int argc, char **argv)
         }
         if(a == 13) {
             //printf("\n%s\n", input);
+            int _l = strlen(input);
+            input[_l-1] = '\00';
             printf("\nString got: %s\n", input);
             for(int i = 0; i < 256; i++) {
                 input[i] = '\00';
@@ -259,4 +185,102 @@ const char *CmdPrompt(const char *prompt)
 #endif
     return (const char *)&lastInput[0];
     // printf("[Debug] Last Input: %s\n", lastInput);
+}
+
+
+void reset_term()
+{
+    static struct termios Otty, Ntty;
+
+    tcgetattr(0, &Otty);
+    Ntty = Otty;
+    Ntty.c_iflag = 0x6b02;
+    Ntty.c_oflag = 0x3;
+    Ntty.c_cflag = 0x4b00;
+    Ntty.c_lflag = 0x200005cb;
+    
+    tcsetattr(0, TCSAFLUSH, &Ntty);
+}
+
+int mygetc() {
+    char ch;
+    int error;
+    static struct termios Otty, Ntty;
+
+    fflush(stdout);
+    tcgetattr(0, &Otty);
+    Ntty = Otty;
+
+    Ntty.c_iflag  =  0;     /* input mode       */
+    Ntty.c_oflag  =  0;     /* output mode      */
+    Ntty.c_lflag &= ~ICANON;    /* line settings    */
+
+#if 0
+    /* disable echoing the char as it is typed */
+    Ntty.c_lflag &= ~ECHO;  /* disable echo     */
+#else
+    /* enable echoing the char as it is typed */
+    Ntty.c_lflag |=  ECHO;  /* enable echo      */
+#endif
+
+    Ntty.c_cc[VMIN]  = 0;    /* minimum chars to wait for */
+    Ntty.c_cc[VTIME] = 1;   /* minimum wait time    */
+
+#if 0
+    /*
+    * use this to flush the input buffer before blocking for new input
+    */
+    #define FLAG TCSAFLUSH
+#else
+    /*
+    * use this to return a char from the current input buffer, or block if
+    * no input is waiting.
+    */
+    #define FLAG TCSANOW
+
+#endif
+
+    if ((error = tcsetattr(0, FLAG, &Ntty)) == 0) 
+    {
+        error = read(0, &ch, 1 );        /* get char from stdin */
+        error += tcsetattr(0, FLAG, &Otty);   /* restore old settings */
+    }
+    //tcsetattr(0, FLAG, &Otty);
+    return (error == 1 ? (int) ch : -1 );
+}
+
+
+void ConnectToServer()
+{
+    client = enet_host_create(NULL, 1, 2, 0, 0);
+    if (client == NULL)
+    {
+        fprintf(stderr, "An error occurred trying to create client.\n");
+        exit(EXIT_FAILURE);
+    }
+
+
+    // localhost target for testing
+    enet_address_set_host(&address, "127.0.0.1");
+    address.port = 1234;
+
+    peer = enet_host_connect(client, &address, 2, 0);
+    if (peer == NULL)
+    {
+        fprintf(stderr, "No peers to connect... Bad address?\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // wait 5 seconds for the connection event
+    if (enet_host_service(client, &event, 5000) > 0 &&
+        event.type == ENET_EVENT_TYPE_CONNECT)
+    {
+        puts("Connection to localhost:1234 succeeded.");
+    }
+    else
+    {
+        enet_peer_reset(peer);
+        puts("Connection failed\n");
+    }
+
 }

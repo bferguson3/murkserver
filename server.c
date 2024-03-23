@@ -37,10 +37,26 @@ const Screen scrMainMenu = {
     "Main menu of MURKSERVER."
 };
 
+void reset_term()
+{
+    static struct termios Otty, Ntty;
+
+    tcgetattr(0, &Otty);
+    Ntty = Otty;
+    Ntty.c_iflag = 0x6b02;
+    Ntty.c_oflag = 0x3;
+    Ntty.c_cflag = 0x4b00;
+    Ntty.c_lflag = 0x200005cb;
+    
+    tcsetattr(0, TCSAFLUSH, &Ntty);
+}
+
 
 //
 int main(int argc, char **argv)
 {
+    //reset_term();
+
 #ifdef WIN32
     HANDLE hStdout, hStdin;
     hStdin = GetStdHandle(STD_INPUT_HANDLE);
