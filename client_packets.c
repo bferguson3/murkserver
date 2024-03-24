@@ -73,7 +73,7 @@ void ProcessEvent(ENetEvent* event)
 void ProcessPacket(const char *pkt, size_t len, ENetPeer *peer)
 {
     printf("[Debug] Packet length: %zu len\n", len);
-    //printf("%s\n", pkt);
+    printf("%s\n", pkt);
     // parse json object
     struct json_value_s *j = json_parse(pkt, len);
     // into a struct

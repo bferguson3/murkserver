@@ -1,0 +1,1 @@
+void generate_new_guid(char* GUID);

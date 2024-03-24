@@ -158,50 +158,50 @@ void CreatePlayerStruct(ENetPeer* peer)
 void ProcessEvent(ENetEvent event)
 {
     char *mypacket;
-        switch (event.type)
-        {
-            case ENET_EVENT_TYPE_CONNECT:
-                /* Connection event */
-                printf("Client connected from %x:%u.\n",
-                        event.peer->address.host, event.peer->address.port);
+    switch (event.type)
+    {
+        case ENET_EVENT_TYPE_CONNECT:
+            /* Connection event */
+            printf("Client connected from %x:%u.\n",
+                    event.peer->address.host, event.peer->address.port);
 
-                //event.peer->data =
-                    //generate_new_guid();  //"Test"; // Generate user ID here
-                CreatePlayerStruct(event.peer);
+            //event.peer->data =
+                //generate_new_guid();  //"Test"; // Generate user ID here
+            CreatePlayerStruct(event.peer);
 
-                ENetPacket *packet = enet_packet_create(
-                    welcome_packet, strlen(welcome_packet),
-                    ENET_PACKET_FLAG_RELIABLE);
-                enet_peer_send(event.peer, 0, packet);
-                break;
+            ENetPacket *packet = enet_packet_create(
+                welcome_packet, strlen(welcome_packet),
+                ENET_PACKET_FLAG_RELIABLE);
+            enet_peer_send(event.peer, 0, packet);
+            break;
 
-            case ENET_EVENT_TYPE_RECEIVE:
-                /* Receive event type */
-                printf("[Debug] EVENT RECEIVE\n");
-                size_t len = event.packet->dataLength;
-                mypacket = (char *)malloc(len);
-                memcpy(mypacket, event.packet->data, len); // Duplicate the packet
+        case ENET_EVENT_TYPE_RECEIVE:
+            /* Receive event type */
+            printf("[Debug] EVENT RECEIVE\n");
+            size_t len = event.packet->dataLength;
+            mypacket = (char *)malloc(len);
+            memcpy(mypacket, event.packet->data, len); // Duplicate the packet
 
-                ProcessPacket(mypacket, len, event.peer); // Process it 
-                
-                enet_packet_destroy(event.packet); // And destroy them
-                free(mypacket);
-                
-                break;
+            ProcessPacket(mypacket, len, event.peer); // Process it 
+            
+            enet_packet_destroy(event.packet); // And destroy them
+            free(mypacket);
+            
+            break;
 
-            case ENET_EVENT_TYPE_DISCONNECT:
-                /* Disconnect event */
-                printf("%s disconnected.\n", (char *)event.peer->data);
-                
-                // This should not be freed - check this later TODO 
-                //free(event.peer->data);
-                event.peer->data = NULL;
-                break;
+        case ENET_EVENT_TYPE_DISCONNECT:
+            /* Disconnect event */
+            printf("%s disconnected.\n", (char *)event.peer->data);
+            
+            // This should not be freed - check this later TODO 
+            //free(event.peer->data);
+            event.peer->data = NULL;
+            break;
 
-            case ENET_EVENT_TYPE_NONE:
+        case ENET_EVENT_TYPE_NONE:
 
-                break;
-        }
+            break;
+    }
 }
 
 bool bytecmp(void *src, void *dst, size_t count)

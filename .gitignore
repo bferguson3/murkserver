@@ -9,3 +9,6 @@ tools/enc/**
 .clang-format
 users.db
 .docs
+*.a
+*.so
+*.dylib

@@ -4,7 +4,7 @@
 #define __MURK_H__
 
 typedef unsigned char u8;
-typedef unsigned char bool;
+//typedef unsigned char bool;
 typedef unsigned char byte;
 
 typedef struct json_object_element_s *JSONElement;
