@@ -53,7 +53,7 @@ void MurkClient::Connect(ENetAddress* address)
 void MurkClient::Disconnect()
 {
     enet_host_destroy(host);
-	atexit(enet_deinitialize);
+    atexit(enet_deinitialize);
 }
 
 

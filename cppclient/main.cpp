@@ -8,52 +8,52 @@ int _getc();
 
 int main()
 {
-	class MurkClient client;
+    class MurkClient client;
 
-	client.SetNonblocking(); // not needed?
+    client.SetNonblocking(); // not needed?
 
-	client.InitEnet();
+    client.InitEnet();
 
-	// localhost target for testing
+    // localhost target for testing
     ENetAddress address;
-	enet_address_set_host(&address, "127.0.0.1");
+    enet_address_set_host(&address, "127.0.0.1");
     address.port = 1234;
-	
-	client.Connect(&address);
+    
+    client.Connect(&address);
 
-	ENetEvent event;
+    ENetEvent event;
 
-	char input[256];
-	int input_ctr = 0;
-	while (1) // Main loop 
-	{
-		while (enet_host_service(client.host, &event, 1) > 0)  // is there an event?
-		{
-			client.ProcessEvent(&event);
-		}
+    char input[256];
+    int input_ctr = 0;
+    while (1) // Main loop 
+    {
+        while (enet_host_service(client.host, &event, 1) > 0)  // is there an event?
+        {
+            client.ProcessEvent(&event);
+        }
 
-		// Other processing (input etc:)
-		int a = _getc();
+        // Other processing (input etc:)
+        int a = _getc();
         if(a < 127 && a > -1) {
             input[input_ctr++] = (char)a;
-			printf("%d", a);
-			// Key-by-key processing here: 
+            printf("%d", a);
+            // Key-by-key processing here: 
 
         }
         if(a == 10 || a == 13) { // ? 
             size_t _l = strlen(input);
             printf("\nString got: %s\n", input);
-			// String input processing here: 
+            // String input processing here: 
             
-			// reset input 
-			for(int i = 0; i < 256; i++) { input[i] = '\00'; }
+            // reset input 
+            for(int i = 0; i < 256; i++) { input[i] = '\00'; }
             input_ctr = 0;
         }
-	}
+    }
 
-	client.Disconnect();// De-init 
+    client.Disconnect();// De-init 
 
-	return 0;
+    return 0;
 
 }
 

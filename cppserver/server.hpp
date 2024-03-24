@@ -15,20 +15,20 @@ using namespace std;
 
 class MurkServer {
 
-	public:
-	
-		void InitEnet();
-		void InitSQL();
-		void ProcessEvent(ENetEvent event);
+    public:
+    
+        void InitEnet();
+        void InitSQL();
+        void ProcessEvent(ENetEvent event);
 
-		ENetHost* server;
-		ENetAddress address;
-		sqlite3* murk_userdb;
+        ENetHost* server;
+        ENetAddress address;
+        sqlite3* murk_userdb;
 
-		//std::vector <MurkUser> activeUsers;
+        //std::vector <MurkUser> activeUsers;
         std::unordered_map <std::string, MurkUser> activeUserMap;
 
-	private:
-		const int NUM_ACTIVE_USERS = 1000;
+    private:
+        const int NUM_ACTIVE_USERS = 1000;
 
 };
