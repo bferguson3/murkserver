@@ -21,10 +21,9 @@ void Server::ProcessEvent(ENetEvent event)
 
             // Allocate a user and copy the guid 
             Murk::User _nuser;
-            memcpy(&_nuser.id, _guid, 16);
-
-            // Assign "guid" = MurkUser
-            activeUserMap[_guid] = _nuser;
+            _nuser.SetID(&_guid[0]);
+            
+            activeUserMap[_guid] = _nuser;  // Assign "guid" = MurkUser
             
             //CreatePlayerStruct(event.peer);
             //ENetPacket *packet = enet_packet_create(welcome_packet, strlen(welcome_packet), ENET_PACKET_FLAG_RELIABLE);

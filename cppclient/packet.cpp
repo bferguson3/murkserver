@@ -36,12 +36,12 @@ void Packet::AddUserPass(std::string usr, std::string pass)
     str += "\",\n \"";
     str += "pass\":\"";
     str += pass;
-    str += "\",\n ";
+    str += "\"";
 }
 
 void Packet::Finalize()
 {
-    str += "}";
+    str += "\n}";
 }
 
 std::string Packet::GetString() { return str; }
