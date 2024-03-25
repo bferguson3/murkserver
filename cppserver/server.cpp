@@ -1,5 +1,6 @@
 #include "server.hpp"
 #include <cstring>
+#include "packet.hpp"
 
 namespace Murk
 {
@@ -10,6 +11,8 @@ void Server::ProcessEvent(ENetEvent event)
   char *mypacket;
   size_t len;
   Murk::User _nuser;
+  Murk::Packet _p;
+            
     switch (event.type)
     {
         case ENET_EVENT_TYPE_CONNECT:
@@ -21,7 +24,6 @@ void Server::ProcessEvent(ENetEvent event)
             generate_new_guid(&_guid[0]);
 
             // Allocate a user and copy the guid 
-            //Murk::User _nuser;
             _nuser.SetID(&_guid[0]);
             
             activeUserMap[_guid] = _nuser;  // Assign "guid" = MurkUser
@@ -36,13 +38,14 @@ void Server::ProcessEvent(ENetEvent event)
             /* Receive event type */
             printf("[Debug] EVENT RECEIVE\n");
             len = event.packet->dataLength;
-            /*
-            mypacket = (char *)malloc(len);
-            memcpy(mypacket, event.packet->data, len); // Duplicate the packet
-            ProcessPacket(mypacket, len, event.peer); // Process it 
+            
+            _p.SetString((const char*)event.packet->data);
+            if(_p.Validate() != 0) {
+                printf("Fatal: Failed parsing json blob: %s\n. Quitting ", _p.GetString().c_str());
+            }
+            printf("[DEBUG] PACKET: %s\n", _p.GetString().c_str());
             enet_packet_destroy(event.packet); // And destroy them
-            free(mypacket);
-            */
+            
             break;
 
         case ENET_EVENT_TYPE_DISCONNECT:

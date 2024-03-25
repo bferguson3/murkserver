@@ -14,43 +14,31 @@ void clear(void* dat, size_t ct);
 
 int main()
 {
-    ////// TESTING 
-    class Murk::Packet pak(MP_LOGIN_REQ);
-    pak.UserPass("ben", "1234");
-    
-    // parse json object
-    struct json_value_s *j = json_parse(pak.GetString().c_str(), pak.GetString().length()); 
-    if(j == 0) {
-        printf("Fatal error: Error parsing JSON: %s\n", pak.GetString().c_str());
-        exit(1);
-    }
-    ////////
-
-
     class Murk::Client client;
 
-    client.SetNonblocking(); // not needed?
-
+    client.SetNonblocking(); 
     client.InitEnet();
 
     // localhost target for testing
     ENetAddress address;
     enet_address_set_host(&address, "127.0.0.1");
     address.port = 1234;
-    
-    client.Connect(&address);
 
-    ENetEvent event;
+    client.Connect(&address);
+    client.state = STATE_LOGGING_IN; 
 
     // Allocate buffer for kb input
     char input[256];
     clear(&input, 256);
     while (1) // Main loop 
     {
+        ENetEvent event;
         while (enet_host_service(client.host, &event, 1) > 0)  // is there an event?
         {
             client.ProcessEvent(&event);
         }
+
+        client.GameLoop();
 
         // Other processing (input etc:)
         client.ProcessInput(input);

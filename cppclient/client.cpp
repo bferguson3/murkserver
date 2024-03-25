@@ -4,12 +4,23 @@
 #include <fcntl.h>
 
 #include "packet.hpp"
+#include <enet/enet.h>
 
 extern int _getc();
 extern void clear(void* a, size_t s);
 
 namespace Murk
 {
+
+Client::Client()
+{
+    last_c = 0;
+    arrow_check = false;
+    arrow_get = false;
+    FLAG_INPUT_USER = false;
+    FLAG_INPUT_PASSWORD = false;
+}
+
 
 void Client::InitEnet()
 {
@@ -28,6 +39,38 @@ void Client::InitEnet()
 
     printf("ENet initialized OK.\n");
 
+}
+
+
+void Client::GameLoop()
+{
+    switch(state)
+    {
+        case STATE_DEAD:
+            break;
+        case STATE_IDLE:
+            break;
+        case STATE_INCOMBAT:
+
+            break;
+        /////
+        case STATE_LOGGING_IN:
+            if(!FLAG_INPUT_USER && (userpass.user == "")){
+                FLAG_INPUT_USER = true;
+                printf("Username: ");
+            }
+            if(!FLAG_INPUT_PASSWORD && (userpass.user != "") && userpass.pass == ""){
+                FLAG_INPUT_PASSWORD = true;
+                printf("Password: ");
+            }
+            break;
+        ////
+        case STATE_MAINMENU:
+            break;
+
+        case STATE_OFFLINE:
+            break;
+    }
 }
 
 
@@ -84,6 +127,8 @@ void Client::ProcessEvent(ENetEvent* event)
                 event->packet -> data,
                 event->peer -> data,
                 event->channelID);
+
+
         enet_packet_destroy (event->packet);
         break;
        
@@ -129,22 +174,43 @@ void Client::ProcessInput(char* input)
     // Standard check: 
     if(a < 127 && a > -1) {
         input[input_ctr++] = (char)a;
-        printf("%d", a);
         // Key-by-key processing here: 
-
+        if(a > 0x1f && a < 0x80) // Echo normal ascii 
+        {
+            printf("%c", a);
+        }
 
     }
-    if(a == 10 || a == 13) { // 10 or 13 depending on mode
+    if(a == 10 || a == 13) { // 10 or 13 depending on mode submits
         size_t _l = strlen(input);
+        input[_l - 1] = (char)0; // null the RETURN byte at the end
         printf("\nString got: %s\n", input);
+
         // String input processing here: 
-        
+        if(FLAG_INPUT_USER) {
+            userpass.user = input;
+            FLAG_INPUT_USER = false;
+        }
+        if(FLAG_INPUT_PASSWORD) {
+            userpass.pass = input;
+            FLAG_INPUT_PASSWORD = false;
+            
+            class Murk::Packet pak(MP_LOGIN_REQ);
+            pak.UserPass(userpass.user, userpass.pass);
+            if(pak.Validate() != 0) err(1, "Fatal error: Made a bad json packet...");
+
+            ENetPacket *ep = enet_packet_create(pak.GetString().c_str(), pak.GetString().length(), 
+                ENET_PACKET_FLAG_RELIABLE);
+            enet_peer_send(server, 0, ep);
+
+        }
 
         // reset input 
         clear(input, 256);
         input_ctr = 0;
     }
 
+    // special chars: 
     // reverse order to get arrows: (MACOS)
     if(arrow_get){
         if(a == 65){
