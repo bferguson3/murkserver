@@ -9,6 +9,7 @@ void Server::ProcessEvent(ENetEvent event)
 
   char *mypacket;
   size_t len;
+  Murk::User _nuser;
     switch (event.type)
     {
         case ENET_EVENT_TYPE_CONNECT:
@@ -20,7 +21,7 @@ void Server::ProcessEvent(ENetEvent event)
             generate_new_guid(&_guid[0]);
 
             // Allocate a user and copy the guid 
-            Murk::User _nuser;
+            //Murk::User _nuser;
             _nuser.SetID(&_guid[0]);
             
             activeUserMap[_guid] = _nuser;  // Assign "guid" = MurkUser

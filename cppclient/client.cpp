@@ -5,6 +5,9 @@
 
 #include "packet.hpp"
 
+extern int _getc();
+extern void clear(void* a, size_t s);
+
 namespace Murk
 {
 
@@ -116,6 +119,56 @@ void Client::SetNonblocking()
     if (r == -1)
         err(1, "F_SETFL");
    
+}
+
+
+void Client::ProcessInput(char* input)
+{
+    int a = _getc();
+
+    // Standard check: 
+    if(a < 127 && a > -1) {
+        input[input_ctr++] = (char)a;
+        printf("%d", a);
+        // Key-by-key processing here: 
+
+
+    }
+    if(a == 10 || a == 13) { // 10 or 13 depending on mode
+        size_t _l = strlen(input);
+        printf("\nString got: %s\n", input);
+        // String input processing here: 
+        
+
+        // reset input 
+        clear(input, 256);
+        input_ctr = 0;
+    }
+
+    // reverse order to get arrows: (MACOS)
+    if(arrow_get){
+        if(a == 65){
+            printf("up");
+        } else if(a == 66) {
+            printf("down");
+        } else if(a == 67) {
+            printf("right");
+        } else if(a == 68) {
+            printf("left");
+        }
+        arrow_get = false;
+    }
+    if(arrow_check){
+        if(a == 91){
+            arrow_get = true;
+        }
+        arrow_check = false;
+    }
+    if(a == 27) {
+        arrow_check = true;
+    } 
+    //
+    
 }
 
 

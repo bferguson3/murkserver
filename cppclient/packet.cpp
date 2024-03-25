@@ -3,31 +3,30 @@
 
 namespace Murk { 
 
-Packet::Packet()
+//! Constructing a packet requires the first json field 
+//!  to be "type", so we fill that out here. 
+Packet::Packet(enum MURK_PACKET_TYPES t)
 {
     str = "{\n \"type\":\"";
-    
-}
-
-void Packet::SetType(enum MURK_PACKET_TYPES t)
-{
     type = t;
     switch(t){
         case MP_LOGIN_REQ:
             str += "LOGIN_REQ\",\n ";
             break;
         case MP_MENUSEL:
+            str += "MENUSEL\",\n ";
             break;
         case MP_PCOMMAND:
+            str += "PCOMMAND\",\n ";
             break;
     }
-    
 }
 
-void Packet::AddUserPass(std::string usr, std::string pass)
+//! Only used for LOGIN_REQ
+void Packet::UserPass(std::string usr, std::string pass)
 {
     if(type != MP_LOGIN_REQ) {
-        printf("Fatal error: Mismatch packet type in adduserpass()\n");
+        printf("Fatal error: Mismatch packet type in userpass()\n");
         exit(1);
     }
 
@@ -36,12 +35,8 @@ void Packet::AddUserPass(std::string usr, std::string pass)
     str += "\",\n \"";
     str += "pass\":\"";
     str += pass;
-    str += "\"";
-}
+    str += "\"\n}";
 
-void Packet::Finalize()
-{
-    str += "\n}";
 }
 
 std::string Packet::GetString() { return str; }
