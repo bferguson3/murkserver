@@ -1,8 +1,13 @@
 // client.hpp
+#ifndef __MURKCLIENT_H__
+#define __MURKCLIENT_H__
+
 #include <enet/enet.h>
 #include <termios.h>
 
-class MurkClient {
+namespace Murk { 
+
+class Client {
 
     public:
 
@@ -22,3 +27,7 @@ class MurkClient {
         void err(int i, const char* s);
 
 };
+
+}
+
+#endif 

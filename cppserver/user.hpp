@@ -1,6 +1,7 @@
 //user.hpp
+namespace Murk { 
 
-class MurkUser 
+class User 
 {
     public:
         char id[16]; // assigned guid 
@@ -10,3 +11,5 @@ class MurkUser
         
         char bytes[256];
 };
+
+}

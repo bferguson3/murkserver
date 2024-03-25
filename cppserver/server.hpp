@@ -12,8 +12,9 @@ extern "C"
 
 using namespace std;
 
+namespace Murk { 
 
-class MurkServer {
+class Server {
 
     public:
     
@@ -26,9 +27,11 @@ class MurkServer {
         sqlite3* murk_userdb;
 
         //std::vector <MurkUser> activeUsers;
-        std::unordered_map <std::string, MurkUser> activeUserMap;
+        std::unordered_map <std::string, Murk::User> activeUserMap;
 
     private:
         const int NUM_ACTIVE_USERS = 1000;
 
 };
+
+}

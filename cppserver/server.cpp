@@ -1,8 +1,10 @@
 #include "server.hpp"
 #include <cstring>
 
+namespace Murk
+{
 
-void MurkServer::ProcessEvent(ENetEvent event)
+void Server::ProcessEvent(ENetEvent event)
 {
 
   char *mypacket;
@@ -18,7 +20,7 @@ void MurkServer::ProcessEvent(ENetEvent event)
             generate_new_guid(&_guid[0]);
 
             // Allocate a user and copy the guid 
-            MurkUser _nuser;
+            Murk::User _nuser;
             memcpy(&_nuser.id, _guid, 16);
 
             // Assign "guid" = MurkUser
@@ -56,7 +58,7 @@ void MurkServer::ProcessEvent(ENetEvent event)
 
 //! Initialize ENet driver
 //!
-void MurkServer::InitEnet()
+void Server::InitEnet()
 {
 
     if (enet_initialize() != 0)
@@ -82,7 +84,7 @@ void MurkServer::InitEnet()
 
 //! Initialize SQL access to database
 //! 
-void MurkServer::InitSQL()
+void Server::InitSQL()
 {
     int rc;
     rc = sqlite3_open("users.db", &murk_userdb);
@@ -93,3 +95,4 @@ void MurkServer::InitSQL()
     }
 }
 
+}

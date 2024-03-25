@@ -3,7 +3,12 @@
 #include <cstdio>
 #include <fcntl.h>
 
-void MurkClient::InitEnet()
+#include "packet.hpp"
+
+namespace Murk
+{
+
+void Client::InitEnet()
 {
     if (enet_initialize() != 0)
     {
@@ -23,7 +28,7 @@ void MurkClient::InitEnet()
 }
 
 
-void MurkClient::Connect(ENetAddress* address)
+void Client::Connect(ENetAddress* address)
 {
 
     server = enet_host_connect(host, address, 2, 0);
@@ -50,14 +55,14 @@ void MurkClient::Connect(ENetAddress* address)
 }
 
 
-void MurkClient::Disconnect()
+void Client::Disconnect()
 {
     enet_host_destroy(host);
     atexit(enet_deinitialize);
 }
 
 
-void MurkClient::ProcessEvent(ENetEvent* event)
+void Client::ProcessEvent(ENetEvent* event)
 {
 
     char *mypacket;
@@ -87,7 +92,7 @@ void MurkClient::ProcessEvent(ENetEvent* event)
 }
 
 
-void MurkClient::SetNonblocking()
+void Client::SetNonblocking()
 {
     //    Set terminal to raw   
     struct termios tty;
@@ -114,8 +119,10 @@ void MurkClient::SetNonblocking()
 }
 
 
-void MurkClient::err(int fi, const char* str)
+void Client::err(int fi, const char* str)
 {
     printf(str);
     exit(fi);
+}
+
 }

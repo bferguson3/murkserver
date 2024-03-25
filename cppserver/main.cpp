@@ -4,7 +4,7 @@
 
 int main()
 {
-	class MurkServer server;
+	class Murk::Server server;
 
 	server.InitEnet();
 	server.InitSQL();

@@ -3,12 +3,35 @@
 #include "client.hpp"
 #include <cstdio>
 #include <string.h>
+#include "packet.hpp"
+
+extern "C" {
+  #include "../res/json.h"
+}
 
 int _getc();
+void clear(void* dat, size_t ct);
+
 
 int main()
 {
-    class MurkClient client;
+    ////// TESTING 
+    class Murk::Packet pak;
+    
+    pak.SetType(MP_LOGIN_REQ);
+    pak.AddUserPass("ben", "1234");
+    pak.Finalize();
+    
+    // parse json object
+    struct json_value_s *j = json_parse(pak.GetString().c_str(), pak.GetString().length()); 
+    if(j == 0) {
+        printf("Fatal error: Error parsing JSON: %s\n", pak.GetString().c_str());
+        exit(1);
+    }
+    ////////
+
+
+    class Murk::Client client;
 
     client.SetNonblocking(); // not needed?
 
@@ -23,7 +46,9 @@ int main()
 
     ENetEvent event;
 
+    // Allocate buffer for kb input
     char input[256];
+    clear(&input, 256);
     int input_ctr = 0;
     while (1) // Main loop 
     {
@@ -39,14 +64,16 @@ int main()
             printf("%d", a);
             // Key-by-key processing here: 
 
+
         }
         if(a == 10 || a == 13) { // ? 
             size_t _l = strlen(input);
             printf("\nString got: %s\n", input);
             // String input processing here: 
             
+
             // reset input 
-            for(int i = 0; i < 256; i++) { input[i] = '\00'; }
+            clear(&input, 256);
             input_ctr = 0;
         }
     }
@@ -58,28 +85,8 @@ int main()
 }
 
 
-//! Custom getc for non-blocking 
-int _getc() 
+void clear(void* dat, size_t ct)
 {
-    char ch;
-    int error;
-    static struct termios Otty, Ntty;
-
-    fflush(stdout);
-    tcgetattr(0, &Otty);
-    Ntty = Otty;
-
-    Ntty.c_iflag  =  0;     /* input mode       */
-    Ntty.c_oflag  =  0;     /* output mode      */
-
-    Ntty.c_cc[VMIN]  = 0;    /* minimum chars to wait for */
-    Ntty.c_cc[VTIME] = 1;   /* minimum wait time 0.1s   */
-
-    if ((error = tcsetattr(0, TCSANOW, &Ntty)) == 0) // if no error?
-    {
-        error = read(0, &ch, 1 );        	  /* get char from stdin */
-        error += tcsetattr(0, TCSANOW, &Otty);   /* restore old settings */
-    }
-    // else return -1
-    return (error == 1 ? (int) ch : -1 );
+    char* _v = (char*)dat;
+    for(size_t i = 0; i < ct; i++) { _v[i] = '\00'; }
 }
