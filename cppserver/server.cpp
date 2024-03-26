@@ -4,6 +4,36 @@
 namespace Murk
 {
 
+
+//! Initialize SQL access to database
+//! 
+void Server::InitSQL()
+{
+    int rc;
+    rc = sqlite3_open("users.db", &murk_userdb);
+    if (rc)
+    {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(murk_userdb));
+        exit(EXIT_FAILURE);
+    }
+}
+
+
+void Server::DeInit()
+{
+    enet_host_destroy(server);
+	atexit(enet_deinitialize);
+	sqlite3_close(murk_userdb);
+}
+
+
+void Server::Init()
+{
+    InitEnet();
+    InitSQL();
+}
+
+
 void Server::ProcessEvent(ENetEvent event)
 {
 
@@ -64,11 +94,62 @@ void Server::ProcessPacket(Packet p)
     std::string _d = p.GetData(_t);
     
     if(_d == "LOGIN_REQ"){
-        printf("debug\n");
+        //printf("debug\n");
+        if(CheckPassword(p.GetData("user"), p.GetData("pass")))
+        {
+            printf("[Debug] Password check for user %s OK\n", p.GetData("user").c_str());
+        
+        }
     }    
     
 }
 
+
+int Murk::Server::pw_callback(void *_pass, int argc, char **argv, char **azColName)
+{
+    for (int i = 0; i < argc; i++)
+    {
+        std::string _pw = "password";
+        std::string azc = azColName[i];
+        
+        if (azc.find(_pw) != std::string::npos)
+        {
+            char buf[128];
+            for(int j = 0; j < 128; j++) buf[j] = argv[i][j];
+            
+            std::string b = buf;
+            
+            b.copy((char*)_pass, 128, 0);
+            
+        }
+    }
+    
+
+    return 0;
+}
+
+bool Server::CheckPassword(std::string un, std::string pw)
+{
+    //extern std::string scratch; 
+    
+    std::string command = "select password from users where user_id = '" + un + "';";
+    int rc;
+    char* zErrMsg;
+    // function pointer
+    char _pass[128] = { 0 };
+    rc = sqlite3_exec(murk_userdb, command.c_str(), pw_callback, &_pass[0], &zErrMsg);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Check PW SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
+    return 0;
+}
 
 //! Initialize ENet driver
 //!
@@ -94,35 +175,5 @@ void Server::InitEnet()
     printf("MURK server started on localhost:%d \n", address.port);
     return;
 }
-
-
-//! Initialize SQL access to database
-//! 
-void Server::InitSQL()
-{
-    int rc;
-    rc = sqlite3_open("users.db", &murk_userdb);
-    if (rc)
-    {
-        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(murk_userdb));
-        exit(EXIT_FAILURE);
-    }
-}
-
-
-void Server::DeInit()
-{
-    enet_host_destroy(server);
-	atexit(enet_deinitialize);
-	sqlite3_close(murk_userdb);
-}
-
-
-void Server::Init()
-{
-    InitEnet();
-    InitSQL();
-}
-
 
 }

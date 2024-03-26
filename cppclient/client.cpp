@@ -62,11 +62,11 @@ void Client::GameLoop()
         case STATE_LOGGING_IN:
             if(!FLAG_INPUT_USER && (userpass.user == "")){
                 FLAG_INPUT_USER = true;
-                printf("Username: ");
+                printf("\nUsername: ");
             }
             if(!FLAG_INPUT_PASSWORD && (userpass.user != "") && userpass.pass == ""){
                 FLAG_INPUT_PASSWORD = true;
-                printf("Password: ");
+                printf("\nPassword: ");
             }
             break;
         ////
@@ -204,6 +204,8 @@ void Client::ProcessInput(char* input)
             FLAG_INPUT_PASSWORD = false;
             
             SendLogin();
+
+            printf("\nLogging in...\n");
         }
 
         // reset input 
@@ -245,7 +247,7 @@ void Client::SendLogin()
     size_t enclen = Base64encode_len(512 / 8);
     char *encodedpass = (char *)malloc(enclen);
     
-    Base64encode(encodedpass, (const char*)Encrypt(userpass.pass), 512 / 8);
+    Base64encode(encodedpass, (const char*)Encrypt(userpass.pass.c_str()), 512 / 8);
     userpass.pass = encodedpass;
     
     pak.UserPass(userpass.user, userpass.pass);
@@ -257,13 +259,13 @@ void Client::SendLogin()
 
 }
 
-void* Client::Encrypt(std::string dat)
+void* Client::Encrypt(const char* dat)
 {
     // sha3 test
     sha3_context c;
     void *hash;
     sha3_Init512(&c);
-    sha3_Update(&c, dat.c_str(), dat.length());
+    sha3_Update(&c, dat, strlen(dat));
     hash = (void *)sha3_Finalize(&c);
     //memcpy(hash, userpass.pass, 64);
     //g_copy((char *)hash, (char *)temp_pass_sh, 64);

@@ -35,7 +35,7 @@ class Client {
 
         void GameLoop();
         void SendLogin();
-        void* Encrypt(std::string dat);
+        void* Encrypt(const char* dat);
 
         ENetHost* host;
         ENetPeer* server;

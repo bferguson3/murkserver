@@ -2,6 +2,7 @@
 
 #include "server.hpp"
 
+
 int main()
 {
 	class Murk::Server server;
@@ -25,3 +26,5 @@ int main()
 	return 0;
 
 }
+
+
