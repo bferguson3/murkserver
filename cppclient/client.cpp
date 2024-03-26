@@ -177,7 +177,10 @@ void Client::ProcessInput(char* input)
         // Key-by-key processing here: 
         if(a > 0x1f && a < 0x80) // Echo normal ascii 
         {
-            printf("%c", a);
+            if(FLAG_INPUT_PASSWORD)
+                putc((int)'*', stdout);
+            else
+                putc(a, stdout); //printf("%c", a); 
         }
 
     }

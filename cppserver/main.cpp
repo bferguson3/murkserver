@@ -6,8 +6,7 @@ int main()
 {
 	class Murk::Server server;
 
-	server.InitEnet();
-	server.InitSQL();
+	server.Init();
 
 	ENetEvent event;
 	while (1)
@@ -21,9 +20,7 @@ int main()
 	}
 
 	// De-init server
-	enet_host_destroy(server.server);
-	atexit(enet_deinitialize);
-	sqlite3_close(server.murk_userdb);
+	server.DeInit();
 
 	return 0;
 

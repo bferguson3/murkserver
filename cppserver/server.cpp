@@ -1,6 +1,5 @@
 #include "server.hpp"
 #include <cstring>
-#include "packet.hpp"
 
 namespace Murk
 {
@@ -8,10 +7,10 @@ namespace Murk
 void Server::ProcessEvent(ENetEvent event)
 {
 
-  char *mypacket;
-  size_t len;
-  Murk::User _nuser;
-  Murk::Packet _p;
+    char *mypacket;
+    size_t len;
+    Murk::User _nuser;
+    Murk::Packet _p;
             
     switch (event.type)
     {
@@ -22,16 +21,14 @@ void Server::ProcessEvent(ENetEvent event)
             // Create a unique guid for the user 
             char _guid[16];
             generate_new_guid(&_guid[0]);
-
             // Allocate a user and copy the guid 
             _nuser.SetID(&_guid[0]);
-            
             activeUserMap[_guid] = _nuser;  // Assign "guid" = MurkUser
             
             //CreatePlayerStruct(event.peer);
             //ENetPacket *packet = enet_packet_create(welcome_packet, strlen(welcome_packet), ENET_PACKET_FLAG_RELIABLE);
             //enet_peer_send(event.peer, 0, packet);
-            
+            enet_packet_destroy(event.packet);
             break;
 
         case ENET_EVENT_TYPE_RECEIVE:
@@ -44,8 +41,10 @@ void Server::ProcessEvent(ENetEvent event)
                 printf("Fatal: Failed parsing json blob: %s\n. Quitting ", _p.GetString().c_str());
             }
             printf("[DEBUG] PACKET: %s\n", _p.GetString().c_str());
-            enet_packet_destroy(event.packet); // And destroy them
             
+            _p.ParseData();
+            ProcessPacket(_p);
+
             break;
 
         case ENET_EVENT_TYPE_DISCONNECT:
@@ -56,6 +55,18 @@ void Server::ProcessEvent(ENetEvent event)
 
     }
 
+}
+
+
+void Server::ProcessPacket(Packet p)
+{
+    std::string _t = "type";
+    std::string _d = p.GetData(_t);
+    
+    if(_d == "LOGIN_REQ"){
+        printf("debug\n");
+    }    
+    
 }
 
 
@@ -97,5 +108,21 @@ void Server::InitSQL()
         exit(EXIT_FAILURE);
     }
 }
+
+
+void Server::DeInit()
+{
+    enet_host_destroy(server);
+	atexit(enet_deinitialize);
+	sqlite3_close(murk_userdb);
+}
+
+
+void Server::Init()
+{
+    InitEnet();
+    InitSQL();
+}
+
 
 }
