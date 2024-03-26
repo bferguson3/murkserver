@@ -4,7 +4,12 @@
 #include <fcntl.h>
 
 #include "packet.hpp"
-#include <enet/enet.h>
+
+extern "C" {
+    #include "../res/base64.c"
+    #include "../res/sha3.c"
+    #include <enet/enet.h>
+}
 
 extern int _getc();
 extern void clear(void* a, size_t s);
@@ -187,7 +192,7 @@ void Client::ProcessInput(char* input)
     if(a == 10 || a == 13) { // 10 or 13 depending on mode submits
         size_t _l = strlen(input);
         input[_l - 1] = (char)0; // null the RETURN byte at the end
-        printf("\nString got: %s\n", input);
+        //printf("\nString got: %s\n", input);
 
         // String input processing here: 
         if(FLAG_INPUT_USER) {
@@ -198,14 +203,7 @@ void Client::ProcessInput(char* input)
             userpass.pass = input;
             FLAG_INPUT_PASSWORD = false;
             
-            class Murk::Packet pak(MP_LOGIN_REQ);
-            pak.UserPass(userpass.user, userpass.pass);
-            if(pak.Validate() != 0) err(1, "Fatal error: Made a bad json packet...");
-
-            ENetPacket *ep = enet_packet_create(pak.GetString().c_str(), pak.GetString().length(), 
-                ENET_PACKET_FLAG_RELIABLE);
-            enet_peer_send(server, 0, ep);
-
+            SendLogin();
         }
 
         // reset input 
@@ -238,6 +236,39 @@ void Client::ProcessInput(char* input)
     } 
     //
     
+}
+
+void Client::SendLogin()
+{
+    class Murk::Packet pak(MP_LOGIN_REQ);
+    
+    size_t enclen = Base64encode_len(512 / 8);
+    char *encodedpass = (char *)malloc(enclen);
+    
+    Base64encode(encodedpass, (const char*)Encrypt(userpass.pass), 512 / 8);
+    userpass.pass = encodedpass;
+    
+    pak.UserPass(userpass.user, userpass.pass);
+    if(pak.Validate() != 0) err(1, "Fatal error: Made a bad json packet...");
+
+    ENetPacket *ep = enet_packet_create(pak.GetString().c_str(), pak.GetString().length(), 
+        ENET_PACKET_FLAG_RELIABLE);
+    enet_peer_send(server, 0, ep);
+
+}
+
+void* Client::Encrypt(std::string dat)
+{
+    // sha3 test
+    sha3_context c;
+    void *hash;
+    sha3_Init512(&c);
+    sha3_Update(&c, dat.c_str(), dat.length());
+    hash = (void *)sha3_Finalize(&c);
+    //memcpy(hash, userpass.pass, 64);
+    //g_copy((char *)hash, (char *)temp_pass_sh, 64);
+
+    return hash;
 }
 
 

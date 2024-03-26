@@ -131,7 +131,13 @@ void sha3_Init512(void *priv) { sha3_Init(priv, 512); }
 enum SHA3_FLAGS sha3_SetFlags(void *priv, enum SHA3_FLAGS flags)
 {
     sha3_context *ctx = (sha3_context *)priv;
+#ifdef _CPP_
+    int f = static_cast<int>(flags);
+    f &= SHA3_FLAGS_KECCAK;
+    flags = static_cast<enum SHA3_FLAGS>(f);
+#else
     flags &= SHA3_FLAGS_KECCAK;
+#endif 
     ctx->capacityWords |=
         (flags == SHA3_FLAGS_KECCAK ? SHA3_USE_KECCAK_FLAG : 0);
     return flags;
@@ -148,7 +154,7 @@ void sha3_Update(void *priv, void const *bufIn, size_t len)
     unsigned tail;
     size_t i;
 
-    const uint8_t *buf = bufIn;
+    const uint8_t *buf = (const uint8_t*)bufIn;
 
     SHA3_TRACE_BUF("called to update with:", buf, len);
 

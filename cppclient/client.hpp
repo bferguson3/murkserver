@@ -6,6 +6,8 @@
 #include <termios.h>
 #include <string>
 
+#define _CPP_
+
 extern "C"
 {
     #include "murk.h"
@@ -32,6 +34,8 @@ class Client {
         void ProcessInput(char* i);
 
         void GameLoop();
+        void SendLogin();
+        void* Encrypt(std::string dat);
 
         ENetHost* host;
         ENetPeer* server;
