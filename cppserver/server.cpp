@@ -1,6 +1,8 @@
 #include "server.hpp"
 #include <cstring>
 
+#include "../jsonres.h"
+
 namespace Murk
 {
 
@@ -41,6 +43,8 @@ void Server::ProcessEvent(ENetEvent event)
     size_t len;
     Murk::User _nuser;
     Murk::Packet _p;
+    printf("event peer %p\n", event.peer);
+    _p.SetPeer(event.peer);
             
     switch (event.type)
     {
@@ -69,10 +73,11 @@ void Server::ProcessEvent(ENetEvent event)
             _p.SetString((const char*)event.packet->data);
             if(_p.Validate() != 0) {
                 printf("Fatal: Failed parsing json blob: %s\n. Quitting ", _p.GetString().c_str());
+                exit(1);
             }
             printf("[DEBUG] PACKET: %s\n", _p.GetString().c_str());
             
-            _p.ParseData();
+            _p.ParseData();     // stores values into a map 
             ProcessPacket(_p);
 
             break;
@@ -98,7 +103,18 @@ void Server::ProcessPacket(Packet p)
         if(CheckPassword(p.GetData("user"), p.GetData("pass")))
         {
             printf("[Debug] Password check for user %s OK\n", p.GetData("user").c_str());
-        
+            // send the welcome/main menu packet 
+
+            Murk::Packet newp(mainmenu_json);
+            
+            if(newp.Validate()!=0) printf("[Debug] Error with main menu packet header file, not sent.\n");
+            
+            ENetPacket *packet = enet_packet_create(newp.GetString().c_str(), newp.GetString().length(),
+                ENET_PACKET_FLAG_RELIABLE);
+
+            //printf("%p\n", p.GetPeer());
+            enet_peer_send(p.GetPeer(), 0, packet);
+            
         }
     }    
     

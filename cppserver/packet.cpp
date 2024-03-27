@@ -26,7 +26,15 @@ Packet::Packet(enum MURK_PACKET_TYPES t)
         case MP_PCOMMAND:
             str += "PCOMMAND\",\n ";
             break;
+        case MP_LOGIN_WELCOME:
+            str += "LOGIN_WELCOME\",\n ";
     }
+}
+
+Packet::Packet(const char* s)
+{
+    str = s;
+    ParseData();
 }
 
 //! Only used for LOGIN_REQ
@@ -58,16 +66,15 @@ int Packet::Validate()
 }
 
 
-std::string Packet::GetData(std::string s)
-{
-    return data[s];
-}
-
-
-
 void Packet::ParseData()
 {
     JSONVal j = json_parse(GetString().c_str(), GetString().length());
+
+    if(j == 0) {
+        printf("Error: Packet could not be parsed: %s", GetString().c_str());
+        return;
+    }
+
     JSONObject object = (JSONObject)j->payload;
     JSONElement p_type = object->start;
     JSONString p_type_str = p_type->name;
@@ -105,6 +112,15 @@ void Packet::ParseData()
     //printf("[Debug] JSON parsed successfully.\n");
 }
 
+
+std::string Packet::GetData(std::string s)
+{
+    return data[s];
+}
+
+
+ENetPeer* Packet::GetPeer() { return peer; }
+void Packet::SetPeer(ENetPeer* p) { peer = p; printf("set to %p\n", peer); }
 
 std::string Packet::GetString() { return str; }
 void Packet::SetString(const char* s) { str = s; }

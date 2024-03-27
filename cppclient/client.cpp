@@ -1,9 +1,6 @@
 // client.cpp 
 #include "client.hpp"
-#include <cstdio>
-#include <fcntl.h>
 
-#include "packet.hpp"
 
 extern "C" {
     #include "../res/base64.c"
@@ -116,8 +113,9 @@ void Client::Disconnect()
 void Client::ProcessEvent(ENetEvent* event)
 {
 
-    char *mypacket;
-
+    char *mypacket; 
+    Murk::Packet incoming((char*)event->packet->data);
+    
     switch (event->type)
     {
     case ENET_EVENT_TYPE_CONNECT:
@@ -127,13 +125,21 @@ void Client::ProcessEvent(ENetEvent* event)
         event->peer -> data = (char*)"Client information";
         break;
     case ENET_EVENT_TYPE_RECEIVE:
-        printf ("A packet of length %u containing %s was received from %s on channel %u.\n",
+        printf ("A packet of length %u was received from %s on channel %u.\n",
                 event->packet -> dataLength,
-                event->packet -> data,
                 event->peer -> data,
                 event->channelID);
-
-
+        
+        if(incoming.Validate()==0)
+        {
+            incoming.ParseData();
+            ///
+            ProcessPacket(incoming);   // < main packet processing function 
+            ///
+        }
+        else { 
+            printf("Error: Failed to validate incoming packet");
+        }
         enet_packet_destroy (event->packet);
         break;
        
@@ -144,6 +150,21 @@ void Client::ProcessEvent(ENetEvent* event)
 
 }
 
+void Client::ProcessPacket(Murk::Packet p)
+{
+    std::string _t = "type";
+    std::string _tx = "text";
+    std::string _d = p.GetData(_t);
+
+    printf("process");
+
+    printf("%s", _d.c_str());
+    
+    if(_d == "LOGIN_WELCOME"){
+        printf("login welcome");
+        printf("%s", p.GetData(_tx).c_str());
+    }
+}
 
 void Client::SetNonblocking()
 {

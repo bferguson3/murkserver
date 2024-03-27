@@ -5,6 +5,10 @@
 #include <enet/enet.h>
 #include <termios.h>
 #include <string>
+#include <cstdio>
+#include <fcntl.h>
+
+#include "packet.hpp"
 
 #define _CPP_
 
@@ -29,6 +33,7 @@ class Client {
         void InitEnet();
         void Connect(ENetAddress* address);
         void ProcessEvent(ENetEvent* event);
+        void ProcessPacket(Murk::Packet p);
         void Disconnect();
         void SetNonblocking();
         void ProcessInput(char* i);
