@@ -37,6 +37,7 @@ class Client {
         void Disconnect();
         void SetNonblocking();
         void ProcessInput(char* i);
+        void AnsiPrint(std::string s);
 
         void GameLoop();
         void SendLogin();
@@ -63,6 +64,7 @@ class Client {
         // flags
         bool FLAG_INPUT_USER;
         bool FLAG_INPUT_PASSWORD;
+        bool FLAG_INPUT_MENU;
 };
 
 }

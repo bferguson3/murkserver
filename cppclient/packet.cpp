@@ -101,10 +101,29 @@ void Packet::ParseData()
 
         JSONString next_name = next_j->name;
         JSONVal next_val = next_j->value;
-        JSONString next_str = (JSONString)next_val->payload;
-
-        data[(std::string)next_name->string] = (std::string)next_str->string; // e.g data["user"]="name"
-        //printf("%s , %s\n", next_name->string, data[next_name->string].c_str());
+        struct json_array_s * array;
+        array = json_value_as_array(next_val);
+        if(array == json_null) // not an array 
+        {
+            JSONString next_str = (JSONString)next_val->payload;
+            data[(std::string)next_name->string] = (std::string)next_str->string; // e.g data["user"]="name"
+            //printf("%s , %s\n", next_name->string, data[next_name->string].c_str());
+        }
+        else { // is an array 
+            // get list of menu options
+            int arlen = array->length;  // and length
+            // get first element
+            struct json_array_element_s *this_ele = array->start;
+            JSONString ele_str = json_value_as_string(this_ele->value);
+            // push to vec
+            p_options.insert(ele_str->string);
+            for (int c = 1; c < arlen; c++)
+            {
+                this_ele = this_ele->next;
+                ele_str = json_value_as_string(this_ele->value);
+                p_options.insert(ele_str->string);
+            }  // and the remaning options
+        }
         last_j = next_j;
     }
 
@@ -112,6 +131,7 @@ void Packet::ParseData()
     //printf("[Debug] JSON parsed successfully.\n");
 }
 
+std::set<std::string> Packet::GetOptions() { return p_options; }
 
 std::string Packet::GetData(std::string s)
 {

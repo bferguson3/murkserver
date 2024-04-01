@@ -132,7 +132,7 @@ void Client::ProcessEvent(ENetEvent* event)
         
         if(incoming.Validate()==0)
         {
-            incoming.ParseData();
+            
             ///
             ProcessPacket(incoming);   // < main packet processing function 
             ///
@@ -150,19 +150,55 @@ void Client::ProcessEvent(ENetEvent* event)
 
 }
 
+
 void Client::ProcessPacket(Murk::Packet p)
 {
     std::string _t = "type";
     std::string _tx = "text";
     std::string _d = p.GetData(_t);
 
-    printf("process");
+    if(_d == "MENU_MAIN"){
+        AnsiPrint(p.GetData(_tx));
+        
+        std::set<std::string> _list = p.GetOptions();
+        int _i = 0;
+        for(std::string s : _list) {
+            _i ++;
+            AnsiPrint(s);
+        }
+        printf("\n");
 
-    printf("%s", _d.c_str());
-    
-    if(_d == "LOGIN_WELCOME"){
-        printf("login welcome");
-        printf("%s", p.GetData(_tx).c_str());
+        FLAG_INPUT_MENU = true;
+    }
+}
+
+
+void Client::AnsiPrint(std::string s)
+{
+    printf("\x1b[0m" "\n");
+
+    int len = s.length();
+    int i = 0;
+    while(i < len)
+    {
+        char p = s[i];
+        if(p == '^')
+        {
+            int _ii = i + 1;
+            std::string _ts;
+            while (s[_ii] != 'm' && s[_ii] != 'h') {
+                _ts += s[_ii];
+                _ii++;
+            }
+            _ts += s[_ii];
+            
+            printf("\x1b%s",_ts.c_str());
+            i = _ii;
+        }
+        else { 
+            printf("%c", p);
+        }
+        i++;
     }
 }
 
@@ -208,7 +244,11 @@ void Client::ProcessInput(char* input)
             else
                 putc(a, stdout); //printf("%c", a); 
         }
-
+        if(FLAG_INPUT_MENU){
+            // send immediately 
+            FLAG_INPUT_MENU = false;
+            printf("\n");
+        }
     }
     if(a == 10 || a == 13) { // 10 or 13 depending on mode submits
         size_t _l = strlen(input);
@@ -228,7 +268,7 @@ void Client::ProcessInput(char* input)
 
             printf("\nLogging in...\n");
         }
-
+        
         // reset input 
         clear(input, 256);
         input_ctr = 0;

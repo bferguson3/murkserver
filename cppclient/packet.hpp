@@ -4,6 +4,7 @@
 
 #include <string>
 #include <map>
+#include <set>
 
 extern "C" {
   #include "murk.h"
@@ -30,15 +31,19 @@ class Packet
         void SetPeer(ENetPeer* p);
         
         std::string GetData(std::string s); // returns string of data 
+        std::set<std::string> GetOptions(); 
 
         void UserPass(std::string usr, std::string pass); //! For MP_LOGIN_REQ
 
     private:
         enum MURK_PACKET_TYPES type;
+
         std::string str;
         std::map<std::string, std::string> data;
-        ENetPeer* peer;
+        std::set<std::string> p_options;
 
+        ENetPeer* peer;
+        
         //! Must be done first, called from constructor
         void SetType(enum MURK_PACKET_TYPES e);
         
