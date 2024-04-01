@@ -29,10 +29,12 @@ typedef struct login
 
 enum MURK_PACKET_TYPES
 {
-    NOPACKET = 0,
-    LOGIN_REQ = 1,
-    LOGIN_WELCOME = 2,
-    MESSAGE_GEN = 3
+    MP_NOPACKET = 0,
+    MP_LOGIN_REQ = 1,
+    MP_LOGIN_WELCOME = 2,
+    MP_MESSAGE_GEN = 3,
+    MP_MENUSEL = 4,
+    MP_PCOMMAND = 5
 };
 
 typedef enum packet_action //! client
@@ -66,10 +68,10 @@ typedef struct _exits {
 #define no_exits 0,0,0,0,0,0,0,0,0,0
 
 enum ScreenType { 
-    LOGIN_SCREEN = 0,
-    MAIN_MENU = 1,
-    SAFE_AREA = 2,
-    NORMAL_AREA = 3
+    SCR_LOGIN = 0,
+    SCR_MAIN_MENU = 1,
+    SCR_SAFE_AREA = 2,
+    SCR_NORMAL_AREA = 3
 };
 
 //! The standard building block of MURK. 
@@ -78,20 +80,22 @@ enum ScreenType {
 //! @param type ScreenType, be it safe room, adventuring room, menu, etc.
 //! @param exits Exits from the room, if any
 //! @param description Pointer to the const char description of the room.
+/*
 typedef struct _screen { 
     int id_no;
     enum ScreenType type;
     Exits exits;
     const char* description;
 } Screen;
-
+*/
 
 enum PlayerState { 
     STATE_OFFLINE = 0,
     STATE_MAINMENU = 1,
     STATE_IDLE = 2,
     STATE_INCOMBAT = 3,
-    STATE_DEAD = 4
+    STATE_DEAD = 4,
+    STATE_LOGGING_IN = 5
 };
 
 
@@ -102,9 +106,10 @@ enum PlayerState {
 //! @param userName the username.
 //! @param level the user's player level. 
 //! @param miscBytes placeholder bytes for size reasons.
+
 typedef struct _user_state {  // this is pointed to by user->data.
     char id[16]; // current GUID
-    Screen* currentScreen; 
+    //Screen* currentScreen; 
     enum PlayerState state;
     char userName[64];
     int level;
@@ -112,5 +117,7 @@ typedef struct _user_state {  // this is pointed to by user->data.
 } UserState;
 // 512 at most?
 
+
+#define MENU_SELECT_STRING "> "
 
 #endif

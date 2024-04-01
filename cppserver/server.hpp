@@ -9,7 +9,7 @@ extern "C"
 #include "guid.hpp"
 #include <vector>
 #include <unordered_map>
-#include "packet.hpp"
+#include "../cppclient/packet.hpp"
 
 using namespace std;
 
@@ -25,9 +25,9 @@ class Server {
         void ProcessPacket(Packet p);
         bool CheckPassword(std::string u, std::string p);
 
-        ENetHost* server;
+        ENetHost*   server;
         ENetAddress address;
-        sqlite3* murk_userdb;
+        sqlite3*    murk_userdb;
 
         
         //std::vector <MurkUser> activeUsers;

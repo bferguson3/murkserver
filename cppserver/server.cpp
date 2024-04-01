@@ -54,14 +54,14 @@ void Server::ProcessEvent(ENetEvent event)
             
             // Create a unique guid for the user 
             char _guid[16];
-            generate_new_guid(&_guid[0]);
+            generate_new_guid(_guid);
+            
             // Allocate a user and copy the guid 
             _nuser.SetID(&_guid[0]);
             activeUserMap[_guid] = _nuser;  // Assign "guid" = MurkUser
-            
+            event.peer->data = &activeUserMap[_guid];
             //CreatePlayerStruct(event.peer);
-            //ENetPacket *packet = enet_packet_create(welcome_packet, strlen(welcome_packet), ENET_PACKET_FLAG_RELIABLE);
-            //enet_peer_send(event.peer, 0, packet);
+            
             enet_packet_destroy(event.packet);
             break;
 
@@ -97,31 +97,40 @@ void Server::ProcessPacket(Packet p)
 {
     std::string _t = "type";
     std::string _d = p.GetData(_t);
-    
+    User* _u = (User*)p.GetPeer()->data;
+    //printf("%s\n", _u->GetID());
+
+    //
+    // LOGIN REQUEST 
+    //
     if(_d == "LOGIN_REQ"){
-        //printf("debug\n");
-        if(CheckPassword(p.GetData("user"), p.GetData("pass")))
+        if(CheckPassword(p.GetData("user"), p.GetData("pass")) == 1)
         {
             printf("[Debug] Password check for user %s OK\n", p.GetData("user").c_str());
             // send the welcome/main menu packet 
-
             Murk::Packet newp(mainmenu_json);
-            
             if(newp.Validate()!=0) printf("[Debug] Error with main menu packet header file, not sent.\n");
-            
+
             ENetPacket *packet = enet_packet_create(newp.GetString().c_str(), newp.GetString().length(),
                 ENET_PACKET_FLAG_RELIABLE);
-
-            //printf("%p\n", p.GetPeer());
             enet_peer_send(p.GetPeer(), 0, packet);
             
         }
+        else { 
+            printf("[Debug] Invalid login from user %s\n", p.GetData("user").c_str());
+        }
     }    
+    //
+    // MENU SELECTION 
+    //
+    else if(_d == "MENUSEL"){
+
+    }
     
 }
 
-
-int Murk::Server::pw_callback(void *_pass, int argc, char **argv, char **azColName)
+// Copies the returned PW from SQL db into a buffer
+int Server::pw_callback(void *_pass, int argc, char **argv, char **azColName)
 {
     for (int i = 0; i < argc; i++)
     {
@@ -162,7 +171,15 @@ bool Server::CheckPassword(std::string un, std::string pw)
     }
     else
     {
-        return 1;
+         // do compare now, _pass vs pw 
+        std::size_t _f = pw.find(_pass);
+        if(_f != std::string::npos) {
+            //printf("Password match.\n");
+            return 1;
+        }
+        //else { return 0; }
+
+        return 0;
     }
     return 0;
 }

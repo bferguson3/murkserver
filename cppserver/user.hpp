@@ -5,6 +5,7 @@ extern "C" {
 }
 #include <cstring>
 #include <string>
+#include "../cppclient/screen.hpp"
 
 namespace Murk { 
 
@@ -12,20 +13,21 @@ class User
 {
     public:
 
-        void SetID(char* id);
+        void  SetID(char* id);
+        char* GetID();
 
         std::string GetLastPacket();
-        void SetLastPacket(std::string p);
+        void        SetLastPacket(std::string p);
 
 
     private:
-        char id[16]; // assigned guid 
+        char        id[16]; // assigned guid 
 
-        Screen* currentScreen;
+        Screen*     currentScreen;
         PlayerState state;
         std::string last_packet;
         
-        char bytes[256];
+        char        bytes[256];
 };
 
 }

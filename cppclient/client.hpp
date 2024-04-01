@@ -7,14 +7,14 @@
 #include <string>
 #include <cstdio>
 #include <fcntl.h>
-
+#include "screen.hpp"
 #include "packet.hpp"
 
 #define _CPP_
 
 extern "C"
 {
-    #include "murk.h"
+    #include "../murk.h"
 }
 
 namespace Murk { 
@@ -41,6 +41,7 @@ class Client {
 
         void GameLoop();
         void SendLogin();
+        void SendMenuSelect(char s);
         void* Encrypt(const char* dat);
 
         ENetHost* host;
@@ -50,7 +51,8 @@ class Client {
 
         int input_ctr;
 
-        enum UserState state;
+        enum PlayerState state;
+        Screen currentScreen;
 
     private:
 
@@ -65,6 +67,7 @@ class Client {
         bool FLAG_INPUT_USER;
         bool FLAG_INPUT_PASSWORD;
         bool FLAG_INPUT_MENU;
+        bool FLAG_MUTE_INPUT;
 };
 
 }

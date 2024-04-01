@@ -21,6 +21,8 @@ Client::Client()
     arrow_get = false;
     FLAG_INPUT_USER = false;
     FLAG_INPUT_PASSWORD = false;
+    //class Screen _s;
+    //currentScreen = _s;
 }
 
 
@@ -57,13 +59,15 @@ void Client::GameLoop()
             break;
         /////
         case STATE_LOGGING_IN:
-            if(!FLAG_INPUT_USER && (userpass.user == "")){
+            if((FLAG_INPUT_USER == false) && (userpass.user == "")){
                 FLAG_INPUT_USER = true;
                 printf("\nUsername: ");
+                input_ctr = 0;
             }
             if(!FLAG_INPUT_PASSWORD && (userpass.user != "") && userpass.pass == ""){
                 FLAG_INPUT_PASSWORD = true;
                 printf("\nPassword: ");
+                input_ctr = 0;
             }
             break;
         ////
@@ -132,7 +136,6 @@ void Client::ProcessEvent(ENetEvent* event)
         
         if(incoming.Validate()==0)
         {
-            
             ///
             ProcessPacket(incoming);   // < main packet processing function 
             ///
@@ -158,8 +161,10 @@ void Client::ProcessPacket(Murk::Packet p)
     std::string _d = p.GetData(_t);
 
     if(_d == "MENU_MAIN"){
+        // Print the menu text 
         AnsiPrint(p.GetData(_tx));
         
+        // And all the options from the blob 
         std::set<std::string> _list = p.GetOptions();
         int _i = 0;
         for(std::string s : _list) {
@@ -167,36 +172,45 @@ void Client::ProcessPacket(Murk::Packet p)
             AnsiPrint(s);
         }
         printf("\n");
-
+        printf(MENU_SELECT_STRING);
+        
+        Exits _e;
+        class Screen _s(SCR_MAIN_MENU, _e, "Main Menu");
+        currentScreen = _s;
+        
+        // Set the input flag 
         FLAG_INPUT_MENU = true;
+
     }
 }
 
 
+
+/// Stores Ansi codes in buffer to flush at once
+/// otherwise, prints one character at a time  
 void Client::AnsiPrint(std::string s)
 {
-    printf("\x1b[0m" "\n");
-
+    printf("\x1b[0m" "\n"); // ANSI RESET 
     int len = s.length();
     int i = 0;
     while(i < len)
     {
         char p = s[i];
-        if(p == '^')
+        if(p == '^')        // CUSTOM JSON ESCAPE CODE
         {
             int _ii = i + 1;
             std::string _ts;
-            while (s[_ii] != 'm' && s[_ii] != 'h') {
+            while (s[_ii] != 'm' && s[_ii] != 'h') { // TODO: m and h are 80% of ANSI codes
                 _ts += s[_ii];
                 _ii++;
             }
-            _ts += s[_ii];
+            _ts += s[_ii];  // grab last char
             
-            printf("\x1b%s",_ts.c_str());
+            printf("\x1b%s",_ts.c_str());   // print ESC+string
             i = _ii;
         }
         else { 
-            printf("%c", p);
+            printf("%c", p); // else just the char
         }
         i++;
     }
@@ -229,6 +243,19 @@ void Client::SetNonblocking()
 }
 
 
+void Client::SendMenuSelect(char s)
+{
+    class Murk::Packet pak(MP_MENUSEL);
+    pak.Select(s);
+    
+    if(pak.Validate() != 0) err(1, "Fatal error: Made a bad json packet in sendmenuselect()\n");
+
+    ENetPacket *ep = enet_packet_create(pak.GetString().c_str(), pak.GetString().length(), 
+        ENET_PACKET_FLAG_RELIABLE);
+    enet_peer_send(server, 0, ep);
+}
+
+
 void Client::ProcessInput(char* input)
 {
     int a = _getc();
@@ -241,19 +268,23 @@ void Client::ProcessInput(char* input)
         {
             if(FLAG_INPUT_PASSWORD)
                 putc((int)'*', stdout);
+            else if(FLAG_MUTE_INPUT)
+            { ; }
             else
                 putc(a, stdout); //printf("%c", a); 
         }
         if(FLAG_INPUT_MENU){
             // send immediately 
             FLAG_INPUT_MENU = false;
-            printf("\n");
+            FLAG_MUTE_INPUT = true;
+            SendMenuSelect(a);
+            printf("\n"); // CR 
         }
     }
     if(a == 10 || a == 13) { // 10 or 13 depending on mode submits
         size_t _l = strlen(input);
         input[_l - 1] = (char)0; // null the RETURN byte at the end
-        //printf("\nString got: %s\n", input);
+        
 
         // String input processing here: 
         if(FLAG_INPUT_USER) {

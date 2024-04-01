@@ -5,9 +5,10 @@
 #include <string>
 #include <map>
 #include <set>
+#include "screen.hpp"
 
 extern "C" {
-  #include "murk.h"
+  #include "../murk.h"
   #include <enet/enet.h>
 }
 
@@ -22,18 +23,19 @@ class Packet
         Packet(enum MURK_PACKET_TYPES e);
         Packet(const char* s);
         
-        int Validate();     // Ensures str is a valid json blob 
-        void ParseData();   // Stores payload in data map 
+        int   Validate();     // Ensures str is a valid json blob 
+        void  ParseData();   // Stores payload in data map 
         
         std::string GetString();        // returns the json blob 
-        void SetString(const char* s);  // sets the json blob 
-        ENetPeer* GetPeer();
-        void SetPeer(ENetPeer* p);
+        void        SetString(const char* s);  // sets the json blob 
+        ENetPeer*   GetPeer();
+        void        SetPeer(ENetPeer* p);
         
         std::string GetData(std::string s); // returns string of data 
         std::set<std::string> GetOptions(); 
 
         void UserPass(std::string usr, std::string pass); //! For MP_LOGIN_REQ
+        void Select(char s);
 
     private:
         enum MURK_PACKET_TYPES type;

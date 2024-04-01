@@ -54,6 +54,18 @@ void Packet::UserPass(std::string usr, std::string pass)
 
 }
 
+void Packet::Select(char s)
+{
+    if(type != MP_MENUSEL) {
+        printf("Fatal error: Mismatch packet type in Select()\n");
+        exit(1);
+    }
+
+    str += "\"select\":\"";
+    str += s;
+    str += "\"\n}";
+}
+
 int Packet::Validate()
 {
     // parse json object
@@ -131,18 +143,11 @@ void Packet::ParseData()
     //printf("[Debug] JSON parsed successfully.\n");
 }
 
-std::set<std::string> Packet::GetOptions() { return p_options; }
-
-std::string Packet::GetData(std::string s)
-{
-    return data[s];
-}
-
-
-ENetPeer* Packet::GetPeer() { return peer; }
-void Packet::SetPeer(ENetPeer* p) { peer = p; printf("set to %p\n", peer); }
-
-std::string Packet::GetString() { return str; }
-void Packet::SetString(const char* s) { str = s; }
+std::set<std::string>   Packet::GetOptions() { return p_options; }
+std::string             Packet::GetData(std::string s) {    return data[s];   }
+ENetPeer*               Packet::GetPeer() { return peer; }
+void                    Packet::SetPeer(ENetPeer* p) { peer = p; printf("set to %p\n", peer); }
+std::string             Packet::GetString() { return str; }
+void                    Packet::SetString(const char* s) { str = s; }
 
 }
