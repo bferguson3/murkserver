@@ -8,7 +8,6 @@ extern "C"
 }
 #include <iostream>
 #include <sqlite3.h>
-#include "screen.hpp"
 #include "user.hpp"
 #include "guid.hpp"
 #include <vector>

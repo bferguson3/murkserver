@@ -1,6 +1,7 @@
 #ifndef __COMMAND_HPP__
 #define __COMMAND_HPP__
 
+#include <string>
 
 namespace Murk { 
 // mob cmd 

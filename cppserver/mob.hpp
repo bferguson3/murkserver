@@ -3,9 +3,9 @@
 #ifndef __MOB_HPP__
 #define __MOB_HPP__
 
-
 #include <map>
 #include "command.hpp"
+//#include "item.hpp"
 
 namespace Murk { 
 
@@ -15,11 +15,11 @@ class Mob {
 
     private:
 
-        std::string name;
-        std::string desc;
-
-#include "mob_data.h"
+        std::string display_name;
+        
 };
+
+
 }
 
 #endif 

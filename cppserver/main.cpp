@@ -2,10 +2,17 @@
 
 #include "server.hpp"
 
-
+namespace Murk { 
+ void use_potion(int* target);
+}
 int main()
 {
 	class Murk::Server server;
+
+	Murk::Item potion;
+	potion.use = &Murk::use_potion;
+	Murk::User _u;
+	potion.use((int*)(&_u));
 
 	server.Init();
 

@@ -65,6 +65,28 @@ typedef struct _exits {
     bool SW;
 } Exits;
 
+
+enum ItemType { 
+    IT_UNUSABLE   = 0,
+    IT_ONLYMAP    = 1,
+    IT_ONLYBATTLE = 2,
+    IT_EVERYWHERE = 3,
+    IT_EQUIPMENT  = 4
+};
+
+#define ITEMFLAG_EQUIPPABLE_FIGHTER (1 << 0)
+#define ITEMFLAG_EQUIPPABLE_RANGER  (1 << 1)
+#define ITEMFLAG_EQUIPPABLE_MAGE    (1 << 2)
+#define ITEMFLAG_EQUIP_BODY         (1 << 3)
+#define ITEMFLAG_EQUIP_ARM          (1 << 4)
+#define ITEMFLAG_EQUIP_WEAPON       (1 << 5)
+#define ITEMFLAG_EQUIP_CURSE        (1 << 6)
+#define ITEMFLAG_JUNK               (1 << 7)
+#define ITEMFLAG_MAGICAL            (1 << 8)
+#define ITEMFLAG_USE_CONSUME        (1 << 9)
+#define ITEMFLAG_USEABLE_BATTLE     (1 << 10)
+#define ITEMFLAG_USEABLE_MAP        (1 << 11)
+
 #define no_exits 0,0,0,0,0,0,0,0,0,0
 
 enum ScreenType { 

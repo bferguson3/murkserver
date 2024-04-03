@@ -46,13 +46,13 @@ class Client {
 
         ENetHost* host;
         ENetPeer* server;
-        char id[16];
+        char            id[16];
         struct UserPass userpass;
 
         int input_ctr;
 
         enum PlayerState state;
-        Screen currentScreen;
+        Screen           currentScreen;
 
     private:
 

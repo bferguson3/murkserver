@@ -2,7 +2,16 @@ INC:=-I/home/bent/Downloads/enet-1.3.17/include/ -I/home/bent/Downloads/sqlite-a
 #LIB:=/usr/lib64/ 
 LIB:=/usr/local/lib/
 
-SRC:=main.cpp server.cpp user.cpp ../cppclient/packet.cpp guid.cpp screen.cpp
+SRC:=main.cpp \
+	server.cpp \
+	user.cpp \
+	../cppclient/packet.cpp \
+	guid.cpp \
+	screen.cpp \
+	mob.cpp \
+	command.cpp \
+	item_callbacks.cpp \
+	item.cpp 
 
 default:
-	g++ $(INC) -L$(LIB) $(SRC) -lenet -lsqlite3  -o server -Wl,-rpath,. -Wall -Werror
+	g++ $(INC) -L$(LIB) $(SRC) -lenet -lsqlite3  -o server -Wl,-rpath,. -Wall 

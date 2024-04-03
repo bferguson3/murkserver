@@ -1,28 +1,31 @@
 #ifndef __ITEM_HPP__
 #define __ITEM_HPP__
 
+#include <string> 
+//#include "user.hpp"
+
 namespace Murk { 
 
-enum ItemType { 
-    IT_UNUSABLE   = 0,
-    IT_ONLYMAP    = 1,
-    IT_ONLYBATTLE = 2,
-    IT_EVERYWHERE = 3,
-    IT_EQUIPMENT  = 4
-};
 
 class Item {
+
+    public:
+        //void setCallback(void(*f)(User*));
+        void (*use)(int*);
+        //void            (* use)(Murk::User*);
 
     private:
         std::string     name;
         std::string     desc;
-        enum ItemType   type;
-        uint32_t        flags;
-        void          (* use)();
+        //enum ItemType   type;
+        bool            stackable;
+        int             stack_ct;
 
-        void    drop();
-        void    destroy();
-        void    equip();
+        uint64_t        flags; // 64 flags to use, check murk.h
+        
+
+        void    drop();     // place in the screen 
+        void    destroy();  // completely remove from game 
 };
 
 }
