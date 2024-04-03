@@ -10,8 +10,8 @@ void generate_new_guid(char* GUID)
     // char GUID[40];
     //char *GUID = (char *)malloc(16);
     int t = 0;
-    char *szTemp = "xxxxxxxxxxxxxxxx";  //-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
-    char *szHex = "0123456789abcdef-";
+    const char *szTemp = "xxxxxxxxxxxxxxxx";  //-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
+    const char *szHex = "0123456789abcdef-";
     int nLen = strlen(szTemp);
 
     for (t = 0; t < nLen + 1; t++)
@@ -28,7 +28,7 @@ void generate_new_guid(char* GUID)
             break;
             case 'y':
             {
-                c = szHex[r & 0x03 | 0x08];
+                c = szHex[(r & 0x03) | 0x08];
             }
             break;
             case '-':

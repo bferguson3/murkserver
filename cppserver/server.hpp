@@ -1,3 +1,6 @@
+#ifndef __SERVER_HPP__
+#define __SERVER_HPP__
+
 extern "C"
 {
   #include <enet/enet.h>
@@ -5,11 +8,13 @@ extern "C"
 }
 #include <iostream>
 #include <sqlite3.h>
+#include "screen.hpp"
 #include "user.hpp"
 #include "guid.hpp"
 #include <vector>
 #include <unordered_map>
 #include "../cppclient/packet.hpp"
+
 
 using namespace std;
 
@@ -39,8 +44,11 @@ class Server {
         void InitSQL();
         static int pw_callback(void *_notused, int argc, char **argv, char **azColName);
 
-        const int NUM_ACTIVE_USERS = 1000;
+#define NUM_ACTIVE_USERS 1000
+//        const int NUM_ACTIVE_USERS;// = 1000;
 
 };
 
 }
+
+#endif 

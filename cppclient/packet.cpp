@@ -20,6 +20,8 @@ Packet::Packet(enum MURK_PACKET_TYPES t)
         case MP_LOGIN_REQ:
             str += "LOGIN_REQ\",\n ";
             break;
+        case MP_NOPACKET:
+            break;
         case MP_MENUSEL:
             str += "MENUSEL\",\n ";
             break;
@@ -28,6 +30,10 @@ Packet::Packet(enum MURK_PACKET_TYPES t)
             break;
         case MP_LOGIN_WELCOME:
             str += "LOGIN_WELCOME\",\n ";
+            break;
+        case MP_MESSAGE_GEN:
+            str += "MESSAGE_GEN\",\n ";
+            break;
     }
 }
 
@@ -101,7 +107,6 @@ void Packet::ParseData()
 
     // Debug print the packet type
     printf("[Debug] packet type: %s\n", p_type_valstr->string);
-    //std::string type = p_type_valstr->string; // store it in the class 
     data[_q] = p_type_valstr->string;
 
     // assign last json element
@@ -119,16 +124,16 @@ void Packet::ParseData()
         {
             JSONString next_str = (JSONString)next_val->payload;
             data[(std::string)next_name->string] = (std::string)next_str->string; // e.g data["user"]="name"
-            //printf("%s , %s\n", next_name->string, data[next_name->string].c_str());
+            
         }
         else { // is an array 
             // get list of menu options
             int arlen = array->length;  // and length
-            // get first element
-            struct json_array_element_s *this_ele = array->start;
+            
+            struct json_array_element_s *this_ele = array->start; // get first element
             JSONString ele_str = json_value_as_string(this_ele->value);
-            // push to vec
-            p_options.insert(ele_str->string);
+            
+            p_options.insert(ele_str->string); // push to vec
             for (int c = 1; c < arlen; c++)
             {
                 this_ele = this_ele->next;
@@ -146,7 +151,7 @@ void Packet::ParseData()
 std::set<std::string>   Packet::GetOptions() { return p_options; }
 std::string             Packet::GetData(std::string s) {    return data[s];   }
 ENetPeer*               Packet::GetPeer() { return peer; }
-void                    Packet::SetPeer(ENetPeer* p) { peer = p; printf("set to %p\n", peer); }
+void                    Packet::SetPeer(ENetPeer* p) { peer = p; }
 std::string             Packet::GetString() { return str; }
 void                    Packet::SetString(const char* s) { str = s; }
 

@@ -117,7 +117,6 @@ void Client::Disconnect()
 void Client::ProcessEvent(ENetEvent* event)
 {
 
-    char *mypacket; 
     Murk::Packet incoming((char*)event->packet->data);
     
     switch (event->type)
@@ -130,8 +129,8 @@ void Client::ProcessEvent(ENetEvent* event)
         break;
     case ENET_EVENT_TYPE_RECEIVE:
         printf ("A packet of length %u was received from %s on channel %u.\n",
-                event->packet -> dataLength,
-                event->peer -> data,
+                (unsigned int)event->packet -> dataLength,
+                (const char*)event->peer -> data,
                 event->channelID);
         
         if(incoming.Validate()==0)
@@ -147,9 +146,14 @@ void Client::ProcessEvent(ENetEvent* event)
         break;
        
     case ENET_EVENT_TYPE_DISCONNECT:
-        printf ("%s disconnected.\n", event->peer -> data);
+        printf ("%s disconnected.\n", (char*)event->peer -> data);
         event->peer -> data = NULL;
+        break;
+    case ENET_EVENT_TYPE_NONE:
+        break;
+
     }
+
 
 }
 
@@ -166,11 +170,12 @@ void Client::ProcessPacket(Murk::Packet p)
         
         // And all the options from the blob 
         std::set<std::string> _list = p.GetOptions();
-        int _i = 0;
-        for(std::string s : _list) {
-            _i ++;
-            AnsiPrint(s);
-        }
+        std::set<std::string>::iterator it;
+        for(it = _list.begin(); it != _list.end(); ++it) AnsiPrint((std::string)*it);
+        //for(std::string s : _list) {
+            //_i ++;
+        //    AnsiPrint(s);
+        //}
         printf("\n");
         printf(MENU_SELECT_STRING);
         
@@ -368,7 +373,7 @@ void* Client::Encrypt(const char* dat)
 
 void Client::err(int fi, const char* str)
 {
-    printf(str);
+    printf("%s", str);
     exit(fi);
 }
 

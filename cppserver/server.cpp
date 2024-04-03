@@ -39,8 +39,7 @@ void Server::Init()
 void Server::ProcessEvent(ENetEvent event)
 {
 
-    char *mypacket;
-    size_t len;
+    //size_t len;
     Murk::User _nuser;
     Murk::Packet _p;
     printf("event peer %p\n", event.peer);
@@ -68,7 +67,6 @@ void Server::ProcessEvent(ENetEvent event)
         case ENET_EVENT_TYPE_RECEIVE:
             /* Receive event type */
             printf("[Debug] EVENT RECEIVE\n");
-            len = event.packet->dataLength;
             
             _p.SetString((const char*)event.packet->data);
             if(_p.Validate() != 0) {
@@ -87,7 +85,8 @@ void Server::ProcessEvent(ENetEvent event)
             
             event.peer->data = NULL;
             break;
-
+        case ENET_EVENT_TYPE_NONE:
+            break;
     }
 
 }
@@ -97,7 +96,7 @@ void Server::ProcessPacket(Packet p)
 {
     std::string _t = "type";
     std::string _d = p.GetData(_t);
-    User* _u = (User*)p.GetPeer()->data;
+    //User* _u = (User*)p.GetPeer()->data;
     //printf("%s\n", _u->GetID());
 
     //
@@ -171,6 +170,8 @@ bool Server::CheckPassword(std::string un, std::string pw)
     }
     else
     {
+        std::string _o = _pass;
+        if (_o == "") return 0;
          // do compare now, _pass vs pw 
         std::size_t _f = pw.find(_pass);
         if(_f != std::string::npos) {
