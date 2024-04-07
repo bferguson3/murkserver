@@ -11,6 +11,7 @@ extern "C" {
 #include <string>
 #include <set>
 #include "item.hpp"
+//#include "screen.hpp"
 
 namespace Murk { 
 
@@ -22,19 +23,22 @@ class User
 
         std::string GetLastPacket();
         void        SetLastPacket(std::string p);
-
-        void Equip(Item i);
+        
+        void        Equip(Item i);
         void        UpdateStats();
+
+        void SetScreen(void* s);
+        
 
 
     private:
         char        id[16]; // assigned guid 
 
-        void*     currentScreen;
         PlayerState state;
         std::string last_packet;
+        void* currentScreen;
         
-        std::string   display_name;
+        std::string display_name;
         // Define custom character data 
 
              int   level;
@@ -45,7 +49,7 @@ class User
              int   WIS;
 
 std::vector<Item>  inventory; // pointers to itemdb as items are static, count is held here
-std::vector<Item*>   equipment;  // points to a* in inventory<a,b>
+std::vector<Item*> equipment;  // points to a* in inventory<a,b>
 
 };
 

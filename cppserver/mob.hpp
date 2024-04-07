@@ -16,7 +16,7 @@ class Mob {
     private:
 
         std::string display_name;
-        
+#include "mob_data.h"
 };
 
 

@@ -2,6 +2,7 @@
 #include <cstring>
 
 #include "../jsonres.h"
+#include "screen.hpp"
 
 namespace Murk
 {
@@ -42,6 +43,7 @@ void Server::ProcessEvent(ENetEvent event)
     //size_t len;
     Murk::User _nuser;
     Murk::Packet _p;
+    Murk::Screen* _s;
     printf("event peer %p\n", event.peer);
     _p.SetPeer(event.peer);
             
@@ -57,9 +59,10 @@ void Server::ProcessEvent(ENetEvent event)
             
             // Allocate a user and copy the guid 
             _nuser.SetID(&_guid[0]);
+            _nuser.SetScreen((void*)&mainmenu); // todo: static_cast<> ? 
             activeUserMap[_guid] = _nuser;  // Assign "guid" = MurkUser
             event.peer->data = &activeUserMap[_guid];
-            //CreatePlayerStruct(event.peer);
+            //_s = (Murk::Screen*)_nuser.currentScreen;
             
             enet_packet_destroy(event.packet);
             break;
@@ -123,7 +126,9 @@ void Server::ProcessPacket(Packet p)
     // MENU SELECTION 
     //
     else if(_d == "MENUSEL"){
-
+        User* _u = (User*)p.GetPeer()->data; // What is the User?
+        // What screen is the user on?
+        //Murk::Screen _s = _u.
     }
     
 }

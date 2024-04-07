@@ -1,12 +1,7 @@
 // screen.cpp 
 
 #include "screen.hpp"
-#include <string>
 
-extern "C"
-{
-    #include "../murk.h"
-}
 
 namespace Murk { 
 
@@ -24,11 +19,16 @@ namespace Murk {
         SCREEN_COUNT++;
     }
 
-    Screen::Screen(enum ScreenType t, Exits e, std::string desc)
+    int Screen::GetScreenCount() { return SCREEN_COUNT; }
+
+    std::string Screen::GetDescription() { return description; }
+
+    Screen::Screen(enum ScreenType t, Exits e, std::string desc, std::string longdesc)
     {
         type = t;
         exits = e;
-        description = desc;
+        shortdesc = desc;
+        description = longdesc;
         id = SCREEN_COUNT;
 
         SCREEN_COUNT++;

@@ -13,12 +13,15 @@ extern "C" {
 
 namespace Murk { 
 
-
 class Screen 
 {
     public:
         Screen();
-        Screen(enum ScreenType t, Exits e, std::string desc);
+        Screen(enum ScreenType t, Exits e, std::string desc, std::string longdesc);
+
+        static int GetScreenCount();
+
+        std::string GetDescription();
 
     private:    
         int id;
@@ -31,11 +34,13 @@ class Screen
 
         // The vectors of class objects are only filled as they are needed. 
         std::vector<Item*>   localItems; // Items cannot be maipulated as they are pointers
-        std::vector<Mob>    localMobs;      // Mobs must be instantiated 
-        std::vector<Murk::User*>   localUsers; // e.g. full data here is not sent 
+        std::vector<Mob>     localMobs;      // Mobs must be instantiated 
+        std::vector<User*>   localUsers; // e.g. full data here is not sent 
             // On client side, localUsers are allocated/instantiated upon 
             //  entering rooms. On the server they track users as they move.
 };
+
+extern const Screen mainmenu;
 
 }
 
