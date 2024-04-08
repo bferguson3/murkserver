@@ -41,19 +41,26 @@ MURK Flow
     - Local character data is only updated via server packets, and is updated piecemeal after the initial log-in, which obtains the full structure from memory. 
     - All net events can occur while input is still taking place. 
 
-Packet: 
-	- Contains user ID 
-	- JSON blob with packet type and accompanying data 
-Mob: 
-	- Contains all custom stats as defined, as well as behavior, drop tables, etc. Generally empty 	otherwise. 
-Screen: 
-	- Exits, description (short and long), and running list of mobs, items, and players. Screens will 	re-populate themselves every so many ticks. 
-User: 
-	- Holds all character data 
-Command: 
-	- General action structure - Name, description, pointer to callback. Pointers to these commands 	make up enemy AI tables. 
-Item: 
-	- Name, desc, stackable, callback, stack ct max, flags, drop/destroy
+Classes:
+### Packet
+  - Contains user ID 
+  - JSON blob with packet type and accompanying data
+    
+### Mob   
+  - Contains all custom stats as defined, as well as behavior, drop tables, etc. Generally empty 	otherwise.
+    
+### Screen 
+  - Exits, description (short and long), and running list of mobs, items, and players. Screens will 	re-populate themselves every so many ticks.
+    
+### User 
+  - Holds all character data
+    
+### Command
+  - General action structure - Name, description, pointer to callback. Pointers to these commands 	make up enemy AI tables.
+    
+### Item
+  - Name, desc, stackable, callback, stack ct max, flags, drop/destroy
+    
 
 ###  blobs/
 json blob packets
@@ -61,17 +68,17 @@ json blob packets
 misc 
 ### ansi.h
 stdout ansi codes 
-### base64.c/h
+### res/base64.c/h
 base64 encoding/decoding
-### murk.h, client.c, server.c 
-main code files 
-### getpasswd.c 
+### murk.h
+cross platform header information 
+### res/getpasswd.c 
 filter input from stdin
-### guid.c/h
+### res/guid.c/h
 generating unique IDs
-### json.h
+### res/json.h
 https://github.com/sheredom/json.h
 ### jsonres.h
 generated from itemizejson.sh
-### sha3.c/h
+### res/sha3.c/h
 sha3-512 hashing source 
