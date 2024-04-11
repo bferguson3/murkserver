@@ -33,9 +33,9 @@ class Screen
         std::string description;
 
         // The vectors of class objects are only filled as they are needed. 
-        std::vector<Item*>   localItems; // Items cannot be maipulated as they are pointers
-        std::vector<Mob>     localMobs;      // Mobs must be instantiated 
-        std::vector<User*>   localUsers; // e.g. full data here is not sent 
+        std::vector<Item*>   localItems;    // Items cannot be maipulated as they are pointers
+        std::vector<Mob>     localMobs;     // Mobs must be instantiated 
+        std::vector<User*>   localUsers;    // e.g. full data here is not sent 
             // On client side, localUsers are allocated/instantiated upon 
             //  entering rooms. On the server they track users as they move.
 };

@@ -5,9 +5,7 @@ namespace Murk {
     Mob::Mob() { 
         
         display_name = "None";
-        
 
     }
-
 
 }

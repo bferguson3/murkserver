@@ -2,22 +2,21 @@
 #define __ITEM_HPP__
 
 #include <string> 
+#include "object.hpp"
 //#include "user.hpp"
 
 namespace Murk { 
 
 
-class Item {
+class Item : public Object {
 
     public:
-        //void setCallback(void(*f)(User*));
+    //std::string     display_name; // inherited
         void (*use)(int*);
-        //void            (* use)(Murk::User*);
 
     private:
-        std::string     name;
         std::string     desc;
-        //enum ItemType   type;
+        
         bool            stackable;
         int             stack_ct;
 

@@ -1,5 +1,6 @@
 // client.cpp 
 #include "client.hpp"
+#include <iostream>
 
 
 extern "C" {
@@ -21,6 +22,8 @@ Client::Client()
     arrow_get = false;
     FLAG_INPUT_USER = false;
     FLAG_INPUT_PASSWORD = false;
+
+    verb_context = verb_context[0];
     //class Screen _s;
     //currentScreen = _s;
 }
@@ -179,9 +182,10 @@ void Client::ProcessPacket(Murk::Packet p)
         printf("\n");
         printf(MENU_SELECT_STRING);
         
-        Exits _e;
-        class Screen _s(SCR_MAIN_MENU, _e, "Main Menu");
-        currentScreen = _s;
+        //Exits _e;
+        //class Screen _s(SCR_MAIN_MENU, _e, "Main Menu");
+        //currentScreen = _s;
+        // Instead of assigning here, receive the screen data from the server! 
         
         // Set the input flag 
         FLAG_INPUT_MENU = true;
@@ -264,7 +268,7 @@ void Client::SendMenuSelect(char s)
 void Client::ProcessInput(char* input)
 {
     int a = _getc();
-
+    //if(a > 0) printf("%d\n", a);
     // Standard check: 
     if(a < 127 && a > -1) {
         input[input_ctr++] = (char)a;
@@ -276,7 +280,7 @@ void Client::ProcessInput(char* input)
             else if(FLAG_MUTE_INPUT)
             { ; }
             else
-                putc(a, stdout); //printf("%c", a); 
+                putc(a, stdout); 
         }
         if(FLAG_INPUT_MENU){
             // send immediately 
@@ -290,7 +294,6 @@ void Client::ProcessInput(char* input)
         size_t _l = strlen(input);
         input[_l - 1] = (char)0; // null the RETURN byte at the end
         
-
         // String input processing here: 
         if(FLAG_INPUT_USER) {
             userpass.user = input;
@@ -309,9 +312,23 @@ void Client::ProcessInput(char* input)
         clear(input, 256);
         input_ctr = 0;
     }
+    // TAB FOR AUTO COMPLETE 
+    if(a == 9) // TAB 
+    {
+        if(verb_context == "NONE"){
+
+        }
+    }
+    // DELETE 
+    if(a == 127) {
+        input_ctr--;
+        input[input_ctr] = 0;
+        printf("\x1b[1D \x1b[1D");
+        std::cout << std::flush;
+    }
 
     // special chars: 
-    // reverse order to get arrows: (MACOS)
+    // reverse order to get arrows: ^[A etc
     if(arrow_get){
         if(a == 65){
             printf("up");

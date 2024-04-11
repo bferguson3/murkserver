@@ -11,11 +11,12 @@ extern "C" {
 #include <string>
 #include <set>
 #include "item.hpp"
+#include "object.hpp"
 //#include "screen.hpp"
 
 namespace Murk { 
 
-class User 
+class User : public Object 
 {
     public:
         void      SetID(char* id);
@@ -27,7 +28,7 @@ class User
         void        Equip(Item i);
         void        UpdateStats();
 
-        void SetScreen(void* s);
+        void        SetScreen(void* s);
         
 
 
@@ -38,19 +39,9 @@ class User
         std::string last_packet;
         void* currentScreen;
         
-        std::string display_name;
+        //std::string display_name;
         // Define custom character data 
-
-             int   level;
-            long   exp;
-
-             int   STR;
-             int   DEX;
-             int   WIS;
-
-std::vector<Item>  inventory; // pointers to itemdb as items are static, count is held here
-std::vector<Item*> equipment;  // points to a* in inventory<a,b>
-
+#include "character_data.h"
 };
 
 

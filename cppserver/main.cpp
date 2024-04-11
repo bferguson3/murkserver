@@ -19,13 +19,14 @@ int main()
 {
 	class Murk::Server server;
 
+		// debug:
 	//Murk::Item potion;
 	//potion.use = &Murk::use_potion;
 	//Murk::User _u;
 	//potion.use((int*)(&_u));
-	Murk::Screen scr;
-	scr = Murk::mainmenu;
-	printf("%d\n", Murk::Screen::GetScreenCount());
+	//Murk::Screen scr;
+	//scr = Murk::mainmenu;
+	//printf("%d\n", Murk::Screen::GetScreenCount());
 
 	server.Init();
 

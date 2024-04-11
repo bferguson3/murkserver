@@ -10,6 +10,8 @@
 #include "screen.hpp"
 #include "packet.hpp"
 
+#include "verb_context.h"
+
 #define _CPP_
 
 extern "C"
@@ -68,6 +70,10 @@ class Client {
         bool FLAG_INPUT_PASSWORD;
         bool FLAG_INPUT_MENU;
         bool FLAG_MUTE_INPUT;
+
+        std::string verb_context;
+        //std::vector<std::string> verb_context;
+        std::vector<Object> object_context;
 };
 
 }

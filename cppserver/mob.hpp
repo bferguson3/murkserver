@@ -5,17 +5,19 @@
 
 #include <map>
 #include "command.hpp"
+#include "object.hpp"
 //#include "item.hpp"
 
 namespace Murk { 
 
-class Mob { 
+class Mob : public Object { 
+    
     public:
+        //std::string display_name; inherited 
         Mob();
 
     private:
 
-        std::string display_name;
 #include "mob_data.h"
 };
 
