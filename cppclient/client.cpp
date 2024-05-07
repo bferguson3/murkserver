@@ -180,7 +180,7 @@ void Client::ProcessPacket(Murk::Packet p)
         //    AnsiPrint(s);
         //}
         printf("\n");
-        printf(MENU_SELECT_STRING);
+        printf("%s", MENU_SELECT_STRING);
         
         //Exits _e;
         //class Screen _s(SCR_MAIN_MENU, _e, "Main Menu");

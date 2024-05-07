@@ -19,13 +19,33 @@ namespace Murk {
         SCREEN_COUNT++;
     }
 
+    void Screen::Execute(User u, int i)
+    {
+        void (*f)(User);
+        f = (menuFunctions[i]);
+        f(u);
+    }
+
     void Screen::EnterUser(const char* u)
     {
         localUsers.push_back(u);
-        printf("added user %s\n", u);
+        printf("[DEBUG] added user %s to room %d\n", u, GetID());
     }
 
     void Screen::ExitUser(const char* u){
+        // TODO 
+        std::string n = u;
+        std::vector<std::string>::iterator it;
+        for(it = localUsers.begin(); it != localUsers.end(); it++)
+        {
+            if(n.compare(0, 16, *it) == 0){
+                // match 
+                //printf("adfasfed\n");
+                localUsers.erase(it);
+                break;
+                //localUsers.erase(localUsers.begin() + y);
+            }
+        }
         
     }
     
@@ -43,6 +63,12 @@ namespace Murk {
 
         SCREEN_COUNT++;
     }
+
+    void Screen::SetMenu(std::vector<void(*)(User)> opts)
+    {
+        menuFunctions = opts;
+    }
+
 
     int Screen::GetLocalUserCt() { 
         return localUsers.size();

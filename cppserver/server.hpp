@@ -16,7 +16,7 @@ extern "C"
 
 
 using namespace std;
-
+/*
 struct Key { 
     std::string guid;
 
@@ -31,9 +31,9 @@ struct std::hash<Key>{
     return hash<string>()(k.guid);
   }
 };
+*/
 
 namespace Murk { 
-
 
 
 class Server {
@@ -46,13 +46,11 @@ class Server {
         void ProcessPacket(Packet p);
         bool CheckPassword(std::string u, std::string p);
 
-        // TODO; make a template 
-        void SendLocalMessage(std::string a);
+        // TODO; convert these to formatted strings
+        void SendLocalMessage(void* s, std::string a);
         void SendLocalMessage(std::string a, std::string b);
         void SendLocalMessage(void* s, std::string a, std::string b, std::string c);
-        void SendLocalMessage(std::string a, std::string b, std::string c, std::string d);
-        void SendLocalMessage(std::string a, std::string b, std::string c, std::string d, std::string e);
-
+        
         User GetUserFromActiveUserMap(std::string id);
 
         ENetHost*   server;
@@ -63,7 +61,7 @@ class Server {
 
         
         //std::vector <MurkUser> activeUsers;
-        std::unordered_map <Key, Murk::User> activeUserMap; // guid, User object
+        std::unordered_map <std::string, Murk::User> activeUserMap; // guid, User object
         std::vector<Murk::Screen> screensList;
 
 

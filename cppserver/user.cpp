@@ -15,14 +15,17 @@ namespace Murk
     }
 
     void User::PickUp(Item i, bool stackable, int ct) { 
-
+        
+        // TODO : multiple checks here 
         Item _i;
         _i = i;
         _i.SetStackable(stackable);
         _i.SetStackCount(ct);
         inventory.push_back(_i);
 
-        server.SendLocalMessage(GetScreen(), "{0} picks up the {1}.", display_name, _i.display_name);
+        // finally, send message if all is clear 
+        std::string s = display_name + " picks up the " + _i.display_name + ".";
+        server.SendLocalMessage(GetScreen(), s);
     }
 
     void User::SetID(char* _id)

@@ -36,16 +36,17 @@ void Server::Init()
     InitSQL();
 }
 
+extern Screen mainmenu;
 
 void Server::ProcessEvent(ENetEvent event)
 {
 
     //size_t len;
     Murk::User _nuser;
+    std::string _un;
     Murk::Packet _p;
     Murk::Screen* _s;
 
-    Key k;
     printf("event peer %p\n", event.peer);
     _p.SetPeer(event.peer);
             
@@ -65,15 +66,12 @@ void Server::ProcessEvent(ENetEvent event)
             _nuser.SetPeer(event.peer);
             _nuser.display_name = "HELLO WORLD"; // temporary 
             
-            k.guid = _guid;
+            _un = _guid;
+            activeUserMap.insert(std::make_pair(_un, _nuser));
+
+            event.peer->data = activeUserMap[_un].GetID(); //&activeUserMap[_guid];
             
-            //activeUserMap[k] = _nuser;  // Assign "guid" = MurkUser
-            activeUserMap.insert(std::make_pair(k, _nuser));
-
-            event.peer->data = activeUserMap[k].GetID(); //&activeUserMap[_guid];
-            //_s = (Murk::Screen*)_nuser.currentScreen;
-
-            printf("Testing new user name: %s\n", activeUserMap[k].display_name.c_str());
+            printf("Testing new user name: %s\n", activeUserMap[_un].display_name.c_str());
             
             enet_packet_destroy(event.packet);
             break;
@@ -111,8 +109,6 @@ void Server::ProcessPacket(Packet p)
 {
     std::string _t = "type";
     std::string _d = p.GetData(_t);
-    //User* _u = (User*)p.GetPeer()->data;
-    //printf("%s\n", _u->GetID());
 
     //
     // LOGIN REQUEST 
@@ -141,13 +137,15 @@ void Server::ProcessPacket(Packet p)
         std::string id = (const char*)p.GetPeer()->data;
         
         User u = GetUserFromActiveUserMap(id);
+        // what scene am I on ? 
+        Screen* sc = (Screen*)u.GetScreen();
+        sc->Execute(u, 0); // TODO what selection
         
-        SendLocalMessage(u.GetScreen(), "Wazzap {0}{1}", "ho", "sack");
-        
+        SendLocalMessage(sc, "You selected an option, hold on. WIP!");
     }
     //
-    // END MENU SELECTION TEST 
-    // 
+    //
+
 }
 
 User Server::GetUserFromActiveUserMap(std::string id)
@@ -156,13 +154,10 @@ User Server::GetUserFromActiveUserMap(std::string id)
     for(auto& x : activeUserMap)
         {
             string xg;
-            string xg2;
-            xg = x.first.guid; // .copy(&xg[0], 16);
-            xg2 = id;
+            xg = x.first; // .copy(&xg[0], 16);
 
-            if(xg.compare(0, 16, xg2) == 0){
-                //std::cout << "I found my guy" << '\n';
-                //std::cout << x.second.display_name << '\n';
+            if(xg.compare(0, 16, id) == 0){
+                //match 
                 us = x.second;
                 break;
             }
@@ -253,11 +248,37 @@ void Server::InitEnet()
     return;
 }
 
-void Server::SendLocalMessage(std::string a)
+//////
+/////
+// The following functions need to be converted to an appropriate formatted string
+//////
+
+void Server::SendLocalMessage(void* screen, std::string a)
 {   
-    // TODO: SEND THIS OVER THE NETWORK 
-    printf("test message:");
-    printf("%s", a.c_str());
+    Murk::Packet _p(MP_MESSAGE_SCREEN);
+    _p.SetMessage(a.c_str());
+
+    Screen* _s = (Screen*)screen;
+    _p.SetScreen(_s->GetID());
+    
+    if(!!_p.Validate()) { 
+        printf("ERROR: Invalid packet created, not sent.\n");
+        return; 
+    };
+    
+    ENetPacket *packet = enet_packet_create(_p.GetString().c_str(), _p.GetString().length(),
+                ENET_PACKET_FLAG_RELIABLE);
+    
+    //printf("[DEBUG] %s\n", _p.GetString().c_str());
+    
+    // now loop through all uesrs in the target scene ID 
+    for(int i = 0; i < _s->GetLocalUserCt(); i++){
+        std::string us = _s->GetUserByIndex(i);
+        User u;
+        u = GetUserFromActiveUserMap(us); // < This is slow, be careful 
+        
+        enet_peer_send(u.GetPeer(), 0, packet); // Send the packet 
+    }
     
 }
 
@@ -266,8 +287,6 @@ void Server::SendLocalMessage(std::string a, std::string b)
     size_t _zero = a.find("{0}");
     a.replace(_zero, 3, b);
     // TODO: SEND THIS OVER THE NETWORK 
-    printf("test message:");
-    printf("%s", a.c_str());
 }
 
 void Server::SendLocalMessage(void* screen, std::string a, std::string b, std::string c)
@@ -278,9 +297,6 @@ void Server::SendLocalMessage(void* screen, std::string a, std::string b, std::s
     size_t _one = a.find("{1}");
     a.replace(_one, 3, c);
     
-    // TODO: SEND THIS OVER THE NETWORK 
-    printf("test message:");
-    printf("%s", a.c_str());
 
     Murk::Packet _p(MP_MESSAGE_SCREEN);
     _p.SetMessage(a.c_str());
@@ -288,7 +304,10 @@ void Server::SendLocalMessage(void* screen, std::string a, std::string b, std::s
     Screen* _s = (Screen*)screen;
     _p.SetScreen(_s->GetID());
     
-    _p.Validate();
+    if(!!_p.Validate()){
+        printf("ERROR: Invalid packet created, not sent.\n");
+        return;
+    };
     
     ENetPacket *packet = enet_packet_create(_p.GetString().c_str(), _p.GetString().length(),
                 ENET_PACKET_FLAG_RELIABLE);
@@ -296,11 +315,9 @@ void Server::SendLocalMessage(void* screen, std::string a, std::string b, std::s
     // now loop through all uesrs in the target scene ID 
     for(int i = 0; i < _s->GetLocalUserCt(); i++){
         std::string us = _s->GetUserByIndex(i);
-        //printf("User by index: %s\n", us.c_str());
         User u;
-        Key k;
-        k.guid = us;
         u = GetUserFromActiveUserMap(us);
+        
         enet_peer_send(u.GetPeer(), 0, packet);
     }
     //
@@ -309,42 +326,6 @@ void Server::SendLocalMessage(void* screen, std::string a, std::string b, std::s
 void Server::AddScreen(Murk::Screen s)
 {
     screensList.push_back(s);
-}
-
-void Server::SendLocalMessage(std::string a, std::string b, std::string c, std::string d)
-{
-    size_t _z = a.find("{0}");
-    a.replace(_z, 3, b);
-    
-    _z = a.find("{1}");
-    a.replace(_z, 3, c);
-
-    _z = a.find("{2}");
-    a.replace(_z, 3, d);
-    
-    // TODO: SEND THIS OVER THE NETWORK 
-    printf("test message:");
-    printf("%s", a.c_str());
-    
-}
-void Server::SendLocalMessage(std::string a, std::string b, std::string c, std::string d, std::string e)
-{
-    size_t _z = a.find("{0}");
-    a.replace(_z, 3, b);
-    
-    _z = a.find("{1}");
-    a.replace(_z, 3, c);
-
-    _z = a.find("{2}");
-    a.replace(_z, 3, d);
-    
-    _z = a.find("{3}");
-    a.replace(_z, 3, e);
-
-    
-    // TODO: SEND THIS OVER THE NETWORK 
-    printf("test message:");
-    printf("%s", a.c_str());
 }
 
 }

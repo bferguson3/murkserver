@@ -168,7 +168,7 @@ void ProcessPacket_Type(JSONElement next_j, PacketAction* p_act, const char* pTy
         }
         else if (JNEXT("menuOptions"))
         {
-            printf(_Rst);  // Reset ansi just in case
+            printf("%s", _Rst);  // Reset ansi just in case
             
             // get list of menu options
             struct json_array_s *array = json_value_as_array(next_val);

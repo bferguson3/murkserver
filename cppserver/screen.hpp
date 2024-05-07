@@ -32,6 +32,11 @@ class Screen
         void EnterUser(const char* guid);
         void ExitUser(const char* guid); // match to User*
 
+        void Execute(User u, int i);
+
+        void SetMenu(std::vector<void(*)(User)> opts);
+        
+
     private:    
         int id;
 
@@ -45,9 +50,11 @@ class Screen
         std::vector<Item*>   localItems;    // Items cannot be maipulated as they are pointers
         std::vector<Mob>     localMobs;     // Mobs must be instantiated 
         std::vector<std::string>   localUsers;    // by GUID only, for refereence 
+
+        std::vector<void(*)(User)>   menuFunctions;
 };
 
-extern const Screen mainmenu;
+//extern const Screen mainmenu;
 
 }
 

@@ -11,7 +11,8 @@ SRC:=main.cpp \
 	mob.cpp \
 	command.cpp \
 	item_callbacks.cpp \
-	item.cpp 
+	item.cpp \
+	main_menu.cpp
 
 default:
 	g++ $(INC) -L$(LIB) $(SRC) -lenet -lsqlite3  -o server -Wl,-rpath,. -Wall 
