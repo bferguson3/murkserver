@@ -46,6 +46,7 @@ void Server::ProcessEvent(ENetEvent event)
     std::string _un;
     Murk::Packet _p;
     Murk::Screen* _s;
+    char _guid[17] = { 0 };
 
     printf("event peer %p\n", event.peer);
     _p.SetPeer(event.peer);
@@ -57,7 +58,7 @@ void Server::ProcessEvent(ENetEvent event)
                     event.peer->address.host, event.peer->address.port);
             
             // Create a unique guid for the user 
-            char _guid[16];
+            
             generate_new_guid(_guid);
             
             // Allocate a user and copy the guid 
@@ -109,7 +110,7 @@ void Server::ProcessPacket(Packet p)
 {
     std::string _t = "type";
     std::string _d = p.GetData(_t);
-
+    
     //
     // LOGIN REQUEST 
     //
@@ -135,37 +136,20 @@ void Server::ProcessPacket(Packet p)
     //
     else if(_d == "MENUSEL"){
         //std::string id = (const char*)p.GetPeer()->data;
+        User* _u = (User*)p.GetPeer()->data;
+        std::string id = _u->GetID();
         
-        //User u = GetUserFromActiveUserMap(id);
-        User* u = (User*)p.GetPeer()->data;
+        User u = activeUserMap[id];
+        
         // what scene am I on ? 
-        Screen* sc = (Screen*)u->GetScreen();
-        sc->Execute(*u, 0); // TODO what selection
+        Screen* sc = (Screen*)u.GetScreen();
+        sc->Execute(u, 0); // TODO what selection
         
         SendLocalMessage(sc, "You selected an option, hold on. WIP!");
     }
     //
     //
 
-}
-
-User Server::GetUserFromActiveUserMap(std::string id)
-{
-    User us;
-    std::unordered_map<std::string, Murk::User>::iterator it;
-    for(it = activeUserMap.begin(); it != activeUserMap.end(); it++)
-        {
-            string xg;
-            xg = it->first; // .copy(&xg[0], 16);
-
-            if(xg.compare(0, 16, id) == 0){
-                //match 
-                us = it->second;
-                break;
-            }
-            printf("[DEBUG] Moving on...\n");
-        }
-    return us;
 }
 
 // Copies the returned PW from SQL db into a buffer
@@ -273,13 +257,13 @@ void Server::SendLocalMessage(void* screen, std::string a)
     
     //printf("[DEBUG] %s\n", _p.GetString().c_str());
     
+    std::unordered_map<std::string, Murk::User>::iterator it;
     // now loop through all uesrs in the target scene ID 
-    for(int i = 0; i < _s->GetLocalUserCt(); i++){
-        std::string us = _s->GetUserByIndex(i);
-        User u;
-        u = GetUserFromActiveUserMap(us); // < This is slow, be careful 
+    for(it = activeUserMap.begin(); it!=activeUserMap.end(); it++){
+    
+        User* u = &it->second;
         
-        enet_peer_send(u.GetPeer(), 0, packet); // Send the packet 
+        enet_peer_send(u->GetPeer(), 0, packet); // Send the packet 
     }
     
 }

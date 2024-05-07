@@ -48,8 +48,6 @@ class Server {
 
         void SendLocalMessage(void* s, std::string a);
         
-        User GetUserFromActiveUserMap(std::string id);
-
         ENetHost*   server;
         ENetAddress address;
         sqlite3*    murk_userdb;
