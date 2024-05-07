@@ -46,10 +46,7 @@ class Server {
         void ProcessPacket(Packet p);
         bool CheckPassword(std::string u, std::string p);
 
-        // TODO; convert these to formatted strings
         void SendLocalMessage(void* s, std::string a);
-        void SendLocalMessage(std::string a, std::string b);
-        void SendLocalMessage(void* s, std::string a, std::string b, std::string c);
         
         User GetUserFromActiveUserMap(std::string id);
 

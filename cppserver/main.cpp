@@ -7,6 +7,7 @@
 
 
 void InitMainMenu();
+void Initialize_ItemDB();
 
 // const scr definitions - loaded from data files 
 // id, type, exits, shortdesc, desc, items/mobs
@@ -14,6 +15,8 @@ void InitMainMenu();
 const Exits NSEW = { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 };
 // callbacks
 namespace Murk { 
+
+	Murk::Item potion; // allocate
 
 	std::vector<void(*)(User)> mm_opt;
 	Murk::Screen mainmenu(SCR_LOGIN, noexit, "Main Menu", "Main menu example for MURK");
@@ -39,19 +42,16 @@ int main()
 
 	
 	// Set up inventory database: 
-	Murk::Item potion; // allocate
-	potion.use = &Murk::use_potion; // set meta
-	potion.display_name = "Potion";
-	potion.SetFlags(ITEMFLAG_USE_CONSUME|ITEMFLAG_USEABLE_BATTLE|ITEMFLAG_USEABLE_MAP);
-
+	Initialize_ItemDB();
 		// TEST AUTO USER 
 	
 	Murk::User _u;	// allocate 
+	//extern Murk::Item Murk::potion; // test
 	_u.SetID("g00b3rg00b3r");
 	_u.SetScreen(&server.screensList[0]); // meta 
 	_u.display_name = "Test!!!User";
-	_u.PickUp(potion, true, 1); // action 
-	potion.use((int*)(&_u));
+	_u.PickUp(Murk::potion, true, 1); // action 
+	Murk::potion.use((int*)(&_u));
 	_u.SetScreen(&server.screensList[1]);
 	
 
@@ -73,6 +73,7 @@ int main()
 
 }
 
+// BEYOND HERE WILL BE GENERATED CODE AUTOMATICALLY . 
 
 void InitMainMenu()
 {
@@ -84,3 +85,12 @@ void InitMainMenu()
 
 
 }
+
+// DO NOT MODIFY 
+void Initialize_ItemDB(){
+    
+	Murk::potion.use = &Murk::use_potion; // set meta
+	Murk::potion.display_name = "Potion";
+	Murk::potion.SetFlags(ITEMFLAG_USE_CONSUME|ITEMFLAG_USEABLE_BATTLE|ITEMFLAG_USEABLE_MAP);
+}
+	

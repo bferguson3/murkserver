@@ -151,14 +151,16 @@ void Server::ProcessPacket(Packet p)
 User Server::GetUserFromActiveUserMap(std::string id)
 {
     User us;
-    for(auto& x : activeUserMap)
+    std::unordered_map<std::string, Murk::User>::iterator it;
+    //for(auto& x : activeUserMap)
+    for(it = activeUserMap.begin(); it != activeUserMap.end(); it++)
         {
             string xg;
-            xg = x.first; // .copy(&xg[0], 16);
+            xg = it->first; // .copy(&xg[0], 16);
 
             if(xg.compare(0, 16, id) == 0){
                 //match 
-                us = x.second;
+                us = it->second;
                 break;
             }
             printf("[DEBUG] Moving on...\n");
@@ -280,47 +282,6 @@ void Server::SendLocalMessage(void* screen, std::string a)
         enet_peer_send(u.GetPeer(), 0, packet); // Send the packet 
     }
     
-}
-
-void Server::SendLocalMessage(std::string a, std::string b)
-{
-    size_t _zero = a.find("{0}");
-    a.replace(_zero, 3, b);
-    // TODO: SEND THIS OVER THE NETWORK 
-}
-
-void Server::SendLocalMessage(void* screen, std::string a, std::string b, std::string c)
-{
-    size_t _zero = a.find("{0}");
-    a.replace(_zero, 3, b);
-    
-    size_t _one = a.find("{1}");
-    a.replace(_one, 3, c);
-    
-
-    Murk::Packet _p(MP_MESSAGE_SCREEN);
-    _p.SetMessage(a.c_str());
-
-    Screen* _s = (Screen*)screen;
-    _p.SetScreen(_s->GetID());
-    
-    if(!!_p.Validate()){
-        printf("ERROR: Invalid packet created, not sent.\n");
-        return;
-    };
-    
-    ENetPacket *packet = enet_packet_create(_p.GetString().c_str(), _p.GetString().length(),
-                ENET_PACKET_FLAG_RELIABLE);
-    
-    // now loop through all uesrs in the target scene ID 
-    for(int i = 0; i < _s->GetLocalUserCt(); i++){
-        std::string us = _s->GetUserByIndex(i);
-        User u;
-        u = GetUserFromActiveUserMap(us);
-        
-        enet_peer_send(u.GetPeer(), 0, packet);
-    }
-    //
 }
 
 void Server::AddScreen(Murk::Screen s)
