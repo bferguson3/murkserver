@@ -21,6 +21,8 @@ class User : public Object
     public:
         void      SetID(char* id);
         char*     GetID();
+        
+        void PickUp(Item i, bool stackable, int ct);
 
         std::string GetLastPacket();
         void        SetLastPacket(std::string p);
@@ -28,8 +30,8 @@ class User : public Object
         void        Equip(Item i);
         void        UpdateStats();
 
-        void        SetScreen(void* s);
-        
+        void        SetScreen(void* s); // move immediately to...
+        void*      GetScreen();
 
 
     private:

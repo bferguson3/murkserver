@@ -19,8 +19,8 @@ namespace Murk {
         SCREEN_COUNT++;
     }
 
+    std::string Screen::GetName() { return shortdesc; }
     int Screen::GetScreenCount() { return SCREEN_COUNT; }
-
     std::string Screen::GetDescription() { return description; }
 
     Screen::Screen(enum ScreenType t, Exits e, std::string desc, std::string longdesc)
@@ -33,5 +33,11 @@ namespace Murk {
 
         SCREEN_COUNT++;
     }
+
+    int Screen::GetLocalUserCt() { 
+        return localUsers.size();
+    }
+
+    int Screen::GetID() { return id; }
 
 }

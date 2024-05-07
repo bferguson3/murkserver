@@ -5,7 +5,7 @@
 #include <string>
 #include <map>
 #include <set>
-//#include "screen.hpp"
+#include "../cppserver/screen.hpp"
 
 extern "C" {
   #include "../murk.h"
@@ -28,6 +28,9 @@ class Packet
         
         std::string GetString();        // returns the json blob 
         void        SetString(const char* s);  // sets the json blob 
+        void SetMessage(std::string msg);
+        void SetScreen(int id);
+
         ENetPeer*   GetPeer();
         void        SetPeer(ENetPeer* p);
         

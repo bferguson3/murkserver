@@ -7,7 +7,7 @@ namespace Murk {
 
 void use_potion(int* target)
 { 
-    printf("test");
+    printf("TEST USE POTION\n");
 }
 
 }

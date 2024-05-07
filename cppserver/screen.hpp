@@ -21,7 +21,11 @@ class Screen
 
         static int GetScreenCount();
 
+
         std::string GetDescription();
+        std::string GetName();
+        int GetID();
+        int GetLocalUserCt();
 
     private:    
         int id;

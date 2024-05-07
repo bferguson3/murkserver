@@ -8,4 +8,10 @@ namespace Murk {
 
     }
 
+    void Mob::PickUp(Item i) { 
+
+        //server.SendLocalMessage("")
+    
+    }
+
 }

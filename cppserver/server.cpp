@@ -59,7 +59,7 @@ void Server::ProcessEvent(ENetEvent event)
             
             // Allocate a user and copy the guid 
             _nuser.SetID(&_guid[0]);
-            _nuser.SetScreen((void*)&mainmenu); // todo: static_cast<> ? 
+            _nuser.SetScreen((void*)&mainmenu); //ADDRESS OF! Screen obj.  // todo: static_cast<> ? 
             activeUserMap[_guid] = _nuser;  // Assign "guid" = MurkUser
             event.peer->data = &activeUserMap[_guid];
             //_s = (Murk::Screen*)_nuser.currentScreen;
@@ -213,6 +213,90 @@ void Server::InitEnet()
     // OK!
     printf("MURK server started on localhost:%d \n", address.port);
     return;
+}
+
+void Server::SendLocalMessage(std::string a)
+{   
+    // TODO: SEND THIS OVER THE NETWORK 
+    printf("test message:");
+    printf("%s", a.c_str());
+    
+}
+
+void Server::SendLocalMessage(std::string a, std::string b)
+{
+    size_t _zero = a.find("{0}");
+    a.replace(_zero, 3, b);
+    // TODO: SEND THIS OVER THE NETWORK 
+    printf("test message:");
+    printf("%s", a.c_str());
+}
+
+void Server::SendLocalMessage(void* screen, std::string a, std::string b, std::string c)
+{
+    size_t _zero = a.find("{0}");
+    a.replace(_zero, 3, b);
+    
+    size_t _one = a.find("{1}");
+    a.replace(_one, 3, c);
+    
+    // TODO: SEND THIS OVER THE NETWORK 
+    printf("test message:");
+    printf("%s", a.c_str());
+
+    Murk::Packet _p(MP_MESSAGE_SCREEN);
+    _p.SetMessage(a.c_str());
+    Screen* _s = (Screen*)screen;
+    _p.SetScreen(_s->GetID());
+    _p.Validate();
+    ENetPacket *packet = enet_packet_create(_p.GetString().c_str(), _p.GetString().length(),
+                ENET_PACKET_FLAG_RELIABLE);
+    // now loop through all uesrs in the target scene ID 
+    for(int i = 0; i < _s->GetLocalUserCt(); i++){
+        
+    }
+    //enet_peer_send(p.GetPeer(), 0, packet);
+}
+
+void Server::AddScreen(Murk::Screen s)
+{
+    screensList.push_back(s);
+}
+
+void Server::SendLocalMessage(std::string a, std::string b, std::string c, std::string d)
+{
+    size_t _z = a.find("{0}");
+    a.replace(_z, 3, b);
+    
+    _z = a.find("{1}");
+    a.replace(_z, 3, c);
+
+    _z = a.find("{2}");
+    a.replace(_z, 3, d);
+    
+    // TODO: SEND THIS OVER THE NETWORK 
+    printf("test message:");
+    printf("%s", a.c_str());
+    
+}
+void Server::SendLocalMessage(std::string a, std::string b, std::string c, std::string d, std::string e)
+{
+    size_t _z = a.find("{0}");
+    a.replace(_z, 3, b);
+    
+    _z = a.find("{1}");
+    a.replace(_z, 3, c);
+
+    _z = a.find("{2}");
+    a.replace(_z, 3, d);
+    
+    _z = a.find("{3}");
+    a.replace(_z, 3, e);
+
+    
+    // TODO: SEND THIS OVER THE NETWORK 
+    printf("test message:");
+    printf("%s", a.c_str());
 }
 
 }

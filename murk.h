@@ -34,7 +34,8 @@ enum MURK_PACKET_TYPES
     MP_LOGIN_WELCOME = 2,
     MP_MESSAGE_GEN = 3,
     MP_MENUSEL = 4,
-    MP_PCOMMAND = 5
+    MP_PCOMMAND = 5,
+    MP_MESSAGE_SCREEN = 6
 };
 
 typedef enum packet_action //! client

@@ -1,6 +1,7 @@
 
 #include "packet.hpp"
 #include "../res/json.h"
+#include "../cppserver/screen.hpp"
 
 namespace Murk { 
 
@@ -34,8 +35,27 @@ Packet::Packet(enum MURK_PACKET_TYPES t)
         case MP_MESSAGE_GEN:
             str += "MESSAGE_GEN\",\n ";
             break;
+        case MP_MESSAGE_SCREEN:
+            str += "MESSAGE_SCREEN\",\n ";
     }
 }
+
+//
+// These two are used together 
+void Packet::SetMessage(std::string msg)
+{
+    str += "\"text\":\"";
+    str += msg;
+    str += "\",\n";
+}
+void Packet::SetScreen(int id)
+{
+    str += "\"screen\":\"";
+    str += std::to_string(id);
+    str += "\"\n}";
+}
+///
+//
 
 Packet::Packet(const char* s)
 {

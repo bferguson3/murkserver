@@ -29,13 +29,24 @@ class Server {
         void ProcessPacket(Packet p);
         bool CheckPassword(std::string u, std::string p);
 
+        // TODO; make a template 
+        void SendLocalMessage(std::string a);
+        void SendLocalMessage(std::string a, std::string b);
+        void SendLocalMessage(void* s, std::string a, std::string b, std::string c);
+        void SendLocalMessage(std::string a, std::string b, std::string c, std::string d);
+        void SendLocalMessage(std::string a, std::string b, std::string c, std::string d, std::string e);
+
         ENetHost*   server;
         ENetAddress address;
         sqlite3*    murk_userdb;
 
+        void AddScreen(Screen s);
+
         
         //std::vector <MurkUser> activeUsers;
-        std::unordered_map <std::string, Murk::User> activeUserMap;
+        std::unordered_map <std::string, Murk::User> activeUserMap; // guid, User object
+        std::vector<Murk::Screen> screensList;
+
 
     private:
 
