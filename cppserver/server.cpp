@@ -69,7 +69,7 @@ void Server::ProcessEvent(ENetEvent event)
             _un = _guid;
             activeUserMap.insert(std::make_pair(_un, _nuser));
 
-            event.peer->data = activeUserMap[_un].GetID(); //&activeUserMap[_guid];
+            event.peer->data = &activeUserMap[_un]; // .GetID(); //&activeUserMap[_guid];
             
             printf("Testing new user name: %s\n", activeUserMap[_un].display_name.c_str());
             
@@ -134,12 +134,13 @@ void Server::ProcessPacket(Packet p)
     // MENU SELECTION 
     //
     else if(_d == "MENUSEL"){
-        std::string id = (const char*)p.GetPeer()->data;
+        //std::string id = (const char*)p.GetPeer()->data;
         
-        User u = GetUserFromActiveUserMap(id);
+        //User u = GetUserFromActiveUserMap(id);
+        User* u = (User*)p.GetPeer()->data;
         // what scene am I on ? 
-        Screen* sc = (Screen*)u.GetScreen();
-        sc->Execute(u, 0); // TODO what selection
+        Screen* sc = (Screen*)u->GetScreen();
+        sc->Execute(*u, 0); // TODO what selection
         
         SendLocalMessage(sc, "You selected an option, hold on. WIP!");
     }
@@ -152,7 +153,6 @@ User Server::GetUserFromActiveUserMap(std::string id)
 {
     User us;
     std::unordered_map<std::string, Murk::User>::iterator it;
-    //for(auto& x : activeUserMap)
     for(it = activeUserMap.begin(); it != activeUserMap.end(); it++)
         {
             string xg;
