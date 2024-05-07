@@ -37,8 +37,8 @@ int main()
 	potion.SetFlags(ITEMFLAG_USE_CONSUME|ITEMFLAG_USEABLE_BATTLE|ITEMFLAG_USEABLE_MAP);
 
 	Murk::User _u;	// allocate 
-	_u.SetScreen((void*)&Murk::test1); // meta 
-	_u.display_name = "Test User";
+	_u.SetScreen(&server.screensList[0]); // meta 
+	_u.display_name = "Test!!!User";
 
 	_u.PickUp(potion, true, 1); // action 
 	potion.use((int*)(&_u));

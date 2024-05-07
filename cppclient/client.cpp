@@ -191,6 +191,12 @@ void Client::ProcessPacket(Murk::Packet p)
         FLAG_INPUT_MENU = true;
 
     }
+    else if (_d == "MESSAGE_SCREEN"){
+        // Print the menu text 
+        AnsiPrint(p.GetData(_tx));
+
+        //TODO 
+    }
 }
 
 

@@ -4,7 +4,9 @@
 #ifndef __USER_HPP__
 #define __USER_HPP__
 
-extern "C" {
+extern "C"
+{
+  #include <enet/enet.h>
   #include "../murk.h"
 }
 #include <cstring>
@@ -14,15 +16,18 @@ extern "C" {
 #include "object.hpp"
 //#include "screen.hpp"
 
+
 namespace Murk { 
 
 class User : public Object 
 {
     public:
+        User();
+
         void      SetID(char* id);
         char*     GetID();
         
-        void PickUp(Item i, bool stackable, int ct);
+        void      PickUp(Item i, bool stackable, int ct);
 
         std::string GetLastPacket();
         void        SetLastPacket(std::string p);
@@ -33,13 +38,19 @@ class User : public Object
         void        SetScreen(void* s); // move immediately to...
         void*      GetScreen();
 
+        void SetPeer(ENetPeer* p);
+        ENetPeer* GetPeer();
+      
 
     private:
-        char        id[16]; // assigned guid 
+        char        id[17]; // assigned guid 
 
         PlayerState state;
         std::string last_packet;
         void* currentScreen;
+        ENetPeer* mypeer;
+
+        
         
         //std::string display_name;
         // Define custom character data 

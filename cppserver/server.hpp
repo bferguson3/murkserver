@@ -17,7 +17,24 @@ extern "C"
 
 using namespace std;
 
+struct Key { 
+    std::string guid;
+
+    bool operator==(const Key &other) const { 
+      return !(strcmp(guid.c_str(),other.guid.c_str()));
+    }
+};
+
+template<>
+struct std::hash<Key>{ 
+  std::size_t operator()(const Key& k) const { 
+    return hash<string>()(k.guid);
+  }
+};
+
 namespace Murk { 
+
+
 
 class Server {
 
@@ -36,6 +53,8 @@ class Server {
         void SendLocalMessage(std::string a, std::string b, std::string c, std::string d);
         void SendLocalMessage(std::string a, std::string b, std::string c, std::string d, std::string e);
 
+        User GetUserFromActiveUserMap(std::string id);
+
         ENetHost*   server;
         ENetAddress address;
         sqlite3*    murk_userdb;
@@ -44,7 +63,7 @@ class Server {
 
         
         //std::vector <MurkUser> activeUsers;
-        std::unordered_map <std::string, Murk::User> activeUserMap; // guid, User object
+        std::unordered_map <Key, Murk::User> activeUserMap; // guid, User object
         std::vector<Murk::Screen> screensList;
 
 

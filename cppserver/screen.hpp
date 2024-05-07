@@ -7,6 +7,7 @@ extern "C" {
     #include "../murk.h"
 }
 #include <string>
+#include <vector>
 #include "user.hpp"
 #include "item.hpp"
 #include "mob.hpp"
@@ -26,6 +27,10 @@ class Screen
         std::string GetName();
         int GetID();
         int GetLocalUserCt();
+        std::string GetUserByIndex(int i);
+
+        void EnterUser(const char* guid);
+        void ExitUser(const char* guid); // match to User*
 
     private:    
         int id;
@@ -39,9 +44,7 @@ class Screen
         // The vectors of class objects are only filled as they are needed. 
         std::vector<Item*>   localItems;    // Items cannot be maipulated as they are pointers
         std::vector<Mob>     localMobs;     // Mobs must be instantiated 
-        std::vector<User*>   localUsers;    // e.g. full data here is not sent 
-            // On client side, localUsers are allocated/instantiated upon 
-            //  entering rooms. On the server they track users as they move.
+        std::vector<std::string>   localUsers;    // by GUID only, for refereence 
 };
 
 extern const Screen mainmenu;

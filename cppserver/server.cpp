@@ -44,6 +44,8 @@ void Server::ProcessEvent(ENetEvent event)
     Murk::User _nuser;
     Murk::Packet _p;
     Murk::Screen* _s;
+
+    Key k;
     printf("event peer %p\n", event.peer);
     _p.SetPeer(event.peer);
             
@@ -60,9 +62,18 @@ void Server::ProcessEvent(ENetEvent event)
             // Allocate a user and copy the guid 
             _nuser.SetID(&_guid[0]);
             _nuser.SetScreen((void*)&mainmenu); //ADDRESS OF! Screen obj.  // todo: static_cast<> ? 
-            activeUserMap[_guid] = _nuser;  // Assign "guid" = MurkUser
-            event.peer->data = &activeUserMap[_guid];
+            _nuser.SetPeer(event.peer);
+            _nuser.display_name = "HELLO WORLD"; // temporary 
+            
+            k.guid = _guid;
+            
+            //activeUserMap[k] = _nuser;  // Assign "guid" = MurkUser
+            activeUserMap.insert(std::make_pair(k, _nuser));
+
+            event.peer->data = activeUserMap[k].GetID(); //&activeUserMap[_guid];
             //_s = (Murk::Screen*)_nuser.currentScreen;
+
+            printf("Testing new user name: %s\n", activeUserMap[k].display_name.c_str());
             
             enet_packet_destroy(event.packet);
             break;
@@ -77,6 +88,7 @@ void Server::ProcessEvent(ENetEvent event)
                 exit(1);
             }
             printf("[DEBUG] PACKET: %s\n", _p.GetString().c_str());
+            printf("\n[DEBUG] Peer GUID: %s\n", (const char*)(event.peer)->data);
             
             _p.ParseData();     // stores values into a map 
             ProcessPacket(_p);
@@ -126,11 +138,37 @@ void Server::ProcessPacket(Packet p)
     // MENU SELECTION 
     //
     else if(_d == "MENUSEL"){
-        User* _u = (User*)p.GetPeer()->data; // What is the User?
-        // What screen is the user on?
-        //Murk::Screen _s = _u.
+        std::string id = (const char*)p.GetPeer()->data;
+        
+        User u = GetUserFromActiveUserMap(id);
+        
+        SendLocalMessage(u.GetScreen(), "Wazzap {0}{1}", "ho", "sack");
+        
     }
-    
+    //
+    // END MENU SELECTION TEST 
+    // 
+}
+
+User Server::GetUserFromActiveUserMap(std::string id)
+{
+    User us;
+    for(auto& x : activeUserMap)
+        {
+            string xg;
+            string xg2;
+            xg = x.first.guid; // .copy(&xg[0], 16);
+            xg2 = id;
+
+            if(xg.compare(0, 16, xg2) == 0){
+                //std::cout << "I found my guy" << '\n';
+                //std::cout << x.second.display_name << '\n';
+                us = x.second;
+                break;
+            }
+            printf("[DEBUG] Moving on...\n");
+        }
+    return us;
 }
 
 // Copies the returned PW from SQL db into a buffer
@@ -246,16 +284,26 @@ void Server::SendLocalMessage(void* screen, std::string a, std::string b, std::s
 
     Murk::Packet _p(MP_MESSAGE_SCREEN);
     _p.SetMessage(a.c_str());
+
     Screen* _s = (Screen*)screen;
     _p.SetScreen(_s->GetID());
+    
     _p.Validate();
+    
     ENetPacket *packet = enet_packet_create(_p.GetString().c_str(), _p.GetString().length(),
                 ENET_PACKET_FLAG_RELIABLE);
+    
     // now loop through all uesrs in the target scene ID 
     for(int i = 0; i < _s->GetLocalUserCt(); i++){
-        
+        std::string us = _s->GetUserByIndex(i);
+        //printf("User by index: %s\n", us.c_str());
+        User u;
+        Key k;
+        k.guid = us;
+        u = GetUserFromActiveUserMap(us);
+        enet_peer_send(u.GetPeer(), 0, packet);
     }
-    //enet_peer_send(p.GetPeer(), 0, packet);
+    //
 }
 
 void Server::AddScreen(Murk::Screen s)
@@ -300,3 +348,4 @@ void Server::SendLocalMessage(std::string a, std::string b, std::string c, std::
 }
 
 }
+
