@@ -14,12 +14,12 @@ namespace Murk
         currentScreen = 0;
     }
 
-    void User::PickUp(Item i, bool stackable, int ct) { 
+    void User::PickUp(Item i, int ct) { 
         
         // TODO : multiple checks here 
         Item _i;
         _i = i;
-        _i.SetStackable(stackable);
+        
         _i.SetStackCount(ct);
         inventory.push_back(_i);
 
@@ -43,15 +43,30 @@ namespace Murk
         Screen* _s = (Screen*)currentScreen;
         // leave current screen 
         if(currentScreen != 0){
-            printf("current screen not 0, so.. \n");
+            //printf("[DEBUG] Current screen not null. Removing from <vec>\n");
             _s->ExitUser(GetID()); // Delete user from screen by ref
         }
         // move to next 
         _s = (Screen*)s;
-        printf("%s\n", _s->GetDescription().c_str());
         _s->EnterUser(GetID());
 
+        //printf("[DEBUG] Room short desc: %s\n", _s->GetName().c_str());
+        //printf("[DEBUG] Room description: %s\n", _s->GetDescription().c_str());
+        // print exits? 
+
         currentScreen = s; 
+
+        // send a packet with all of the room info. 
+        Murk::Packet _p = Packet(MP_ROOM_INFO); 
+        _p.AddScreen(_s);
+        
+        if(!!_p.Validate())
+        {
+            printf("ERROR: Packet invalid! Not sent.\n");
+            return;
+        }
+        
+        server.SendPacket(GetPeer(), _p);
     
     }
     void*     User::GetScreen() { return (void*)currentScreen; }

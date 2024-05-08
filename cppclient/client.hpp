@@ -40,21 +40,27 @@ class Client {
         void SetNonblocking();
         void ProcessInput(char* i);
         void AnsiPrint(std::string s);
+        std::string InputPrompt();
 
         void GameLoop();
         void SendLogin();
         void SendMenuSelect(char s);
+        void SendCommand(std::string s);
         void* Encrypt(const char* dat);
 
         ENetHost* host;
         ENetPeer* server;
         char            id[16];
         struct UserPass userpass;
+        std::string last_cmd;
 
         int input_ctr;
 
         enum PlayerState state;
         Screen           currentScreen;
+
+    // PUBLIC VARS FROM SERVER 
+#include "../cppserver/character_data.h"
 
     private:
 

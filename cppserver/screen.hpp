@@ -32,10 +32,10 @@ class Screen
         void EnterUser(const char* guid);
         void ExitUser(const char* guid); // match to User*
 
-        void Execute(User u, int i);
+        void Execute(User* u, int i);
 
-        void SetMenu(std::vector<void(*)(User)> opts);
-        
+        void SetMenu(std::vector<void(*)(User*)> opts);
+        int ExitsToInt();
 
     private:    
         int id;
@@ -51,7 +51,7 @@ class Screen
         std::vector<Mob>     localMobs;     // Mobs must be instantiated 
         std::vector<std::string>   localUsers;    // by GUID only, for refereence 
 
-        std::vector<void(*)(User)>   menuFunctions;
+        std::vector<void(*)(User*)>   menuFunctions;
 };
 
 //extern const Screen mainmenu;

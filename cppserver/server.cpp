@@ -4,6 +4,9 @@
 #include "../jsonres.h"
 #include "screen.hpp"
 
+
+extern Murk::Screen mainmenu;
+
 namespace Murk
 {
 
@@ -36,13 +39,13 @@ void Server::Init()
     InitSQL();
 }
 
-extern Screen mainmenu;
 
 void Server::ProcessEvent(ENetEvent event)
 {
 
     //size_t len;
     Murk::User _nuser;
+    Murk::User* up;
     std::string _un;
     Murk::Packet _p;
     Murk::Screen* _s;
@@ -87,7 +90,8 @@ void Server::ProcessEvent(ENetEvent event)
                 exit(1);
             }
             printf("[DEBUG] PACKET: %s\n", _p.GetString().c_str());
-            printf("\n[DEBUG] Peer GUID: %s\n", (const char*)(event.peer)->data);
+            up = (User*)event.peer->data;
+            printf("\n[DEBUG] Peer GUID: %s\n", up->GetID());
             
             _p.ParseData();     // stores values into a map 
             ProcessPacket(_p);
@@ -135,21 +139,33 @@ void Server::ProcessPacket(Packet p)
     // MENU SELECTION 
     //
     else if(_d == "MENUSEL"){
-        //std::string id = (const char*)p.GetPeer()->data;
-        User* _u = (User*)p.GetPeer()->data;
-        std::string id = _u->GetID();
         
-        User u = activeUserMap[id];
+        User* _u = (User*)p.GetPeer()->data;
+        
+        // alternate way of getting User
+        //std::string id = _u->GetID();
+        //User u = activeUserMap[id];
         
         // what scene am I on ? 
-        Screen* sc = (Screen*)u.GetScreen();
-        sc->Execute(u, 0); // TODO what selection
+        Screen* sc = (Screen*)_u->GetScreen();
+
+        int sel = std::stoi(p.GetData("select"));
+        printf("[DEBUG] selected %d\n", sel);
+        sc->Execute(_u, sel);
         
-        SendLocalMessage(sc, "You selected an option, hold on. WIP!");
+        //SendLocalMessage(sc, "You selected an option, hold on. WIP!");
     }
     //
     //
 
+}
+
+void Server::SendPacket(ENetPeer* u, Packet p)
+{
+    ENetPacket *packet = enet_packet_create(p.GetString().c_str(), p.GetString().length(),
+            ENET_PACKET_FLAG_RELIABLE);
+
+    enet_peer_send(u, 0, packet); // Send the packet 
 }
 
 // Copies the returned PW from SQL db into a buffer

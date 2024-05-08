@@ -6,5 +6,8 @@ long   exp;
     int   DEX;
     int   WIS;
 
+    int maxHP;
+    int curHP;
+
 std::vector<Item>  inventory; // pointers to itemdb as items are static, count is held here
 std::vector<Item*> equipment;  // points to a* in inventory<a,b>

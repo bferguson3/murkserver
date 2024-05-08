@@ -31,6 +31,9 @@ class Packet
         void SetMessage(std::string msg);
         void SetScreen(int id);
 
+        void AddScreen(Screen* s);
+        void AddCommand(std::string s);
+
         ENetPeer*   GetPeer();
         void        SetPeer(ENetPeer* p);
         

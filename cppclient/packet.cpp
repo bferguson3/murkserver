@@ -11,6 +11,23 @@ Packet::Packet()
     type = MP_NOPACKET;
 }
 
+/*
+{
+"type":"ROOM_INFO",
+"name":$shortdesc,
+"desc":$longdesc,
+"exits":int,
+"users":[],
+"items":[]
+}
+*/
+
+void Packet::AddScreen(Screen* s)
+{
+    str += "\"name\":\"" + s->GetName() + "\",\n \"desc\":\"" + s->GetDescription() + "\",\n"; 
+    str += " \"exits\":\"" + std::to_string(s->ExitsToInt()) + "\"\n}";
+}
+
 //! Constructing a packet requires the first json field 
 //!  to be "type", so we fill that out here. 
 Packet::Packet(enum MURK_PACKET_TYPES t)
@@ -37,6 +54,10 @@ Packet::Packet(enum MURK_PACKET_TYPES t)
             break;
         case MP_MESSAGE_SCREEN:
             str += "MESSAGE_SCREEN\",\n ";
+            break;
+        case MP_ROOM_INFO:
+            str += "ROOM_INFO\",\n ";
+            break;
     }
 }
 
@@ -78,6 +99,11 @@ void Packet::UserPass(std::string usr, std::string pass)
     str += pass;
     str += "\"\n}";
 
+}
+
+void Packet::AddCommand(std::string s)
+{
+    str += " \"cmd\":\"" + s + "\"\n}";
 }
 
 void Packet::Select(char s)

@@ -6,28 +6,35 @@
 #include "main_menu.hpp"
 
 
-void InitMainMenu();
 void Initialize_ItemDB();
+extern void Murk::InitMainMenu();
 
 // const scr definitions - loaded from data files 
 // id, type, exits, shortdesc, desc, items/mobs
 //   if items/mobs is not empty then it will spawn once every SPAWNTICKRATE 
-const Exits NSEW = { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 };
+const Exits NSEW = { 1, 1, 1, 1, 0, 0};//, 0, 0, 0, 0 };
+
+const Exits noexit = { no_exits };
+
+Murk::Server server;
+std::vector<void(*)(Murk::User*)> mm_opt;
+Murk::Screen mainmenu(SCR_LOGIN, noexit, "Main Menu", "Main menu example for MURK");
+	
 // callbacks
 namespace Murk { 
 
-	Murk::Item potion; // allocate
-
-	std::vector<void(*)(User)> mm_opt;
-	Murk::Screen mainmenu(SCR_LOGIN, noexit, "Main Menu", "Main menu example for MURK");
-
+	Item potion; // allocate
+	
 	//const 
-	const Screen test1(SCR_NORMAL_AREA, NSEW, "Grassy Hill", "There is nothing here yet!");
+	const Screen test1(SCR_NORMAL_AREA, NSEW, "Grassy Hill", 
+"Thick sheaves of grass and dandelions dance at your knees. Hills of emerald\\n\
+ and white roll off in all directions, though a small gathering of dots in\\n\
+ the southeast tells you that a settlement is nearby.");
 	void use_potion(int* target);
 }
 
 
-class Murk::Server server;
+//class Murk::Server server;
 
 
 int main()
@@ -35,7 +42,7 @@ int main()
 	server.Init();
 	
 	// Set up all screens : 
-	InitMainMenu(); //adds screen #0 
+	Murk::InitMainMenu(); //adds screen #0 
 	server.AddScreen(Murk::test1);
 		
 	printf("[DEBUG] screen count %d\n", Murk::Screen::GetScreenCount());
@@ -43,17 +50,7 @@ int main()
 	
 	// Set up inventory database: 
 	Initialize_ItemDB();
-		// TEST AUTO USER 
-	
-	Murk::User _u;	// allocate 
-	//extern Murk::Item Murk::potion; // test
-	_u.SetID("g00b3rg00b3r");
-	_u.SetScreen(&server.screensList[0]); // meta 
-	_u.display_name = "Test!!!User";
-	_u.PickUp(Murk::potion, true, 1); // action 
-	Murk::potion.use((int*)(&_u));
-	_u.SetScreen(&server.screensList[1]);
-	
+
 
 	ENetEvent event;
 	while (1)
@@ -70,19 +67,6 @@ int main()
 	server.DeInit();
 
 	return 0;
-
-}
-
-// BEYOND HERE WILL BE GENERATED CODE AUTOMATICALLY . 
-
-void InitMainMenu()
-{
-	// init somehow?
-	Murk::mm_opt.push_back((void(*)(Murk::User))&Murk::new_game);
-	Murk::mm_opt.push_back((void(*)(Murk::User))&Murk::quit_game);
-	Murk::mainmenu.SetMenu(Murk::mm_opt);
-	server.AddScreen(Murk::mainmenu);
-
 
 }
 

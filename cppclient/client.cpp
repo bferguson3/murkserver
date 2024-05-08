@@ -23,7 +23,7 @@ Client::Client()
     FLAG_INPUT_USER = false;
     FLAG_INPUT_PASSWORD = false;
 
-    verb_context = verb_context[0];
+    verb_context = "";//default_context[0];
     //class Screen _s;
     //currentScreen = _s;
 }
@@ -56,6 +56,9 @@ void Client::GameLoop()
         case STATE_DEAD:
             break;
         case STATE_IDLE:
+            break;
+        case STATE_NORMAL:
+            
             break;
         case STATE_INCOMBAT:
 
@@ -182,10 +185,6 @@ void Client::ProcessPacket(Murk::Packet p)
         printf("\n");
         printf("%s", MENU_SELECT_STRING);
         
-        //Exits _e;
-        //class Screen _s(SCR_MAIN_MENU, _e, "Main Menu");
-        //currentScreen = _s;
-        // Instead of assigning here, receive the screen data from the server! 
         
         // Set the input flag 
         FLAG_INPUT_MENU = true;
@@ -197,9 +196,67 @@ void Client::ProcessPacket(Murk::Packet p)
 
         //TODO 
     }
+    else if(_d == "ROOM_INFO")
+    {
+        // [ Room ]
+        AnsiPrint("[" + p.GetData("name") + "]");
+        // [ Description ]
+        AnsiPrint(p.GetData("desc"));
+        // Exits
+        std::string ex = "There are exits to the ";
+        int _ei = stoi(p.GetData("exits"));
+        int _l = 0;
+        if(_ei & (1)){ 
+            ex += "north, ";
+            _l = 1;
+        }
+        if(_ei & (1<<1)){ 
+            ex += "south, ";
+            _l = (1<<1);
+        }
+        if(_ei & (1<<2)){ 
+            ex += "east, ";
+            _l = (1<<2);
+        }
+        if(_ei & (1<<3)){ 
+            ex += "west, ";
+            _l = (1<<3);
+        }
+        if(_ei & (1<<4)){ 
+            ex += "up, ";
+            _l = (1<<4);
+        }
+        if(_ei & (1<<5)){ 
+            ex += "down, ";
+            _l = (1<<5);
+        }
+        // TODO : ENGLISH 
+        if(_l == (1))
+            ex = ex.substr(0, ex.length() - 7) + "north.";
+        if(_l == (1 << 1))
+            ex = ex.substr(0, ex.length() - 7) + "and south.";
+        if(_l == (1 << 2))
+            ex = ex.substr(0, ex.length() - 6) + "and east.";
+        if(_l == (1 << 3))
+            ex = ex.substr(0, ex.length() - 6) + "and west.";
+        if(_l == (1 << 4))
+            ex = ex.substr(0, ex.length() - 4) + "and up.";
+        if(_l == (1 << 5))
+            ex = ex.substr(0, ex.length() - 6) + "and down.";
+
+        AnsiPrint(ex);
+
+        AnsiPrint(InputPrompt());
+
+        state = STATE_NORMAL;
+        FLAG_MUTE_INPUT = false;
+    }
 }
 
-
+std::string Client::InputPrompt()
+{
+    return "HP:" + std::to_string(curHP) + "> ";
+}
 
 /// Stores Ansi codes in buffer to flush at once
 /// otherwise, prints one character at a time  
@@ -276,8 +333,9 @@ void Client::ProcessInput(char* input)
     int a = _getc();
     //if(a > 0) printf("%d\n", a);
     // Standard check: 
-    if(a < 127 && a > -1) {
+    if((a < 127) && (a > -1) && (a != 9)) {
         input[input_ctr++] = (char)a;
+        
         // Key-by-key processing here: 
         if(a > 0x1f && a < 0x80) // Echo normal ascii 
         {
@@ -294,6 +352,8 @@ void Client::ProcessInput(char* input)
             FLAG_MUTE_INPUT = true;
             SendMenuSelect(a);
             printf("\n"); // CR 
+            clear(input, 256);
+            input_ctr = 0;
         }
     }
     if(a == 10 || a == 13) { // 10 or 13 depending on mode submits
@@ -313,6 +373,14 @@ void Client::ProcessInput(char* input)
 
             printf("\nLogging in...\n");
         }
+        if(state == STATE_NORMAL) // Out of combat entity 
+        {
+            SendCommand(input);
+
+            printf("\n");
+
+            state = STATE_IDLE; // waiting for reply 
+        }
         
         // reset input 
         clear(input, 256);
@@ -321,16 +389,57 @@ void Client::ProcessInput(char* input)
     // TAB FOR AUTO COMPLETE 
     if(a == 9) // TAB 
     {
-        if(verb_context == "NONE"){
+        if(verb_context == ""){
+            // current TODO 
+            // This is going to be a lengthy process where we search for the first match in the contexts given
+            std::string caps;// = toupper(input);
+            int si = 0;
+            while (input[si] != 0x00)
+            {
+                input[si] = toupper(input[si]);
+                si++;
+            }
+            caps = input;
+            
+            //input_ctr = 0;
+            for(int i = 0 ; i < DEFAULT_CONTEXT_SIZE; i++)
+            {
+                if(default_context[i].compare(0, caps.length(), caps) == 0)
+                {
+                    // Auto-complete: 
+                    std::string ans = "\x1b[" + std::to_string(input_ctr) + "D";
+                    std::cout << ans;
+            
+                    verb_context = default_context[i];
+                    
+                    strcpy(input, verb_context.c_str());
+                    std::cout << input;
+                    
+                    input_ctr = verb_context.length();
 
+                    break;
+                }
+            }
+        }
+        else if(verb_context == MURK_VERB_ATTACK) // loc 
+        {
+            // if there is anything to attack, 
+            // (players only! pvp custom code here!)
+            // add a space if needed
+            // and then the name of the monster 
         }
     }
     // DELETE 
     if(a == 127) {
-        input_ctr--;
-        input[input_ctr] = 0;
-        printf("\x1b[1D \x1b[1D");
-        std::cout << std::flush;
+        if(input_ctr > 0){
+            input_ctr--;
+            input[input_ctr] = 0;
+            
+            printf("\x1b[1D \x1b[1D");
+            std::cout << std::flush;
+            // todo: smart context changes 
+            if(input_ctr == 0) verb_context = "";
+        }
     }
 
     // special chars: 
@@ -358,6 +467,29 @@ void Client::ProcessInput(char* input)
     } 
     //
     
+}
+
+void Client::SendCommand(std::string cmd)
+{
+    Murk::Packet p(MP_PCOMMAND);
+    // TODO : 
+    // parse string here: throw away anything not in current 
+    // - default context 
+    // - user context (inventory, scene)
+
+    p.AddCommand(cmd);
+
+    if(!!p.Validate())
+    {
+        err(1, "Couldnt validate JSON packet, not sending.");
+        return;
+    }
+
+    ENetPacket *ep = enet_packet_create(p.GetString().c_str(), p.GetString().length(), 
+        ENET_PACKET_FLAG_RELIABLE);
+    enet_peer_send(server, 0, ep);
+    //printf("packet: %s\n", p.GetString().c_str());
+
 }
 
 void Client::SendLogin()

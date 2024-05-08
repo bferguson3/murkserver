@@ -1,5 +1,6 @@
+#define DEFAULT_CONTEXT_SIZE 26
+
 const std::string default_context[] = { 
-    "NONE",
     "ATTACK",
     "CAST",
     "CHANT",
@@ -9,6 +10,7 @@ const std::string default_context[] = {
     "DISARM",
     "EAST",
     "EXAMINE",
+    "GET",
     "GIVE",
     "INVENTORY",
     "KICK",

@@ -27,19 +27,19 @@ class User : public Object
         void      SetID(char* id);
         char*     GetID();
         
-        void      PickUp(Item i, bool stackable, int ct);
+        void      PickUp(Item i, int ct);
 
         std::string GetLastPacket();
-        void        SetLastPacket(std::string p);
+        void      SetLastPacket(std::string p);
         
-        void        Equip(Item i);
-        void        UpdateStats();
+        void      Equip(Item i);
+        void      UpdateStats();
 
-        void        SetScreen(void* s); // move immediately to...
-        void*      GetScreen();
+        void      SetScreen(void* s); // move immediately to...
+        void*     GetScreen();
 
-        void SetPeer(ENetPeer* p);
-        ENetPeer* GetPeer();
+        void        SetPeer(ENetPeer* p);
+        ENetPeer*   GetPeer();
       
 
     private:
@@ -47,8 +47,8 @@ class User : public Object
 
         PlayerState state;
         std::string last_packet;
-        void* currentScreen;
-        ENetPeer* mypeer;
+        void*       currentScreen;
+        ENetPeer*   mypeer;
 
         
         

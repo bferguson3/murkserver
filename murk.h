@@ -35,7 +35,8 @@ enum MURK_PACKET_TYPES
     MP_MESSAGE_GEN = 3,
     MP_MENUSEL = 4,
     MP_PCOMMAND = 5,
-    MP_MESSAGE_SCREEN = 6
+    MP_MESSAGE_SCREEN = 6,
+    MP_ROOM_INFO = 7
 };
 
 typedef enum packet_action //! client
@@ -60,10 +61,10 @@ typedef struct _exits {
     bool W;
     bool Up;
     bool Down;
-    bool NW;
+    /*bool NW;
     bool NE;
     bool SE;
-    bool SW;
+    bool SW;*/
 } Exits;
 
 
@@ -88,7 +89,7 @@ enum ItemType {
 #define ITEMFLAG_USEABLE_BATTLE     (1 << 10)
 #define ITEMFLAG_USEABLE_MAP        (1 << 11)
 
-#define no_exits 0,0,0,0,0,0,0,0,0,0
+#define no_exits 0,0,0,0,0,0//,0,0,0,0
 
 enum ScreenType { 
     SCR_LOGIN = 0,
@@ -112,13 +113,16 @@ typedef struct _screen {
 } Screen;
 */
 
+#define MURK_VERB_ATTACK "ATTACK"
+
 enum PlayerState { 
     STATE_OFFLINE = 0,
     STATE_MAINMENU = 1,
     STATE_IDLE = 2,
     STATE_INCOMBAT = 3,
     STATE_DEAD = 4,
-    STATE_LOGGING_IN = 5
+    STATE_LOGGING_IN = 5,
+    STATE_NORMAL = 6
 };
 
 

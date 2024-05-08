@@ -53,7 +53,7 @@ class Server {
         sqlite3*    murk_userdb;
 
         void AddScreen(Screen s);
-
+        void SendPacket(ENetPeer* u, Packet p);
         
         //std::vector <MurkUser> activeUsers;
         std::unordered_map <std::string, Murk::User> activeUserMap; // guid, User object
