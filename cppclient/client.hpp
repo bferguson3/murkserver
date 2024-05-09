@@ -9,6 +9,7 @@
 #include <fcntl.h>
 #include "screen.hpp"
 #include "packet.hpp"
+#include <time.h>
 
 #include "verb_context.h"
 
@@ -41,6 +42,10 @@ class Client {
         void ProcessInput(char* i);
         void AnsiPrint(std::string s);
         std::string InputPrompt();
+        void Capitalize(char* input);
+        void CapitalizeVerb(std::string* s);
+
+        void SendSayMessage(std::string msg); // to current screen
 
         void GameLoop();
         void SendLogin();
@@ -58,6 +63,8 @@ class Client {
 
         enum PlayerState state;
         Screen           currentScreen;
+
+        struct timespec last_action_time;
 
     // PUBLIC VARS FROM SERVER 
 #include "../cppserver/character_data.h"

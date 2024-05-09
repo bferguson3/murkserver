@@ -113,7 +113,19 @@ typedef struct _screen {
 } Screen;
 */
 
-#define MURK_VERB_ATTACK "ATTACK"
+#define MURK_VERB_ATTACK    "ATTACK"
+#define MURK_VERB_SAY       "SAY"
+
+#define MURK_TARGET_LOCAL   "LOCAL"
+#define MURK_TARGET_SELF    "SELF"
+
+#define MURK_VERB_SOUTH     "SOUTH"
+#define MURK_VERB_NORTH     "NORTH"
+#define MURK_VERB_WEST      "WEST"
+#define MURK_VERB_EAST      "EAST"
+#define MURK_VERB_UP        "UP"
+#define MURK_VERB_DOWN      "DOWN"
+
 
 enum PlayerState { 
     STATE_OFFLINE = 0,

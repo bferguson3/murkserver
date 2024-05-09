@@ -32,7 +32,10 @@ class Packet
         void SetScreen(int id);
 
         void AddScreen(Screen* s);
+        
         void AddCommand(std::string s);
+        void AddTarget(std::string s);
+        void AddSubject(std::string s);
 
         ENetPeer*   GetPeer();
         void        SetPeer(ENetPeer* p);

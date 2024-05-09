@@ -101,9 +101,17 @@ void Packet::UserPass(std::string usr, std::string pass)
 
 }
 
-void Packet::AddCommand(std::string s)
+void Packet::AddCommand(std::string s) // USE x on y 
 {
-    str += " \"cmd\":\"" + s + "\"\n}";
+    str += " \"cmd\":\"" + s + "\",\n";
+}
+void Packet::AddTarget(std::string s) // use x on _Y_ 
+{
+    str += " \"tgt\":\"" + s + "\",\n";
+}
+void Packet::AddSubject(std::string s) // use _X_ on y 
+{
+    str += " \"s\":\"" + s + "\"\n}\x00\x00";
 }
 
 void Packet::Select(char s)

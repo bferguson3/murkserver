@@ -43,9 +43,7 @@ namespace Murk {
         localUsers.push_back(u);
         
         printf("[DEBUG] added user %s to room %d\n", u, GetID());
-        
-        
-        //printf("%s\n", _p.GetString().c_str());
+        printf("[DEBUG] User count: %lu\n", localUsers.size());
 
     }
 
@@ -60,7 +58,7 @@ namespace Murk {
                 break;
             }
         }
-        
+        printf("[DEBUG] User count: %lu\n", localUsers.size());
     }
 
     int Screen::ExitsToInt()

@@ -9,6 +9,8 @@ extern "C" {
     #include <enet/enet.h>
 }
 
+//#include <algorithm>
+
 extern int _getc();
 extern void clear(void* a, size_t s);
 
@@ -26,6 +28,8 @@ Client::Client()
     verb_context = "";//default_context[0];
     //class Screen _s;
     //currentScreen = _s;
+    last_action_time.tv_sec = 0;
+    last_action_time.tv_nsec = 0;
 }
 
 
@@ -122,6 +126,7 @@ void Client::Disconnect()
 
 void Client::ProcessEvent(ENetEvent* event)
 {
+    
 
     Murk::Packet incoming((char*)event->packet->data);
     
@@ -178,13 +183,9 @@ void Client::ProcessPacket(Murk::Packet p)
         std::set<std::string> _list = p.GetOptions();
         std::set<std::string>::iterator it;
         for(it = _list.begin(); it != _list.end(); ++it) AnsiPrint((std::string)*it);
-        //for(std::string s : _list) {
-            //_i ++;
-        //    AnsiPrint(s);
-        //}
+        
         printf("\n");
         printf("%s", MENU_SELECT_STRING);
-        
         
         // Set the input flag 
         FLAG_INPUT_MENU = true;
@@ -255,6 +256,18 @@ void Client::ProcessPacket(Murk::Packet p)
 
 std::string Client::InputPrompt()
 {
+
+    struct timespec start;
+    clock_gettime(CLOCK_REALTIME, &start);
+    
+    if(start.tv_sec <= last_action_time.tv_sec) { 
+        sleep(1);
+    }
+    
+
+    last_action_time.tv_sec = start.tv_sec;
+    last_action_time.tv_nsec = start.tv_nsec;
+    
     return "HP:" + std::to_string(curHP) + "> ";
 }
 
@@ -327,13 +340,72 @@ void Client::SendMenuSelect(char s)
     enet_peer_send(server, 0, ep);
 }
 
+void Client::Capitalize(char* input)
+{
+    int si = 0;
+    while (input[si] != 0x00)
+    {
+        input[si] = toupper(input[si]);
+        si++;
+    }
+    
+}
+
+// find the first verb only and capitalize it 
+// Only works for single commands 
+void Client::CapitalizeVerb(std::string* s)
+{
+    std::string p = *s;
+    // 1 convert temp to capitals 
+    std::string::iterator c;
+    for(c = p.begin(); c != p.end(); c++) 
+        { *c = toupper(*c); }
+
+    if (p == "S") {
+        *s = MURK_VERB_SOUTH;
+        return;
+    }
+    if (p == "E") {
+        *s = MURK_VERB_EAST;
+        return;
+    }
+    if (p == "W") {
+        *s = MURK_VERB_WEST;
+        return;
+    }
+    if (p == "N") {
+        *s = MURK_VERB_NORTH;
+        return;
+    }
+    if (p == "U") {
+        *s = MURK_VERB_UP;
+        return;
+    }
+    if (p == "D") {
+        *s = MURK_VERB_DOWN;
+        return;
+    }
+    // 2 find verb 
+    for(int i = 0; i < DEFAULT_CONTEXT_SIZE; i++){
+        ssize_t len = 0;
+        
+        if(default_context[i].length() > s->length()) len = s->length();
+        else len = default_context[i].length();
+
+        if(default_context[i].compare(0, len, p.c_str()) == 0){
+        //if(p.compare(0, len, default_context[i].c_str()) == 0){
+            *s = default_context[i];
+        }
+    }
+}
+
 
 void Client::ProcessInput(char* input)
 {
     int a = _getc();
     //if(a > 0) printf("%d\n", a);
     // Standard check: 
-    if((a < 127) && (a > -1) && (a != 9)) {
+    if((a < 127) && (a > 0x19) && (a != 9)) {
         input[input_ctr++] = (char)a;
         
         // Key-by-key processing here: 
@@ -357,8 +429,9 @@ void Client::ProcessInput(char* input)
         }
     }
     if(a == 10 || a == 13) { // 10 or 13 depending on mode submits
-        size_t _l = strlen(input);
-        input[_l - 1] = (char)0; // null the RETURN byte at the end
+
+        //size_t _l = strlen(input);
+        //input[_l - 1] = (char)0; // null the RETURN byte at the end
         
         // String input processing here: 
         if(FLAG_INPUT_USER) {
@@ -375,11 +448,63 @@ void Client::ProcessInput(char* input)
         }
         if(state == STATE_NORMAL) // Out of combat entity 
         {
-            SendCommand(input);
+            if(verb_context == "") // no context yet? 
+            {
+                std::string _i; 
+                _i = input;
+                //printf("[DEBUG] input string now: %s\n", _i.c_str());
+                // TODO: loc stuff 
+                // get only the first word 
+                std::string word = _i.substr(0, _i.find(" "));
 
+                CapitalizeVerb(&word);
+                _i.replace(0, _i.find(" "), word);
+                
+                // search for first verb and use that 
+                int i;
+                for(i = 0; i < DEFAULT_CONTEXT_SIZE; i++){
+                    if(word.find(default_context[i]) != std::string::npos){
+                        verb_context = default_context[i];
+                        printf("[DEBUG] Context set to %s\n", default_context[i].c_str());
+                        break;
+                    }
+                }
+
+                ssize_t n = _i.find(default_context[i]);
+                if(n != std::string::npos) { 
+                    _i.erase(n, default_context[i].size());
+                }
+                strcpy(input, _i.c_str());
+            }
+
+            if(verb_context == MURK_VERB_SAY)
+            {
+                // send msg everything after say 
+                std::string words = input;
+                std::string ar = MURK_VERB_SAY;
+                // if its there, erase it 
+                ssize_t n = words.find(ar);
+                if (n != std::string::npos){
+                    int j = ar.length();
+                    words.erase(n, j);
+                    // trim forespace
+                    if(words.compare(0, 1, " ") != std::string::npos) words.erase(0, 1);
+                }
+
+                SendSayMessage(words);
+            }
+            else
+                if(verb_context != "")
+                    SendCommand(verb_context);
+                else { 
+                    printf("\n\x1b[37m Sorry, I didn't understand that.");
+                }
+
+            // newline while wait 
             printf("\n");
 
-            state = STATE_IDLE; // waiting for reply 
+            AnsiPrint(InputPrompt());
+            verb_context = "";
         }
         
         // reset input 
@@ -389,19 +514,13 @@ void Client::ProcessInput(char* input)
     // TAB FOR AUTO COMPLETE 
     if(a == 9) // TAB 
     {
+        // No verb context yet? 
         if(verb_context == ""){
-            // current TODO 
             // This is going to be a lengthy process where we search for the first match in the contexts given
             std::string caps;// = toupper(input);
-            int si = 0;
-            while (input[si] != 0x00)
-            {
-                input[si] = toupper(input[si]);
-                si++;
-            }
+            Capitalize(input);
             caps = input;
             
-            //input_ctr = 0;
             for(int i = 0 ; i < DEFAULT_CONTEXT_SIZE; i++)
             {
                 if(default_context[i].compare(0, caps.length(), caps) == 0)
@@ -428,6 +547,7 @@ void Client::ProcessInput(char* input)
             // add a space if needed
             // and then the name of the monster 
         }
+        
     }
     // DELETE 
     if(a == 127) {
@@ -473,11 +593,13 @@ void Client::SendCommand(std::string cmd)
 {
     Murk::Packet p(MP_PCOMMAND);
     // TODO : 
-    // parse string here: throw away anything not in current 
+    // parse string here: throw away anything not in  
     // - default context 
     // - user context (inventory, scene)
 
     p.AddCommand(cmd);
+    p.AddTarget(MURK_TARGET_SELF);
+    p.AddSubject("");
 
     if(!!p.Validate())
     {
@@ -490,6 +612,27 @@ void Client::SendCommand(std::string cmd)
     enet_peer_send(server, 0, ep);
     //printf("packet: %s\n", p.GetString().c_str());
 
+}
+
+
+void Client::SendSayMessage(std::string msg)
+{
+    // make packet 
+    Murk::Packet p(MP_PCOMMAND);
+    // add say cmd (SAY LOCAL)
+    p.AddCommand(MURK_VERB_SAY);
+    p.AddTarget(MURK_TARGET_LOCAL);
+    // add object (words), adds end bracket
+    p.AddSubject(msg);
+
+    if(!!p.Validate()) {
+        err(1, "ERROR: Couldn't validate packet, not sending.\n");
+        return;
+    }
+
+    ENetPacket *ep = enet_packet_create(p.GetString().c_str(), p.GetString().length(), 
+        ENET_PACKET_FLAG_RELIABLE);
+    enet_peer_send(server, 0, ep);
 }
 
 void Client::SendLogin()

@@ -61,13 +61,13 @@ void Server::ProcessEvent(ENetEvent event)
                     event.peer->address.host, event.peer->address.port);
             
             // Create a unique guid for the user 
-            
             generate_new_guid(_guid);
             
             // Allocate a user and copy the guid 
             _nuser.SetID(&_guid[0]);
             _nuser.SetScreen((void*)&mainmenu); //ADDRESS OF! Screen obj.  // todo: static_cast<> ? 
             _nuser.SetPeer(event.peer);
+
             _nuser.display_name = "HELLO WORLD"; // temporary 
             
             _un = _guid;
@@ -99,8 +99,11 @@ void Server::ProcessEvent(ENetEvent event)
             break;
 
         case ENET_EVENT_TYPE_DISCONNECT:
-            printf("%s disconnected.\n", (char *)event.peer->data);
-            
+            up = (User*)event.peer->data;
+            printf("%s disconnected.\n", up->display_name.c_str());
+            _s = (Screen*)up->GetScreen();
+            _s->ExitUser(up->GetID());
+
             event.peer->data = NULL;
             break;
         case ENET_EVENT_TYPE_NONE:
